@@ -25,14 +25,6 @@
 ##### |   |--app.vue 顶层路由
 ##### |   |--main.js 入口文件
 
-## 下载运行
-```shell
-$ git clone https://github.com/hdjxtc/dj-music.git
-$ cd dj-music
-$ npm install
-$ npm run serve
-```
-
 ## 使用到的对应接口
 1. 登录
 ```js
