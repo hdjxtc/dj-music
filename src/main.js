@@ -8,6 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import handle from '@/model/handle'
 import store from './store'
 
+// 设置全局组件
+import Empty from '@/components/contents/empty'
+Vue.component('Empty', Empty)
+
 Vue.use(ElementUI);
 
 // 封装全局变量
@@ -15,11 +19,10 @@ Vue.use(ElementUI);
 Vue.prototype.$api = api
 Vue.prototype.handle = handle
 
-
 Vue.config.productionTip = false
 
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+	router,
+	store,
+	render: h => h(App)
 }).$mount('#app')

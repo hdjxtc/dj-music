@@ -82,7 +82,7 @@
 						<div class="authorname" v-else @click="login">
 							登录
 						</div>
-						<el-drawer :append-to-body="true" :visible.sync="innerDrawer">
+						<el-drawer :append-to-body="true" :visible.sync="innerDrawer" size="50%">
 							<ui class="innerDrawer">
 								<li class="nav-link el-icon-user" style="margin-left: 5%" @click="personal">个人主页</li>
 								<li class="nav-link el-icon-switch-button" style="margin-left: 5%" @click="signout">退出登录</li>
@@ -169,6 +169,7 @@
 					name: 'login'
 				})
 			},
+			// 饿了么组件的下拉菜单指令事件
 			handleCommand(command) {
 				if (command == 'personal') {
 					this.personal()
@@ -176,6 +177,7 @@
 					this.signout()
 				}
 			},
+			// 个人主页
 			personal(){
 				this.drawer = false
 				this.innerDrawer = false
@@ -183,6 +185,7 @@
 					name: 'personal'
 				})
 			},
+			// 退出登录
 			signout(){
 				window.localStorage.clear()
 				// 待优化,使用vuex同步改变数据不需要刷新

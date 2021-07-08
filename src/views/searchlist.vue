@@ -2,8 +2,8 @@
 	<div class="searchbox">
 		<div style="margin: 30px 0">
 			<el-input placeholder="请输入内容" v-model="keyword" class="input-with-select shadow inputsize" clearable
-				@keyup.enter.native="search(1)">
-				<el-button slot="append" icon="el-icon-search" @click="search(1)"></el-button>
+				@keyup.enter.native="search(type)">
+				<el-button slot="append" icon="el-icon-search" @click="search(type)"></el-button>
 			</el-input>
 		</div>
 		<div class="tis" v-if="type==1">
@@ -22,34 +22,41 @@
 			搜索{{keyword}}，找到 <b class="num">{{playlistCount}}</b> 个歌单
 		</div>
 		<el-tabs type="card" @tab-click="changeType">
+			<!-- 单曲 -->
 			<el-tab-pane label="单曲">
 				<Songlist :songlist="songList" />
 				<div class="feny" v-if="songCount">
-					<Feny :total="songCount" @pageChange="pageChange"/>
+					<Feny :total="songCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
+			<!-- 歌手 -->
 			<el-tab-pane label="歌手">
-				<Singer />
+				<ul class="singer-list">
+					<Singer v-for="(item,index) of singers" :key="index" :item="item" />
+				</ul>
 				<div class="feny" v-if="artistCount">
-					<Feny :total="artistCount" @pageChange="pageChange"/>
+					<Feny :total="artistCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
+			<!-- 专辑 -->
 			<el-tab-pane label="专辑">
-				<Gedanlist />
+				<Albumlist :albums="albums"/>
 				<div class="feny" v-if="albumCount">
-					<Feny :total="albumCount" @pageChange="pageChange"/>
+					<Feny :total="albumCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
+			<!-- 视频 -->
 			<el-tab-pane label="视频">
-				<Videolist />
+				<Videolist :videos="videos"/>
 				<div class="feny" v-if="videoCount">
-					<Feny :total="videoCount" @pageChange="pageChange"/>
+					<Feny :total="videoCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
+			<!-- 歌单 -->
 			<el-tab-pane label="歌单">
 				<Gedanlist />
 				<div class="feny" v-if="playlistCount">
-					<Feny :total="playlistCount" @pageChange="pageChange"/>
+					<Feny :total="playlistCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
 		</el-tabs>
@@ -57,9 +64,13 @@
 </template>
 
 <script>
-	import { createSong,createVideo } from '@/model/song'
+	import {
+		createSong,
+		createVideo
+	} from '@/model/song'
 	import Songlist from '@/components/contents/songlist'
 	import Singer from '@/components/contents/singer'
+	import Albumlist from '@/components/contents/albumlist'
 	import Gedanlist from '@/components/contents/gedanlist'
 	import Videolist from '@/components/contents/videolist'
 	import Feny from '@/components/contents/feny'
@@ -87,6 +98,7 @@
 		components: {
 			Songlist,
 			Singer,
+			Albumlist,
 			Gedanlist,
 			Videolist,
 			Feny
@@ -96,7 +108,7 @@
 			let keyword = this.$route.query.keyword
 			if (keyword) {
 				this.keyword = keyword
-				this.search(1)
+				this.search(this.type)
 			}
 		},
 		methods: {
@@ -125,30 +137,25 @@
 									// 歌手
 									case 100: {
 										this.singers = res.result.artists
+										// console.log(this.singers)
 										break
 									}
 									// 专辑
 									case 10: {
 										this.albums = res.result.albums
+										console.log(this.albums)
 										break
 									}
 									// 视频
 									case 1014: {
 										this.videos = this.normalizeVideos(res.result.videos)
+										// console.log(this.videos)
 										break
 									}
 									// 歌单
 									case 1000: {
 										this.playList = res.result.playlists
-										break
-									}
-									default: {
-										let lists = res.result.songs
-										let songid = []
-										lists.map(item => {
-											songid.push(item.id)
-										})
-										this.getMusicList(songid)
+										// console.log(this.playList)
 										break
 									}
 								}
@@ -251,6 +258,10 @@
 		}
 	}
 
+	.el-tabs__header {
+		margin-bottom: 0 !important;
+	}
+
 	.is-top {
 		margin-left: 1.3%;
 		padding-right: 1.8%;
@@ -265,5 +276,11 @@
 
 	.num {
 		color: #c20c0c;
+	}
+
+	.singer-list {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 2rem;
 	}
 </style>

@@ -60,6 +60,7 @@
 	.el-button--primary{
 		margin-top: 5%!important;
 	}
+	
 </style>
 <script type="text/javascript">
 	import Navbar from './components/header/navbar'

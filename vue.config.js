@@ -11,7 +11,7 @@ module.exports = {
 		port: 8868,
 		hot: true, // 热加载
 		// hotOnly: true, // 不刷新页面，只做热更新
-		disableHostCheck: true, //允许访问hostname不是配置内的
+		disableHostCheck: true, //允许访问hostname不是配置内的，
 		open: true,
 		proxy: { // 解决跨域问题
 			'/api': {

@@ -3,6 +3,7 @@
 import handle from './handle'
 
 export function createSong(musicData) {
+	// console.log(musicData)
 	return {
 		id: musicData.id,
 		singer: filterSinger(musicData.ar || musicData.artists),
@@ -12,7 +13,8 @@ export function createSong(musicData) {
 		image: musicData.al ? musicData.al.picUrl : musicData.album.artist.img1v1Url,
 		url: `https://music.163.com/song/media/outer/url?id=${musicData.id}.mp3`,
 		playCount: musicData.playCount || '',
-		score: musicData.score || ''
+		score: musicData.score || '',
+		mv: musicData.mv
 	}
 }
 

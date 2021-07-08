@@ -10,6 +10,9 @@ import Err from '../views/404.vue'
 import Searchlist from '../views/searchlist.vue'
 import Login from '../views/login.vue'
 import Personal from '../views/personal.vue'
+import Singerpage from '../views/singerpage.vue'
+import Albumpage from '../views/albumpage.vue'
+import Videodetail from '../views/videodetail.vue'
 
 Vue.use(VueRouter)
 
@@ -75,6 +78,25 @@ const routes = [
 		name: 'personal',
 		component: Personal
 	},
+	// 歌手个人详情页
+	{
+		path: '/singerpage',
+		name: 'singerpage',
+		component: Singerpage
+	},
+	// 专辑详情页
+	{
+		path: '/albumpage',
+		name: 'albumpage',
+		component: Albumpage
+	},
+	// 视频详情页
+	{
+		path: '/videodetail',
+		name: 'videodetail',
+		component: Videodetail
+	},
+	
 	// 匹配错误页
 	{
 		path: '*',

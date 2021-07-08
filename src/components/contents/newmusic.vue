@@ -12,7 +12,7 @@
 					<div class="avatar">
 						<el-image :key="index" :src="item.image+ '?param=150y150'" lazy>
 							<div slot="placeholder" class="image-slot flex-center flex-column">
-								<i class="iconfont niceicon-3"></i>
+								<i class="el-icon-picture"></i>
 								<p>加载中<span class="dot">...</span></p>
 							</div>
 							<div slot="error" class="image-slot flex-center">
