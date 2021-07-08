@@ -22,7 +22,7 @@
 ##### |   |--router vue-router相关配置
 ##### |   |   |--index.js 所有路由
 ##### |   |--router vuex相关配置
-##### |   |--views 所有的路由视图组件
+##### |   |--store 所有的路由视图组件
 ##### |   |--app.vue 顶层路由
 ##### |   |--main.js 入口文件
 
