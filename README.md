@@ -48,7 +48,7 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 
 ##对应接口
 ###登录
-```js
+```shell
 	说明 : 调用此接口登录成功后返回对应的userId、cookie、token等
 	必选参数 :
 		phone: 手机号码
@@ -60,14 +60,14 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	调用例子 : /login/cellphone?phone=xxx&password=yyy /login/cellphone?phone=xxx&md5_password=yyy
 ```
 ###获取用户详情
-```js
+```shell
 	说明 : 登录后调用此接口 , 传入用户id, 可以获取用户详情
 	必选参数 : uid : 用户id
 	接口地址 : /user/detail
 	调用例子 : /user/detail?uid=32953014
 ```
 ###搜索
-```js
+```shell
 	说明 : 调用此接口 , 传入搜索关键词可以搜索该音乐/专辑/歌手/歌单/用户,关键词可以多个,以空格隔开,如 "周杰伦 搁浅"(不需要登录),搜索获取的mp3url不能直接用,可通过/song/url接口传入歌曲id获取具体的播放链接
 	必选参数 : keywords : 关键词
 	可选参数 : 
@@ -78,7 +78,7 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	调用例子 : /search?keywords= 海阔天空 /cloudsearch?keywords= 海阔天空
 ```
 ###轮播图
-```js
+```shell
 	说明 : 调用此接口 , 可获取 banner( 轮播图 ) 数据
 	可选参数 :
 		type:资源类型,对应以下类型,默认为 0 即PC
@@ -90,7 +90,7 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	调用例子 : /banner, /banner?type=2
 ```
 ###歌单
-```js
+```shell
 	说明 : 调用此接口 , 可获取网友精选碟歌单
 	可选参数 : 
 		order: 可选值为 'new' 和 'hot', 分别对应最新和最热 , 默认为 'hot'
@@ -101,7 +101,7 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	调用例子 : /top/playlist?limit=10&order=new
 ```
 ###推荐歌单
-```js
+```shell
 	说明 : 调用此接口 , 可获取推荐歌单
 	可选参数 : 
 		limit: 取出数量 , 默认为 30 (不支持 offset)
@@ -109,14 +109,14 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	调用例子 : /personalized?limit=1
 ```
 ###推荐新歌曲
-```js
+```shell
 	说明 : 调用此接口 , 可获取推荐新音乐
 	可选参数 : limit: 取出数量 , 默认为 10 (不支持 offset)
 	接口地址 : /personalized/newsong
 	调用例子 : /personalized/newsong
 ```
 ###获取歌曲详情
-```js
+```shell
 	说明 : 调用此接口 , 传入音乐 id(支持多个 id, 用 , 隔开), 可获得歌曲详情
 	必选参数 : ids: 音乐 id, 如 ids=347230
 	接口地址 : /song/detail
