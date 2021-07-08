@@ -3,6 +3,9 @@
 ## 预览地址
 [dj-music](https://djtc.vip/dj-music)
 
+## 后台接口地址
+[网易云音乐 Node.js API service](https://github.com/Binaryify/NeteaseCloudMusicApi)
+
 ## 目录结构
 ##### | --dist 生成打包后的文件
 ##### | --node_modules 安装的依赖包
@@ -18,36 +21,14 @@
 ##### |   |--components 公用组件
 ##### |   |--router vue-router相关配置
 ##### |   |   |--index.js 所有路由
-##### |   |--views 所有的路由视图组件
+##### |   |--router vuex相关配置
+##### |   |--views 所有路由视图
+##### |   |--store 所有的路由视图组件
 ##### |   |--app.vue 顶层路由
 ##### |   |--main.js 入口文件
 
-## 安装运行
-```shell
-$ git clone https://github.com/Binaryify/NeteaseCloudMusicApi
-$ cd NeteaseCloudMusicApi
-$ npm install
-$ npm start
-$ 成功后访问localhost:3000是否正常，正常下一步
-$ git clone git@gitee.com:lxhcool/desktop-nicemusic.git
-$ cd desktop-nicemusic
-$ npm install
-$ npm run serve
-```
-
-## 打包上线
-```shell
-$ https://github.com/Binaryify/NeteaseCloudMusicApi 构建后端服务（这个需要自行解决，不知道的建议找后端的朋友帮忙）
-$ 构建成功后打开是这样的界面就代表ok了（https://nicemusic-api.lxhcool.cn/）
-$ 构建后会有接口地址，在项目src/api/config.js中将production下面的接口地址修改成自己的api地址
-$ cd desktop-nicemusic
-$ npm install
-$ npm run build
-$ 生成dist文件夹，将里面的内容上传到自己的服务器就可以了
-```
-
-##对应接口
-###登录
+## 使用到的对应接口
+1. 登录
 ```js
 	说明 : 调用此接口登录成功后返回对应的userId、cookie、token等
 	必选参数 :
@@ -59,14 +40,16 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	接口地址 : /login/cellphone
 	调用例子 : /login/cellphone?phone=xxx&password=yyy /login/cellphone?phone=xxx&md5_password=yyy
 ```
-###获取用户详情
+
+2. 获取用户详情
 ```js
 	说明 : 登录后调用此接口 , 传入用户id, 可以获取用户详情
 	必选参数 : uid : 用户id
 	接口地址 : /user/detail
 	调用例子 : /user/detail?uid=32953014
 ```
-###搜索
+
+3. 搜索
 ```js
 	说明 : 调用此接口 , 传入搜索关键词可以搜索该音乐/专辑/歌手/歌单/用户,关键词可以多个,以空格隔开,如 "周杰伦 搁浅"(不需要登录),搜索获取的mp3url不能直接用,可通过/song/url接口传入歌曲id获取具体的播放链接
 	必选参数 : keywords : 关键词
@@ -77,7 +60,8 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	接口地址 : /search 或者 /cloudsearch(更全)
 	调用例子 : /search?keywords= 海阔天空 /cloudsearch?keywords= 海阔天空
 ```
-###轮播图
+
+4. 轮播图
 ```js
 	说明 : 调用此接口 , 可获取 banner( 轮播图 ) 数据
 	可选参数 :
@@ -89,7 +73,8 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	接口地址 : /banner
 	调用例子 : /banner, /banner?type=2
 ```
-###歌单
+
+5. 歌单
 ```js
 	说明 : 调用此接口 , 可获取网友精选碟歌单
 	可选参数 : 
@@ -100,7 +85,8 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	接口地址 : /top/playlist
 	调用例子 : /top/playlist?limit=10&order=new
 ```
-###推荐歌单
+
+6. 推荐歌单
 ```js
 	说明 : 调用此接口 , 可获取推荐歌单
 	可选参数 : 
@@ -108,14 +94,16 @@ $ 生成dist文件夹，将里面的内容上传到自己的服务器就可以�
 	接口地址 : /personalized
 	调用例子 : /personalized?limit=1
 ```
-###推荐新歌曲
+
+7. 推荐新歌曲
 ```js
 	说明 : 调用此接口 , 可获取推荐新音乐
 	可选参数 : limit: 取出数量 , 默认为 10 (不支持 offset)
 	接口地址 : /personalized/newsong
 	调用例子 : /personalized/newsong
 ```
-###获取歌曲详情
+
+8. 获取歌曲详情
 ```js
 	说明 : 调用此接口 , 传入音乐 id(支持多个 id, 用 , 隔开), 可获得歌曲详情
 	必选参数 : ids: 音乐 id, 如 ids=347230
