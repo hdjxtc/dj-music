@@ -12,7 +12,7 @@
 ##### | --public 静态资源会被输出到目录dist
 ##### | --src
 ##### |   |--api 与后端交互使用相关方法和配置
-##### |   |   |--request.js 封装请求，拦截器等等 （axios，fetch）
+##### |   |   |--request.js 封装请求，拦截器等 （axios，fetch）
 ##### |   |   |--config.js 配置不同环境下接口地址
 ##### |   |--assets 存放静态资源，图片等
 ##### |   |--model
