@@ -1,5 +1,5 @@
 <template>
-	<li @click="toSinger(item)">
+	<li @click="toSinger(item.id)">
 		<div class="cover">
 			<div class="image shadow">
 				<el-image :key="item.img1v1Url" :src="item.img1v1Url" lazy>
@@ -28,11 +28,11 @@
 		},
 		methods: {
 			// 跳转歌手页面
-			toSinger(item) {
+			toSinger(id) {
 				this.$router.push({
 					name: 'singerpage',
 					query: {
-						id: item.id
+						id: id
 					}
 				})
 				// this.setSinger(item)
@@ -75,6 +75,7 @@
 		font-weight: 700;
 		font-size: 14px;
 		line-height: 18px;
+		/* 允许在单词内换行 */
 		word-break: break-word;
 	}
 	

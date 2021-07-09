@@ -37,9 +37,7 @@
 </template>
 
 <script>
-	import {
-		createSong
-	} from '@/model/song'
+	import {createSong} from '@/model/song'
 	export default {
 		name: 'newmusic',
 		data() {
@@ -72,6 +70,7 @@
 					},
 				});
 				this.songList = this.hanlesonglist(res.songs)
+				// console.log(this.songList)
 			},
 
 			hanlesonglist(list) {

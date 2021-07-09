@@ -159,7 +159,7 @@
 			height: 155px;
 		}
 
-		.gendanlist {
+		.tjgedan {
 			padding-left: 2rem;
 		}
 	}
@@ -175,7 +175,7 @@
 			height: 140px;
 		}
 
-		.gendanlist {
+		.tjgedan {
 			padding-left: 1.6rem;
 		}
 	}
@@ -191,7 +191,7 @@
 			height: 130px;
 		}
 
-		.gendanlist {
+		.tjgedan {
 			padding-left: 1rem;
 		}
 	}
@@ -219,7 +219,7 @@
 			height: 110px;
 		}
 
-		.gendanlist {
+		.tjgedan {
 			padding-left: 0.5rem;
 		}
 	}
@@ -235,7 +235,7 @@
 			height: 100px;
 		}
 
-		.gendanlist {
+		.tjgedan {
 			padding-left: 0.4rem;
 		}
 	}

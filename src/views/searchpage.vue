@@ -40,21 +40,21 @@
 			</el-tab-pane>
 			<!-- 专辑 -->
 			<el-tab-pane label="专辑">
-				<Albumlist :albums="albums"/>
+				<Albumlist :albums="albums" />
 				<div class="feny" v-if="albumCount">
 					<Feny :total="albumCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
 			<!-- 视频 -->
 			<el-tab-pane label="视频">
-				<Videolist :videos="videos"/>
+				<Videolist :videos="videos" />
 				<div class="feny" v-if="videoCount">
 					<Feny :total="videoCount" @pageChange="pageChange" />
 				</div>
 			</el-tab-pane>
 			<!-- 歌单 -->
 			<el-tab-pane label="歌单">
-				<Gedanlist :playList="playList"/>
+				<Gedanlist :playList="playList" />
 				<div class="feny" v-if="playlistCount">
 					<Feny :total="playlistCount" @pageChange="pageChange" />
 				</div>
@@ -74,6 +74,7 @@
 	export default {
 		data() {
 			return {
+				// 各类型数量
 				songCount: "",
 				artistCount: "",
 				albumCount: "",
@@ -96,8 +97,8 @@
 			Songlist,
 			Singerlist,
 			Albumlist,
-			Gedanlist,
 			Videolist,
+			Gedanlist,
 			Feny
 		},
 		mounted() {
@@ -108,13 +109,27 @@
 				this.search(this.type)
 			}
 		},
+		watch: {
+			keyword(newval, oldval) {
+				console.log(newval, oldval)
+				console.log('搜索推荐待做')
+			},
+			// 监听导航栏输入框里的搜索
+			$route(newobj, oldobj) {
+				// console.log(newobj, oldobj)
+				if (newobj.query.keyword !== oldobj.query.keyword) {
+					this.keyword = newobj.query.keyword
+					this.search(this.type)
+				}
+			}
+		},
 		methods: {
 			// 搜索
 			search(type) {
 				if (this.keyword.split(' ').join('').length !== 0) {
 					this.$message({
 						message: '请稍后！',
-						duration: 1500
+						duration: 1000
 					})
 					this.$api.get(
 							`/search?keywords=${this.keyword}&limit=${this.limit}&offset=${this.offset}&type=${type}`)

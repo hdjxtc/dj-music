@@ -1,5 +1,6 @@
 <template>
 	<div class="songlist">
+		<!-- highlight-current-row高亮显示选中行 -->
 		<el-table :data="songlist" style="width: 95%;margin:0 auto" highlight-current-row>
 			<el-table-column type="index" label="序号" width="60px" align="center"> </el-table-column>
 			<el-table-column :show-overflow-tooltip="true" label="歌曲" width="400px" align="left" header-align="center">
@@ -7,14 +8,11 @@
 					<img :src="scope.row.image" style="height: 50px;width: 50px;" />
 					<span style="margin-left: 10%;">{{scope.row.name}}</span>
 					<i class="el-icon-video-play" style="cursor: pointer; margin-left: 3%;" @click="playSong(scope.row.url)" title="播放"></i>
-					<i class="el-icon-video-camera" style="cursor: pointer; margin-left: 3%;" v-if="scope.row.mv!==0" :mvid="scope.row.mv" @click="playMv(scope.row.mv)" title="MV"></i>
+					<i class="el-icon-video-camera" style="cursor: pointer; margin-left: 3%;" v-if="scope.row.mv!==0" @click="playMv(scope.row.mv)" title="MV"></i>
 				</template>
 			</el-table-column>
-			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" width="300px"
-				align="center">
-			</el-table-column>
-			<el-table-column prop="album" :show-overflow-tooltip="true" label="专辑" width="300px" align="center">
-			</el-table-column>
+			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" width="300px" align="center"></el-table-column>
+			<el-table-column prop="album" :show-overflow-tooltip="true" label="专辑" width="300px" align="center"></el-table-column>
 			<el-table-column prop="duration" label="时间" align="center">
 				<template slot-scope="scope">
 					<!-- 秒转00:00 -->
@@ -37,20 +35,6 @@
 			// 播放歌曲
 			playSong(url) {
 				this.$message.success(url)
-			},
-			// 停止播放歌曲
-			pauseSong() {
-				this.pausePlay()
-			},
-			// 播放全部
-			playAllSong() {
-				this.playAll({
-					list: this.songs
-				})
-			},
-			// 收藏歌单
-			async collect() {
-				this.$emit('collectArtist')
 			},
 			// 分页跳转,向父组件传递参数page为当前页数
 			pageChange(page) {

@@ -3,6 +3,7 @@
 export default {
 	// 补0方法
 	addZero(num, len) {
+		// len=2说明超过10
 		if (String(num).length > len) return num
 		return (Array(len).join(0) + num).slice(-len)
 	},

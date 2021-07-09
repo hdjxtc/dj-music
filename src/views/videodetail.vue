@@ -1,5 +1,5 @@
 <template>
-	<h>视频详情</h>
+	<h1>视频详情</h1>
 </template>
 
 <script>

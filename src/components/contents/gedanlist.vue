@@ -75,7 +75,7 @@
 		background-color: #626262;
 		position: absolute;
 		top: 0;
-		transition: all 0.4s;
+		transition: 0.4s;
 		right: 6px;
 		transform: scale(0.85);
 		/* 旋转基点 */

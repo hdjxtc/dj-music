@@ -154,7 +154,9 @@
 			this.loginStatu = JSON.parse(window.localStorage.getItem('loginStatu'))?JSON.parse(window.localStorage.getItem('loginStatu')):false
 		},
 		methods: {
+			// 搜索
 			search() {
+				// 空格和未输入	this.keyword.split(' ').join('').length
 				if(this.keyword.split(' ').join('').length !== 0){
 					this.drawer = false
 					this.$router.push("/search?keyword=" + this.keyword).catch((err) => {
@@ -179,6 +181,7 @@
 			},
 			// 个人主页
 			personal(){
+				// 收起两个抽屉
 				this.drawer = false
 				this.innerDrawer = false
 				this.$router.push({

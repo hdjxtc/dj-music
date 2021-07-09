@@ -73,7 +73,7 @@
 						} = this.ruleForm
 						this.loginAsync(phone, password)
 					} else {
-						this.loading = false
+						this.$message.error('请输入手机号与密码！')
 					}
 				})
 			},
@@ -115,9 +115,13 @@
 					if (res.code === 200) {
 						this.loginLoading = false
 						let userInfo = res.profile
+						// 等级
 						userInfo.level = res.level
+						// 累计听歌数量
 						userInfo.listenSongs = res.listenSongs
+						// 创建时间
 						userInfo.createTime = res.createTime
+						// 创建天数
 						userInfo.createDays = res.createDays
 						window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
 						// this.setUserInfo(res.profile)
