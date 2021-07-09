@@ -1,12 +1,23 @@
 <template>
 	<div class="banner">
-		<el-carousel :interval="40000" type="card" height="200px" style="margin: 20px 50px;">
-			<el-carousel-item v-for="(item,index) in bannerinfo" :key="index">
-				<a :href="item.url">
-					<img :src="item.imageUrl || item.pic" alt="" class="imgSize" />
-				</a>
-			</el-carousel-item>
-		</el-carousel>
+		<div class="banner-pc">
+			<el-carousel trigger="click" type="card" height="200px" style="margin: 20px 50px;">
+				<el-carousel-item v-for="(item,index) in bannerinfo" :key="index">
+					<a :href="item.url">
+						<img :src="item.imageUrl || item.pic" alt="" class="imgSize" />
+					</a>
+				</el-carousel-item>
+			</el-carousel>
+		</div>
+		<div class="banner-yd">
+			<el-carousel indicator-position="none" trigger="click" height="150px" style="margin: 20px 9.3% 20px 11.8%">
+				<el-carousel-item v-for="(item,index) in bannerinfo" :key="index">
+					<a :href="item.url">
+						<img :src="item.imageUrl || item.pic" alt="" class="imgSize" style="width: 100%;"/>
+					</a>
+				</el-carousel-item>
+			</el-carousel>
+		</div>
 	</div>
 </template>
 
@@ -42,5 +53,15 @@
 <style scoped>
 	img {
 		height: 100%;
+	}
+	@media screen and (max-width: 992px) {
+		.banner-pc{
+			display: none!important;
+		}
+	}
+	@media screen and (min-width: 992px) {
+		.banner-yd{
+			display: none!important;
+		}
 	}
 </style>
