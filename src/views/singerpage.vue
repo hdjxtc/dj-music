@@ -3,9 +3,6 @@
 </template>
 
 <script>
-	export default{
-		name: 'singerpage'
-	}
 </script>
 
 <style>

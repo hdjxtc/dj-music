@@ -32,7 +32,7 @@
 			<!-- 歌手 -->
 			<el-tab-pane label="歌手">
 				<ul class="singer-list">
-					<Singer v-for="(item,index) of singers" :key="index" :item="item" />
+					<Singerlist v-for="(item,index) of singers" :key="index" :item="item" />
 				</ul>
 				<div class="feny" v-if="artistCount">
 					<Feny :total="artistCount" @pageChange="pageChange" />
@@ -54,7 +54,7 @@
 			</el-tab-pane>
 			<!-- 歌单 -->
 			<el-tab-pane label="歌单">
-				<Gedanlist />
+				<Gedanlist :playList="playList"/>
 				<div class="feny" v-if="playlistCount">
 					<Feny :total="playlistCount" @pageChange="pageChange" />
 				</div>
@@ -64,12 +64,9 @@
 </template>
 
 <script>
-	import {
-		createSong,
-		createVideo
-	} from '@/model/song'
+	import {createSong,createVideo} from '@/model/song'
 	import Songlist from '@/components/contents/songlist'
-	import Singer from '@/components/contents/singer'
+	import Singerlist from '@/components/contents/singerlist'
 	import Albumlist from '@/components/contents/albumlist'
 	import Gedanlist from '@/components/contents/gedanlist'
 	import Videolist from '@/components/contents/videolist'
@@ -97,7 +94,7 @@
 		},
 		components: {
 			Songlist,
-			Singer,
+			Singerlist,
 			Albumlist,
 			Gedanlist,
 			Videolist,
@@ -143,7 +140,7 @@
 									// 专辑
 									case 10: {
 										this.albums = res.result.albums
-										console.log(this.albums)
+										// console.log(this.albums)
 										break
 									}
 									// 视频
@@ -207,12 +204,10 @@
 						ret.push(
 							createVideo({
 								id: item.vid,
-								nickName: item.creator.nickname,
 								name: item.title,
 								playCount: item.playTime,
 								duration: item.durationms,
 								image: item.coverUrl,
-								isLive: false
 							})
 						)
 					}

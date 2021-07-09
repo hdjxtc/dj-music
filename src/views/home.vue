@@ -3,7 +3,7 @@
 		<Banner />
 		<h5 class="tuijian">热门推荐</h5>
 		<div style="clear: both;"></div>
-		<Gedanlist />
+		<Tjgedan />
 		<h5 class="tjgd">新歌上架</h5>
 		<div style="clear: both;"></div>
 		<Newmusic />
@@ -27,13 +27,13 @@
 </style>
 <script>
 	import Banner from '@/components/contents/banner.vue'
-	import Gedanlist from '@/components/contents/gedanlist.vue'
+	import Tjgedan from '@/components/contents/tjgedan.vue'
 	import Newmusic from '@/components/contents/newmusic.vue'
 	export default {
 		name: 'home',
 		components: {
 			Banner,
-			Gedanlist,
+			Tjgedan,
 			Newmusic
 		}
 	}

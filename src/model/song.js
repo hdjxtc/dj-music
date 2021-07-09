@@ -39,11 +39,9 @@ export function createVideo(videoData) {
 	}
 	return {
 		id: videoData.id,
-		nickName: videoData.nickName,
 		name: videoData.name,
 		playCount: videoData.playCount,
 		duration: videoData.duration,
 		image: videoData.image,
-		isLive: videoData.isLive
 	}
 }

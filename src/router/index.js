@@ -7,12 +7,13 @@ import Geshou from '../views/geshou.vue'
 import Shiping from '../views/shiping.vue'
 import Mv from '../views/mv.vue'
 import Err from '../views/404.vue'
-import Searchlist from '../views/searchlist.vue'
+import Searchpage from '../views/searchpage.vue'
 import Login from '../views/login.vue'
 import Personal from '../views/personal.vue'
 import Singerpage from '../views/singerpage.vue'
 import Albumpage from '../views/albumpage.vue'
 import Videodetail from '../views/videodetail.vue'
+import Playlistdetail from '../views/playlistdetail.vue'
 
 Vue.use(VueRouter)
 
@@ -61,7 +62,7 @@ const routes = [
 	{
 		path: '/search',
 		name: 'search',
-		component: Searchlist
+		component: Searchpage
 	},
 	// 登录
 	{
@@ -96,7 +97,12 @@ const routes = [
 		name: 'videodetail',
 		component: Videodetail
 	},
-	
+	// 歌单详情页
+	{
+		path: '/playlistdetail',
+		name: 'playlistdetail',
+		component: Playlistdetail
+	},
 	// 匹配错误页
 	{
 		path: '*',

@@ -1,12 +1,12 @@
 <template>
 	<div class="mv-box">
 		<ul class="mv-list" v-if="videos.length > 0">
-			<li v-for="item of videos" :key="item.id" :class="item.isLive ? 'live' : ''">
+			<li v-for="(item,index) of videos" :key="item.id">
 				<div class="cover">
 					<div class="image">
-						<el-image :key="item.image + '?param=352y197'" :src="item.image + '?param=325y197'" lazy>
+						<el-image :key="index" :src="item.image" lazy>
 							<div slot="placeholder" class="image-slot flex-center flex-column">
-								<i class="iconfont niceicon-3"></i>
+								<i class="el-icon-loading"></i>
 							</div>
 							<div slot="error" class="image-slot flex-center">
 								<i class="el-icon-picture-outline"></i>
@@ -18,25 +18,20 @@
 						<span>{{ handle.tranNumber(item.playCount, 0) }}</span>
 					</div>
 					<div class="action">
-						<button class="play flex-center" title="播放" v-if="!item.isLive"
-							@click="toDetail(item.id, item.type)">
-							<i class="iconfont nicebofang1"></i>
-						</button>
-						<button class="play flex-center" title="播放" v-else @click="toLive(item.id)">
-							<i class="iconfont nicebofang1"></i>
+						<button class="play flex-center" title="播放" @click="toDetail(item.id)">
+							<i class="el-icon-caret-right"></i>
 						</button>
 					</div>
 					<div class="foot">
-						<p>{{ item.nickName }}</p>
 						<p>{{ item.duration }}</p>
 					</div>
 				</div>
 				<div class="info">
-					<h2 class="title ellipsis">{{ item.name }}</h2>
+					<p class="title ellipsis">{{ item.name }}</p>
 				</div>
 			</li>
 		</ul>
-		<Empty v-else/>
+		<Empty v-else />
 	</div>
 </template>
 
@@ -46,35 +41,18 @@
 		props: {
 			videos: {
 				type: Array
-			},
-			type: {
-				type: String
 			}
 		},
 		methods: {
-			// 直播跳转
-			toLive(id) {
-				let url = `https://iplay.163.com/live?id=${id}`
-				window.open(url, '_blank')
-			},
 			// 视频详情
 			toDetail(id) {
 				// this.stopPlay()播放视频移除播放   vuex待优化
-				if (typeof id == 'number' || id.length < 10) {
-					this.$router.push({
-						name: 'videodetail',
-						query: {
-							id
-						}
-					})
-				} else {
-					this.$router.push({
-						name: 'videoDetail',
-						query: {
-							id
-						}
-					})
-				}
+				this.$router.push({
+					name: 'videodetail',
+					query: {
+						id
+					}
+				})
 			},
 		},
 	}
@@ -89,13 +67,14 @@
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		margin: 0 -15px;
+		padding: 1rem;
 	}
 
 	.mv-box .mv-list li {
+		list-style: none;
+		flex: 0 0 20%;
+		min-width: 20%;
 		padding: 0 15px 30px;
-		flex: 0 0 25%;
-		max-width: 25%;
 	}
 
 	.mv-box .mv-list li .cover {
@@ -103,7 +82,7 @@
 		z-index: 2;
 		padding-top: 56%;
 		border-radius: 2px;
-		background-color: #000;
+		background-color: #D9D9D9;
 	}
 
 	.mv-box .mv-list li .cover .image {
@@ -171,17 +150,17 @@
 		border: none;
 		border-radius: 50%;
 		color: #fff;
+		background-color: #fa2800;
 		cursor: pointer;
 	}
 
 	.mv-box .mv-list li .cover .action .play i {
-		font-size: 12px;
+		font-size: 15px;
 	}
 
 	.mv-box .mv-list li .cover .foot {
 		width: 100%;
-		height: 35px;
-		background: rgba(0, 0, 0, 0.6);
+		/* background: rgba(0, 0, 0, 0.6); */
 		position: absolute;
 		left: 0;
 		bottom: 0;
@@ -193,6 +172,8 @@
 
 	.mv-box .mv-list li .cover .foot p {
 		color: #fff;
+		margin-bottom: 0 !important;
+		text-shadow: -2px 1px rgb(0 0 0 / 40%);
 	}
 
 	.mv-box .mv-list li .cover:hover .action {
@@ -210,13 +191,27 @@
 		line-height: 1.3;
 	}
 
-	.mv-box .mv-list li .info .author {
-		margin-top: 5px;
-		font-size: 12px;
-		color: #999;
+	.ellipsis {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
-	.mv-box .mv-list li.live .cover .foot {
-		background: rgba(250, 40, 0, 0.75);
+	@media screen and (max-width: 992px) {
+		.mv-box .mv-list li {
+			flex: 0 0 33.3%;
+		}
+	}
+
+	@media screen and (max-width: 550px) {
+		.mv-box .mv-list li {
+			flex: 0 0 50%;
+		}
+	}
+
+	@media screen and (max-width: 341px) {
+		.mv-box .mv-list li {
+			flex: 0 0 100%;
+		}
 	}
 </style>

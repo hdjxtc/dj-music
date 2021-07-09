@@ -58,12 +58,13 @@ export default {
 	 */
 	tranNumber(num, point) {
 		let numStr = num.toString()
-		// 十万以内直接返回
+		// 小于10万直接返回
 		if (numStr.length < 6) {
 			return numStr
 		}
 		//大于8位数是亿
 		else if (numStr.length > 8) {
+			// 取小数
 			let decimal = numStr.substring(
 				numStr.length - 8,
 				numStr.length - 8 + point
@@ -89,11 +90,11 @@ export default {
 		} else if (time < 60) {
 			formatTime = '00:' + time
 		} else {
-			var m = ~~parseInt((time % (1000 * 60 * 60)) / (1000 * 60))
+			var m = ~~(time / (1000 * 60))
 			if (m < 10) {
 				m = '0' + m
 			}
-			var s = ~~parseInt((time % (1000 * 60)) / 1000)
+			var s = ~~((time / 1000) % 60)
 			if (s < 10) {
 				s = '0' + s
 			}

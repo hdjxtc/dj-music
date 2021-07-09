@@ -20,7 +20,7 @@
 
 <script>
 	export default {
-		name: 'singer',
+		name: 'singerlist',
 		props: {
 			item: {
 				type: Object

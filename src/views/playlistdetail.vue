@@ -1,5 +1,5 @@
 <template>
-	<h1>专辑页</h1>
+	<h1>歌单详情页</h1>
 </template>
 
 <script>
