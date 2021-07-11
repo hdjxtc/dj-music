@@ -1,9 +1,7 @@
 /** 歌曲处理方法 */
-
 import handle from './handle'
 
 export function createSong(musicData) {
-	// console.log(musicData)
 	return {
 		id: musicData.id,
 		singer: filterSinger(musicData.ar || musicData.artists),

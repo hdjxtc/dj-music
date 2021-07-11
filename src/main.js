@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from './store'
 import router from './router'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import api from './api/request.js'
+import handle from '@/model/handle'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import handle from '@/model/handle'
-import store from './store'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '@/assets/iconfont/iconfont.css'
+
 
 // 设置全局组件
 import Empty from '@/components/contents/empty'

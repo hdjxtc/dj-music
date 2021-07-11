@@ -3,29 +3,29 @@
 export default {
 	// 补0方法
 	addZero(num, len) {
-		// len=2说明超过10
-		if (String(num).length > len) return num
+		// if (String(num).length > len) return num
+		// -slice取出
 		return (Array(len).join(0) + num).slice(-len)
 	},
-	// localStorage存储
-	setStore(name, content) {
-		let contentClone = content
-		if (!name) return
-		if (typeof content !== 'string') {
-			contentClone = JSON.stringify(contentClone)
-		}
-		window.localStorage.setItem(name, contentClone)
-	},
-	// localStorage获取
-	getStore(name) {
-		if (!name) return null
-		return window.localStorage.getItem(name)
-	},
-	// localStorage删除
-	removeStore(name) {
-		if (!name) return
-		window.localStorage.removeItem(name)
-	},
+	// // localStorage存储
+	// setStorage(name, content) {
+	// 	let contentClone = content
+	// 	if (!name) return
+	// 	if (typeof content !== 'string') {
+	// 		contentClone = JSON.stringify(contentClone)
+	// 	}
+	// 	window.localStorage.setItem(name, contentClone)
+	// },
+	// // localStorage获取
+	// getStorage(name) {
+	// 	if (!name) return null
+	// 	return window.localStorage.getItem(name)
+	// },
+	// // localStorage删除
+	// removeStorage(name) {
+	// 	if (!name) return
+	// 	window.localStorage.removeItem(name)
+	// },
 	// 日期格式化
 	dateFormat(str, type) {
 		let date = new Date(str)

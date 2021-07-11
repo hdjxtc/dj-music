@@ -189,12 +189,14 @@
 				let timestamp = new Date().valueOf()
 				let ids = songid.join(',')
 				try {
+					// 获取到歌曲信息
 					let res = await this.$api.get("/song/detail", {
 						params: {
 							ids: ids,
 							timestamp: timestamp
 						}
 					})
+					// console.log(res.songs)
 					this.songList = this.normalizeSongs(res.songs)
 					// console.log(this.songList)
 				} catch (err) {
@@ -203,8 +205,9 @@
 			},
 			// 处理歌曲
 			normalizeSongs(list) {
+				// 处理后的歌曲信息
 				let ret = []
-				list.map(item => {
+				list.map((item)=>{
 					if (item.id) {
 						ret.push(createSong(item))
 					}

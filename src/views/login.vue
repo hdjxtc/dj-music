@@ -59,7 +59,7 @@
 						trigger: 'blur'
 					}]
 				},
-				loginLoading: false
+				loginLoading: false,
 			}
 		},
 		methods: {
@@ -93,7 +93,6 @@
 						window.localStorage.setItem('cookie', res.cookie)
 						window.localStorage.setItem('token', res.token)
 						window.localStorage.setItem('loginStatu', true)
-						// this.setLoginStatu(true)
 					} else {
 						this.loginLoading = false
 						this.$message.error(res.msg)
@@ -124,7 +123,7 @@
 						// 创建天数
 						userInfo.createDays = res.createDays
 						window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
-						// this.setUserInfo(res.profile)
+
 						this.$message({
 							message: '登录成功',
 							type: 'success'
@@ -132,7 +131,7 @@
 						setTimeout(() => {
 							this.loginLoading = false
 							this.$router.push({
-								path: '/'
+								path: '/home'
 							})
 						}, 1000)
 					}

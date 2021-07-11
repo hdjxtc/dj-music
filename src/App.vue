@@ -7,6 +7,9 @@
 			<div class="content">
 				<Contents />
 			</div>
+			<div class="container playbar">
+				<Playbar/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -18,7 +21,6 @@
 		-moz-osx-font-smoothing: grayscale;
 		text-align: center;
 		color: #2c3e50;
-		/* background: url(https://kdy.djtc.vip/djapi/bing) no-repeat; */
 		background: url(./assets/img/bg.jpg) no-repeat;
 		background-size: 100% 100%;
 		overflow: hidden;
@@ -29,15 +31,6 @@
 		margin: 0;
 		padding: 0;
 	}
-
-/* 	.box {
-		z-index: 999;
-		background-color: rgba(255, 255, 255, 0.6);
-		width: 1320px !important;
-		height: 950px;
-		margin: 0 auto;
-		box-shadow: 0 0 30px #ccc;
-	} */
 
 	.container {
 		padding: 0 !important;
@@ -61,10 +54,30 @@
 		margin-top: 5%!important;
 	}
 	
+	/* 是否播放渲染播放样式 */
+	.isplay{
+		transition: .3s;
+		color: red;
+		background-color: #ecf5ff!important;
+	}
+	.isplay td div i:nth-of-type(1){
+		color: red;
+	}
+	
+	/* 播放条 */
+	.playbar{
+		width: 86%;
+		height: 65px;
+		background: #f9f9f9;
+		position: fixed;
+		bottom: 0;
+	}
 </style>
 <script type="text/javascript">
 	import Navbar from './components/header/navbar'
 	import Contents from './components/contents/index'
+	import Playbar from './components/footer/playbar'
+	// import Playbar from './components/footer/playbar'
 	export default {
 		name: 'App',
 		data(){
@@ -75,6 +88,7 @@
 		components: {
 			Navbar,
 			Contents,
+			Playbar
 		},
 	}
 </script>

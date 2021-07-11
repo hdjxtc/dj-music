@@ -6,7 +6,7 @@
 					<div class="index-container flex-center">
 						<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
 						<div class="boFang hidden-xs">
-							<i class="el-icon-video-play"></i>
+							<i class="el-icon-video-play" @click="playSong(songList,index)"></i>
 						</div>
 					</div>
 					<div class="avatar">
@@ -37,7 +37,12 @@
 </template>
 
 <script>
-	import {createSong} from '@/model/song'
+	import {
+		createSong
+	} from '@/model/song'
+	import {
+		mapActions
+	} from 'vuex'
 	export default {
 		name: 'newmusic',
 		data() {
@@ -60,6 +65,7 @@
 				// console.log('list',list)
 				this.getSongDetail(list)
 			},
+			// 获取歌曲信息，拿歌曲作者、图片等
 			async getSongDetail(lists) {
 				let timestamp = new Date().valueOf()
 				lists = lists.join(',')
@@ -72,7 +78,7 @@
 				this.songList = this.hanlesonglist(res.songs)
 				// console.log(this.songList)
 			},
-
+			// 处理歌曲
 			hanlesonglist(list) {
 				let ret = []
 				list.map(item => {
@@ -81,7 +87,20 @@
 					}
 				})
 				return ret
-			}
+			},
+			// 播放歌曲
+			playSong(list, index) {
+				let id = list[index].id
+				this.$api.get(`/song/url?id=${id}`).then(res=>{
+					// console.log('nes',res.data[0].url)
+					list[index].url = res.data[0].url
+					this.selectPlay({list,index})
+				})
+			},
+			// 调用vuex的Actions改数据
+			...mapActions([
+				'selectPlay'
+			])
 		},
 	}
 </script>
