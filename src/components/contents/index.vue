@@ -2,7 +2,7 @@
 	<div class="contents">
 		<router-view />
 		<Footer v-if="!$route.meta.isLogin"/>
-		<el-backtop target=".contents" :bottom="35" :right="25">
+		<el-backtop target=".contents" :bottom="80">
 			<img src="../../assets/img/gotop.png" >
 		</el-backtop>
 	</div>
@@ -37,5 +37,31 @@
 		border-radius: 3px;
 		background: linear-gradient(45deg, #66e3ff,#6dcaf4, #66e3ff);
 		-webkit-box-shadow: inset 0 0 10px rgba(78, 255, 0, 0.2);
+	}
+	
+	
+	.el-backtop{
+		right: 9%!important;
+	}
+	/* 返回顶部移动端 */
+	@media screen and (max-width: 1199px) {
+		.el-backtop{
+			right: 13%!important;;
+		}
+	}
+	@media screen and (max-width: 992px) {
+		.el-backtop{
+			right: 17%!important;;
+		}
+	}
+	@media screen and (max-width: 768px) {
+		.el-backtop{
+			right: 19%!important;;
+		}
+	}
+	@media screen and (max-width: 576px){
+		.el-backtop{
+			right: 8%!important;;
+		}
 	}
 </style>

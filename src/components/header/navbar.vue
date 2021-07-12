@@ -27,7 +27,7 @@
 							<router-link :to="{ name: 'mv' }" tag="a" class="nav-link">MV</router-link>
 						</li>
 					</ul>
-					<div class="search form-inline search-poss" v-if="loginStatu">
+					<div class="search form-inline search-poss" v-if="loginstatu">
 						<input type="search" placeholder="  搜索音乐/视频/歌手/歌单" class="form-control" v-model="keyword"
 							@keyup.enter="search()">
 					</div>
@@ -36,7 +36,7 @@
 							@keyup.enter="search()">
 					</div>
 					<div class="userbox">
-						<div class="is-login flex-row" v-if="loginStatu">
+						<div class="is-login flex-row" v-if="loginstatu">
 							<el-avatar class="avatar" :src="userInfo.avatarUrl"></el-avatar>
 							<!-- command指令，点击选项时触发对应事件 -->
 							<el-dropdown trigger="click" @command="handleCommand">
@@ -69,14 +69,14 @@
 						</span>
 					</div>
 					<div class="author">
-						<div class="authorimg" v-if="loginStatu">
+						<div class="authorimg" v-if="loginstatu">
 							<img :src="userInfo.avatarUrl" @click="innerDrawer = true">
 						</div>
 						<div class="authorimg" v-else @click="login">
 							<el-avatar icon="el-icon-user-solid" :size="70"></el-avatar>
 						</div>
 
-						<div class="authorname" v-if="loginStatu" @click="innerDrawer = true">
+						<div class="authorname" v-if="loginstatu" @click="innerDrawer = true">
 							{{userInfo.nickname}}
 						</div>
 						<div class="authorname" v-else @click="login">
@@ -85,7 +85,8 @@
 						<el-drawer :append-to-body="true" :visible.sync="innerDrawer" size="50%">
 							<ui class="innerDrawer">
 								<li class="nav-link el-icon-user" style="margin-left: 5%" @click="personal">个人主页</li>
-								<li class="nav-link el-icon-switch-button" style="margin-left: 5%" @click="signout">退出登录</li>
+								<li class="nav-link el-icon-switch-button" style="margin-left: 5%" @click="signout">退出登录
+								</li>
 							</ui>
 						</el-drawer>
 					</div>
@@ -137,27 +138,40 @@
 	</div>
 </template>
 <script>
+	import {mapGetters} from 'vuex'
 	export default {
 		name: 'navbar',
 		data() {
 			return {
+				loginstatu: false || JSON.parse(window.localStorage.getItem('loginStatu')),
+				userinfo: null || JSON.parse(window.localStorage.getItem('userInfo')),
 				keyword: '',
-				loginStatu: false,
-				userInfo: JSON.parse(window.localStorage.getItem('userInfo')),
 				hots: [],
 				drawer: false,
 				innerDrawer: false,
 				dialogVisible: false
 			}
 		},
-		created() {
-			this.loginStatu = JSON.parse(window.localStorage.getItem('loginStatu'))?JSON.parse(window.localStorage.getItem('loginStatu')):false
+		computed: {
+			...mapGetters([
+				'loginStatu',
+				'userInfo'
+			])
+		},
+		// 监听登录数据改变,实时改变信息
+		watch:{
+			loginStatu(newstate){
+				this.loginstatu = newstate
+			},
+			userInfo(newinfo){
+				this.userinfo = newinfo
+			}
 		},
 		methods: {
 			// 搜索
 			search() {
 				// 空格和未输入	this.keyword.split(' ').join('').length
-				if(this.keyword.split(' ').join('').length !== 0){
+				if (this.keyword.split(' ').join('').length !== 0) {
 					this.drawer = false
 					this.$router.push("/search?keyword=" + this.keyword).catch((err) => {
 						console.log(err);
@@ -175,12 +189,12 @@
 			handleCommand(command) {
 				if (command == 'personal') {
 					this.personal()
-				}else{
+				} else {
 					this.signout()
 				}
 			},
 			// 个人主页
-			personal(){
+			personal() {
 				// 收起两个抽屉
 				this.drawer = false
 				this.innerDrawer = false
@@ -189,17 +203,21 @@
 				})
 			},
 			// 退出登录
-			signout(){
+			signout() {
+				this.drawer = false
+				this.innerDrawer = false
 				window.localStorage.clear()
+				this.$store.commit('upStatu',false)
+				this.$store.commit('upUserinfo',null)
 				// 待优化,使用vuex同步改变数据不需要刷新
-				setTimeout(() => {
-					window.location.reload()
-				}, 500)
+				// setTimeout(() => {
+				// 	window.location.reload()
+				// }, 500)
 				this.$message({
 					message: '退出成功',
 					type: 'success'
 				});
-			}
+			},
 		},
 	}
 </script>
@@ -276,11 +294,11 @@
 		/* margin-right: -70vw; */
 		/* margin-left: 1.5vw; */
 	}
-	
-	.flex-row{
+
+	.flex-row {
 		margin-top: 5px;
 	}
-	
+
 	.el-dropdown {
 		bottom: 15px;
 		left: 15px;

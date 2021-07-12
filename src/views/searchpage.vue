@@ -111,8 +111,9 @@
 		},
 		watch: {
 			keyword(newval, oldval) {
-				console.log(newval, oldval)
-				console.log('搜索推荐待做')
+				// console.log(newval, oldval)
+				// console.log('搜索推荐待做')
+				return
 			},
 			// 监听导航栏输入框里的搜索
 			$route(newobj, oldobj) {

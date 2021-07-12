@@ -9,16 +9,8 @@
 							<i class="el-icon-video-play" @click="playSong(songList,index)"></i>
 						</div>
 					</div>
-					<div class="avatar">
-						<el-image :key="index" :src="item.image+ '?param=150y150'" lazy>
-							<div slot="placeholder" class="image-slot flex-center flex-column">
-								<i class="el-icon-picture"></i>
-								<p>加载中<span class="dot">...</span></p>
-							</div>
-							<div slot="error" class="image-slot flex-center">
-								<i class="el-icon-picture-outline"></i>
-							</div>
-						</el-image>
+					<div class="avatar" @click="playSong(songList,index)">
+						<img :src="item.image">
 					</div>
 					<div class="info">
 						<p class="name ellipsis">{{item.name}}</p>
@@ -37,12 +29,8 @@
 </template>
 
 <script>
-	import {
-		createSong
-	} from '@/model/song'
-	import {
-		mapActions
-	} from 'vuex'
+	import {createSong} from '@/model/song'
+	import {mapActions} from 'vuex'
 	export default {
 		name: 'newmusic',
 		data() {
@@ -91,10 +79,13 @@
 			// 播放歌曲
 			playSong(list, index) {
 				let id = list[index].id
-				this.$api.get(`/song/url?id=${id}`).then(res=>{
-					// console.log('nes',res.data[0].url)
+				this.$api.get(`/song/url?id=${id}`).then(res => {
 					list[index].url = res.data[0].url
-					this.selectPlay({list,index})
+					// console.log(res)
+					this.selectPlay({
+						list,
+						index
+					})
 				})
 			},
 			// 调用vuex的Actions改数据
@@ -181,6 +172,7 @@
 		border-radius: 5px;
 		position: relative;
 		margin-right: 30px;
+		cursor: pointer;
 	}
 
 	.list .item .wrapper .avatar img {
@@ -253,7 +245,7 @@
 		left: 2.5%;
 		font-size: 1.5rem;
 		background: #fff;
-		transform: translateX(140%);
+		transform: translateX(170%);
 		transition: 0.2s;
 		cursor: pointer;
 	}

@@ -16,7 +16,7 @@ module.exports = {
 		proxy: { // 解决跨域问题
 			'/api': {
 				// 为了将/api 替换成 https://wyy.djtc.vip/  https://autumnfish.cn/
-				target: 'https://wyy.djtc.vip/',
+				target: 'https://nicemusic-api.lxhcool.cn/',
 				// 允许跨域
 				changeOrigin: true,
 				ws: true,

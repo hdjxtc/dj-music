@@ -1,13 +1,13 @@
 <template>
 	<div id="app">
 		<div class="container">
-			<div class="header" v-if="!$route.meta.isLogin">
+			<div class="header" v-show="!$route.meta.isLogin">
 				<Navbar />
 			</div>
 			<div class="content">
 				<Contents />
 			</div>
-			<div class="container playbar">
+			<div class="container playbar" v-show="!$route.meta.isLogin">
 				<Playbar/>
 			</div>
 		</div>
@@ -66,9 +66,9 @@
 	
 	/* 播放条 */
 	.playbar{
-		width: 86%;
-		height: 65px;
-		background: #f9f9f9;
+		width: 100%;
+		height: 53px;
+		background: transparent;
 		position: fixed;
 		bottom: 0;
 	}

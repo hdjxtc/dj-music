@@ -28,7 +28,7 @@
 </template>
 
 <script>
-	import { mapActions } from 'vuex'
+	import {mapActions} from 'vuex'
 	export default {
 		name: 'songlist',
 		props: {
@@ -38,19 +38,42 @@
 		},
 		watch: {
 			// 正在播放的选中样式在搜索其他歌曲时清除
-			songlist(){
-				let tr = document.getElementsByTagName('tbody')[0].childNodes
-				for (let i = 0, trs = tr.length; i < trs; i++) {
-					tr[i].className = 'el-table__row'
+			songlist(newsong, oldsong) {
+				let newid = newsong[0].id
+				let oldid = null
+				// 因为一开始进去oldsong[0].id会报一个未找到属性的错误，所以先判断是否为第一次进入
+				if (oldsong[0] == undefined) {
+					oldid = this.songlist. [0].id
+				} else {
+					oldid = oldsong[0].id
 				}
-			}
+				// console.log(newid,oldid)
+
+				if (newid !== oldid) {
+					let tr = document.getElementsByTagName('tbody')[0].childNodes
+					for (let i = 0, trs = tr.length; i < trs; i++) {
+						tr[i].className = 'el-table__row'
+					}
+				} else {
+					let index = this.$store.getters.currentIndex
+					// js执行过快，dom节点还没生成就已经执行完了，所以选不到dom,做个延时器
+					setTimeout(() => {
+						let tr = document.getElementsByTagName('tbody')[0].childNodes
+						if (tr[index] == undefined) {
+							return
+						} else {
+							tr[index].className += ' isplay'
+						}
+					}, 50)
+				}
+			},
 		},
 		methods: {
 			// 播放歌曲
-			playSong(scope,list) {
+			playSong(scope, list) {
 				// 渲染选中
-				// console.log(scope)
 				let tr = document.getElementsByTagName('tbody')[0].childNodes
+				// console.log(tr)
 				let index = scope.$index
 				for (let i = 0, trs = tr.length; i < trs; i++) {
 					if (i == index) {
@@ -63,11 +86,13 @@
 				// console.log(scope)
 				// console.log(songlist)
 				let id = scope.row.id
-				this.$api.get(`/song/url?id=${id}`).then(res=>{
-					// console.log('nes',res.data[0].url)
+				this.$api.get(`/song/url?id=${id}`).then(res => {
 					list[index].url = res.data[0].url
 					// this.$message.success(res.data[0].url)
-					this.selectPlay({list,index})
+					this.selectPlay({
+						list,
+						index
+					})
 				})
 			},
 			// 播放mv
