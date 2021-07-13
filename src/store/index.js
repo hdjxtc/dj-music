@@ -60,6 +60,7 @@ export default new Vuex.Store({
 		},
 		// 更改播放索引
 		upcurrentIndex(state, index) {
+			// console.log(index)
 			state.currentindex = index
 		},
 		// 更改播放状态

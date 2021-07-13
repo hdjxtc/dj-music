@@ -111,7 +111,7 @@
 						isPlaying ? audio.play() : audio.pause()
 					}
 				})
-			}
+			},
 		},
 		methods: {
 			// 格式化时间
@@ -231,20 +231,25 @@
 
 	.info {
 		margin-top: 0.8%;
+		width: 10%;
 	}
-
 	.info h2 {
 		font-weight: 600;
 		font-size: 14px;
 		color: #333;
 		margin-bottom: 3%;
 	}
-
 	.info p {
 		font-size: 12px;
 		color: #999;
 	}
-
+	.name,
+	.singer {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
 	/* 控制按钮 */
 	.player-btn i {
 		font-size: 30px;
@@ -314,13 +319,6 @@
 
 		.info {
 			width: 40%;
-		}
-
-		.name,
-		.singer {
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 		}
 	}
 </style>

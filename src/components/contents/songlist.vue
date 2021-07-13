@@ -28,7 +28,7 @@
 </template>
 
 <script>
-	import {mapActions} from 'vuex'
+	import {mapGetters,mapActions} from 'vuex'
 	export default {
 		name: 'songlist',
 		props: {
@@ -36,35 +36,46 @@
 				type: Array
 			}
 		},
+		computed:{
+			...mapGetters([
+				'currentIndex',
+				'currentSong'
+			])
+		},
 		watch: {
 			// 正在播放的选中样式在搜索其他歌曲时清除
-			songlist(newsong, oldsong) {
-				let newid = newsong[0].id
-				let oldid = null
-				// 因为一开始进去oldsong[0].id会报一个未找到属性的错误，所以先判断是否为第一次进入
-				if (oldsong[0] == undefined) {
-					oldid = this.songlist. [0].id
-				} else {
-					oldid = oldsong[0].id
-				}
-				// console.log(newid,oldid)
-
-				if (newid !== oldid) {
+			// 切换其他页后切回判断对应歌曲渲染
+			songlist(newsong) {
+				// 改变DOM数据后延迟执行的回调,解决执行过快dom还没还没生成，找不到对应dom导致渲染不上和报错TypeError: Cannot read property 'id' of undefined"
+				this.$nextTick(() => {
+					let indexs = 999
+					newsong.map((item,index)=>{
+						if(this.currentSong.id==item.id){
+							console.log('在这相等',index)
+							indexs = index
+						}
+					})
+					
 					let tr = document.getElementsByTagName('tbody')[0].childNodes
 					for (let i = 0, trs = tr.length; i < trs; i++) {
+						if (i == indexs) {
+							tr[i].className += ' isplay'
+						} else {
+							tr[i].className = 'el-table__row'
+						}
+					}
+				})
+			},
+			// 播放按钮切换时对应的渲染
+			currentIndex(newindex){
+				// console.log(newindex)
+				let tr = document.getElementsByTagName('tbody')[0].childNodes
+				for (let i = 0, trs = tr.length; i < trs; i++) {
+					if (i == newindex) {
+						tr[i].className += ' isplay'
+					} else {
 						tr[i].className = 'el-table__row'
 					}
-				} else {
-					let index = this.$store.getters.currentIndex
-					// js执行过快，dom节点还没生成就已经执行完了，所以选不到dom,做个延时器
-					setTimeout(() => {
-						let tr = document.getElementsByTagName('tbody')[0].childNodes
-						if (tr[index] == undefined) {
-							return
-						} else {
-							tr[index].className += ' isplay'
-						}
-					}, 50)
 				}
 			},
 		},
@@ -73,7 +84,6 @@
 			playSong(scope, list) {
 				// 渲染选中
 				let tr = document.getElementsByTagName('tbody')[0].childNodes
-				// console.log(tr)
 				let index = scope.$index
 				for (let i = 0, trs = tr.length; i < trs; i++) {
 					if (i == index) {
@@ -88,7 +98,6 @@
 				let id = scope.row.id
 				this.$api.get(`/song/url?id=${id}`).then(res => {
 					list[index].url = res.data[0].url
-					// this.$message.success(res.data[0].url)
 					this.selectPlay({
 						list,
 						index
