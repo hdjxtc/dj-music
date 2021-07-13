@@ -4,6 +4,7 @@ import handle from './handle'
 export function createSong(musicData) {
 	return {
 		id: musicData.id,
+		fee: musicData.fee,
 		singer: filterSinger(musicData.ar || musicData.artists),
 		name: musicData.name,
 		album: musicData.al ? musicData.al.name : musicData.album.name,
@@ -12,7 +13,7 @@ export function createSong(musicData) {
 		url: `https://music.163.com/song/media/outer/url?id=${musicData.id}.mp3`,
 		playCount: musicData.playCount || '',
 		score: musicData.score || '',
-		mv: musicData.mv
+		mv: musicData.mv,
 	}
 }
 

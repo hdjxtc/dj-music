@@ -26,52 +26,6 @@
 		overflow: hidden;
 		height: 100vh;
 	}
-
-	* {
-		margin: 0;
-		padding: 0;
-	}
-
-	.container {
-		padding: 0 !important;
-		background-color: rgba(255, 255, 255, 0.6);
-	}
-	.el-drawer__header>:first-child{
-		flex: 0!important;
-	}
-	
-	/* 返回顶部 */
-	.el-backtop{
-		background: none!important;
-		box-shadow: none!important;
-	}
-	
-	/* 登录输入框 */
-	.el-input__inner{
-		padding-left: 10%!important;
-	}
-	.el-button--primary{
-		margin-top: 5%!important;
-	}
-	
-	/* 是否播放渲染播放样式 */
-	.isplay{
-		transition: .3s;
-		color: red;
-		background-color: #ecf5ff!important;
-	}
-	.isplay td div i:nth-of-type(1){
-		color: red;
-	}
-	
-	/* 播放条 */
-	.playbar{
-		width: 100%;
-		height: 53px;
-		background: transparent;
-		position: fixed;
-		bottom: 0;
-	}
 </style>
 <script type="text/javascript">
 	import Navbar from './components/header/navbar'

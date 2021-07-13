@@ -42,7 +42,7 @@ export default new Vuex.Store({
 		// 获取播放状态
 		currentPlaying(state){
 			return state.playing
-		}
+		},
 
 	},
 	mutations: {
@@ -66,7 +66,7 @@ export default new Vuex.Store({
 		// 更改播放状态
 		upplaYing(state,flag){
 			state.playing = flag
-		}
+		},
 	},
 	actions: {
 		// 选中播放歌曲
@@ -78,7 +78,6 @@ export default new Vuex.Store({
 			commit('upcurrentIndex',index)
 			commit('upplaYing',true)
 		},
-		
 	},
 	modules: {}
 })

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2665699 */
-  src: url('iconfont.woff2?t=1625967094728') format('woff2'),
-       url('iconfont.woff?t=1625967094728') format('woff'),
-       url('iconfont.ttf?t=1625967094728') format('truetype');
+  src: url('iconfont.woff2?t=1626189476941') format('woff2'),
+       url('iconfont.woff?t=1626189476941') format('woff'),
+       url('iconfont.ttf?t=1626189476941') format('truetype');
 }
 
 .iconfont {
@@ -14,8 +14,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dj-icon-huiyuan:before {
+  content: "\e65d";
+}
+
 .dj-icon-geci:before {
-  content: "\e727";
+  content: "\e72a";
 }
 
 .dj-icon-baocun:before {
@@ -130,10 +134,6 @@
   content: "\e694";
 }
 
-.dj-icon-bofangduilie:before {
-  content: "\e699";
-}
-
 .dj-icon-suijibofang:before {
   content: "\e6a0";
 }
@@ -146,7 +146,11 @@
   content: "\e6a3";
 }
 
-.dj-icon-bofangMV:before {
+.dj-icon-bofangmv:before {
   content: "\e6a4";
+}
+
+.dj-icon-bofangduilie:before {
+  content: "\e729";
 }
 

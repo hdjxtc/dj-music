@@ -7,6 +7,7 @@ import handle from '@/model/handle'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@/assets/css/app.css'
 import '@/assets/iconfont/iconfont.css'
 
 

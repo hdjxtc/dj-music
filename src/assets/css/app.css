@@ -1,0 +1,56 @@
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	.container {
+		padding: 0 !important;
+		background-color: rgba(255, 255, 255, 0.6);
+	}
+	.el-drawer__header>:first-child{
+		flex: 0!important;
+	}
+	
+	/* 返回顶部 */
+	.el-backtop{
+		background: none!important;
+		box-shadow: none!important;
+	}
+	
+	/* 登录输入框 */
+	.el-input__inner{
+		padding-left: 10%!important;
+	}
+	.el-button--primary{
+		margin-top: 5%!important;
+	}
+	
+	/* 是否播放渲染播放样式 */
+	.isplay{
+		transition: .3s;
+		color: red;
+		background-color: #ecf5ff!important;
+	}
+	.isplay td div i:nth-of-type(1){
+		color: red;
+	}
+	/* 播放条 */
+	.playbar{
+		width: 100%;
+		height: 53px;
+		background: transparent;
+		position: fixed;
+		bottom: 0;
+	}
+	/* 饿了么进度条默认样式 */
+	.el-slider__runway{
+		height: 5px!important;
+	}
+	.el-slider__button{
+		width: 12px!important;
+		height: 12px!important;
+		border: 2px solid #66e3ff!important;
+	}
+	.el-slider__bar{
+		height: 5px!important;
+		background-color: #66e3ff!important;
+	}

@@ -9,8 +9,10 @@
 					<span style="margin-left: 10%;">{{scope.row.name}}</span>
 					<i class="iconfont dj-icon-zanting" style="cursor: pointer; margin-left: 3%;"
 						@click="playSong(scope,songlist)" title="播放"></i>
-					<i class="iconfont dj-icon-bofangMV" style="cursor: pointer; margin-left: 3%;"
+					<i class="iconfont dj-icon-bofangmv" style="cursor: pointer; margin-left: 3%;"
 						v-if="scope.row.mv!==0" @click="playMv(scope.row.mv)" title="MV"></i>
+					<i class="iconfont dj-icon-huiyuan" style="cursor: pointer; margin-left: 3%;color: #fbcc21;"
+						v-if="scope.row.fee==1" @click="playMv(scope.row.mv)" title="MV"></i>
 				</template>
 			</el-table-column>
 			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" width="300px" align="center">
@@ -66,7 +68,7 @@
 					}
 				})
 			},
-			// 播放按钮切换时对应的渲染
+			// 上一首下一首切换时对应的渲染
 			currentIndex(newindex){
 				// console.log(newindex)
 				let tr = document.getElementsByTagName('tbody')[0].childNodes
@@ -95,6 +97,12 @@
 				// console.log(index)
 				// console.log(scope)
 				// console.log(songlist)
+				let loginstate = JSON.parse(window.localStorage.getItem('loginStatu'))
+				if(loginstate==null||false){
+					if(scope.row.fee==1){
+						this.$message.warning('没钱只能试听这么点啦~')
+					}
+				}
 				let id = scope.row.id
 				this.$api.get(`/song/url?id=${id}`).then(res => {
 					list[index].url = res.data[0].url

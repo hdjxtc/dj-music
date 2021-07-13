@@ -90,7 +90,7 @@
 			},
 			// 调用vuex的Actions改数据
 			...mapActions([
-				'selectPlay'
+				'selectPlay',
 			])
 		},
 	}
