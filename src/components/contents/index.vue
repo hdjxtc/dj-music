@@ -2,7 +2,7 @@
 	<div class="contents">
 		<router-view />
 		<Footer v-if="!$route.meta.isLogin"/>
-		<el-backtop target=".contents" :bottom="80">
+		<el-backtop target=".contents" :bottom="70">
 			<img src="../../assets/img/gotop.png" >
 		</el-backtop>
 	</div>

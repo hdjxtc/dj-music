@@ -5,14 +5,14 @@
 			<el-table-column type="index" label="序号" width="60px" align="center"> </el-table-column>
 			<el-table-column :show-overflow-tooltip="true" label="歌曲" width="400px" align="left" header-align="center">
 				<template slot-scope="scope">
-					<img :src="scope.row.image" style="height: 50px;width: 50px;" />
-					<span style="margin-left: 10%;">{{scope.row.name}}</span>
+					<img :src="scope.row.image" style="height: 50px;width: 50px;"/>
+					<span style="margin-left: 10%;cursor: pointer;" @click="playSong(scope,songlist)">{{scope.row.name}}</span>
 					<i class="iconfont dj-icon-zanting" style="cursor: pointer; margin-left: 3%;"
 						@click="playSong(scope,songlist)" title="播放"></i>
 					<i class="iconfont dj-icon-bofangmv" style="cursor: pointer; margin-left: 3%;"
 						v-if="scope.row.mv!==0" @click="playMv(scope.row.mv)" title="MV"></i>
 					<i class="iconfont dj-icon-huiyuan" style="cursor: pointer; margin-left: 3%;color: #fbcc21;"
-						v-if="scope.row.fee==1" @click="playMv(scope.row.mv)" title="MV"></i>
+						v-if="scope.row.fee==1" @click="playMv(scope.row.mv)" title="会员"></i>
 				</template>
 			</el-table-column>
 			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" width="300px" align="center">
@@ -40,7 +40,6 @@
 		},
 		computed:{
 			...mapGetters([
-				'currentIndex',
 				'currentSong'
 			])
 		},
@@ -53,7 +52,7 @@
 					let indexs = 999
 					newsong.map((item,index)=>{
 						if(this.currentSong.id==item.id){
-							console.log('在这相等',index)
+							// console.log('在这相等',index)
 							indexs = index
 						}
 					})
@@ -69,16 +68,25 @@
 				})
 			},
 			// 上一首下一首切换时对应的渲染
-			currentIndex(newindex){
-				// console.log(newindex)
-				let tr = document.getElementsByTagName('tbody')[0].childNodes
-				for (let i = 0, trs = tr.length; i < trs; i++) {
-					if (i == newindex) {
-						tr[i].className += ' isplay'
-					} else {
-						tr[i].className = 'el-table__row'
+			currentSong(newsong){
+				// console.log(newsong)
+				this.$nextTick(() => {
+					let indexs = 999
+					this.songlist.map((item,index)=>{
+						if(newsong.id==item.id){
+							indexs = index
+						}
+					})
+					
+					let tr = document.getElementsByTagName('tbody')[0].childNodes
+					for (let i = 0, trs = tr.length; i < trs; i++) {
+						if (i == indexs) {
+							tr[i].className += ' isplay'
+						} else {
+							tr[i].className = 'el-table__row'
+						}
 					}
-				}
+				})
 			},
 		},
 		methods: {
@@ -100,7 +108,7 @@
 				let loginstate = JSON.parse(window.localStorage.getItem('loginStatu'))
 				if(loginstate==null||false){
 					if(scope.row.fee==1){
-						this.$message.warning('没钱只能试听这么点啦~')
+						this.$message.warning('555,非会员此歌曲只能试听~')
 					}
 				}
 				let id = scope.row.id

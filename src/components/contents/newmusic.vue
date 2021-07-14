@@ -2,8 +2,8 @@
 	<div class="list">
 		<el-col :xs="24" :sm="24" :md="24" :lg="12" v-for="(item,index) in songList" :key="index">
 			<div class="item">
-				<div class="wrapper flex-center shadow">
-					<div class="index-container flex-center">
+				<div class="wrapper flex-centers shadow">
+					<div class="index-container flex-centers">
 						<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
 						<div class="boFang hidden-xs">
 							<i class="el-icon-video-play" @click="playSong(songList,index)"></i>
@@ -13,8 +13,8 @@
 						<img :src="item.image">
 					</div>
 					<div class="info">
-						<p class="name ellipsis">{{item.name}}</p>
-						<p class="flex-row ellipsis">
+						<p class="name ellipsi">{{item.name}}</p>
+						<p class="ellipsi">
 							<span>{{item.singer}}</span>
 						</p>
 					</div>
@@ -106,9 +106,9 @@
 		height: 50px;
 	}
 
-	.ellipsis {
+	.ellipsi {
 		overflow: hidden;
-		text-overflow: ellipsis;
+		text-overflow: ellipsi;
 		white-space: nowrap;
 	}
 
@@ -119,7 +119,7 @@
 		margin-left: 3.7rem;
 	}
 
-	.flex-center {
+	.flex-centers {
 		display: flex;
 		align-items: center;
 	}
@@ -193,7 +193,7 @@
 	}
 
 	.list .item .wrapper .info .author,
-	.ellipsis span {
+	.ellipsi span {
 		font-size: 12px;
 		color: #666;
 		font-weight: bold;
@@ -205,6 +205,9 @@
 		font-weight: bold;
 		margin-left: 10%;
 		flex: 1;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 
 	.list .item .wrapper .duration {
@@ -234,7 +237,7 @@
 		color: #666;
 	}
 
-	.flex-center:hover .boFang {
+	.flex-centers:hover .boFang {
 		transform: translateY(0);
 	}
 
@@ -299,7 +302,7 @@
 		}
 
 		.info .name,
-		.ellipsis {
+		.ellipsi {
 			font-size: 12px !important;
 		}
 	}

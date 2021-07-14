@@ -1,9 +1,9 @@
 <template>
 	<transition name="fade">
-		<div class="shadow flex-row" v-show="playList.length > 0">
+		<div class="container shadow flex-row" v-show="playList.length > 0 && !$route.meta.isLogin">
 			<!-- 歌曲封面 -->
 			<div class="author" @click="playpage=true">
-				<img :src="currentSong.image" alt="dj-music" class="shadow"/>
+				<img :src="currentSong.image" alt="dj-music" class="shadow" />
 			</div>
 			<!-- 歌曲信息 -->
 			<div class="info">
@@ -33,12 +33,37 @@
 			</div>
 			<!-- 工具栏 -->
 			<div class="tool hidden-sm">
-				<i class="iconfont dj-icon-liebiaoxunhuan"></i>
-				<i class="iconfont dj-icon-geci"></i>
-				<i class="iconfont dj-icon-bofangduilie"></i>
+				<el-tooltip :content="modeTitle" effect="light">
+					<i class="iconfont" :class="modeIcon" @click="changeMode"></i>
+				</el-tooltip>
+				<i class="iconfont dj-icon-geci" title="歌词"></i>
+				<i class="iconfont dj-icon-bofangduilie" title="播放列表" @click="openPlaylist"></i>
 			</div>
-			<audio ref="audio" :src="currentSong.url" @playing="audioReady" @error="audioError" @timeupdate="updateTime" @pause="audioPaused" @ended="audioEnd" :muted="isMuted"></audio>
+			<audio ref="audio" :src="currentSong.url" @playing="audioReady" @error="audioError" @timeupdate="updateTime"
+				@pause="audioPaused" @ended="audioEnd" :muted="isMuted"></audio>
 			<div class="container playpage" v-show="playpage" @click="playpage=false">歌曲播放页</div>
+
+			<!-- 播放列表 -->
+			<transition name="fade">
+				<div class="playlist-box shadow" v-if="showPlaylist">
+					<div class="title">播放列表
+						<i class="iconfont dj-icon-shanchu" title="清空" @click="clearPlaylist"></i>
+					</div>
+					<div class="list">
+						<div class="playlist-row" v-for="(item, index) of playList" :key="index"
+							:style="item.id==currentSong.id?'color:red':''">
+							<div class="flex-center">
+								<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
+								<i class="iconfont dj-icon-zanting play-btn" @click="selectPlay(index)"></i>
+							</div>
+							<p class="ellipsis" style="flex: 2;margin-right: 10%">{{item.name}}</p>
+							<p class="ellipsis" style="margin-right: 5%">{{item.singer}}</p>
+							<p class="ellipsis">{{formatTime(item.duration)}}</p>
+							<i class="iconfont dj-icon-guanbi" title="删除" @click="deletePlaylist(index)"></i>
+						</div>
+					</div>
+				</div>
+			</transition>
 		</div>
 	</transition>
 </template>
@@ -49,7 +74,9 @@
 		mapMutations
 	} from 'vuex'
 	// 循环模式
-	// import {playMode} from '@/common/playConfig'
+	import {
+		playMode
+	} from '@/common/playmod'
 	// 歌词
 	// import Lyric from 'lyric-parser'
 	export default {
@@ -70,6 +97,9 @@
 				isDrag: false,
 				// 歌曲最大时间
 				audioduration: 0,
+				// 播放列表
+				showPlaylist: false,
+				// 歌曲播放页
 				playpage: false
 			}
 		},
@@ -77,6 +107,19 @@
 			// 监听播放暂停改图标
 			playIcon() {
 				return this.currentPlaying ? 'dj-icon-bofang' : 'dj-icon-zanting'
+			},
+			// 播放模式图标
+			modeIcon() {
+				return this.currentMod === playMode.sequence ? 'dj-icon-liebiaoxunhuan' :
+					this.currentMod === playMode.loop ? 'dj-icon-danquxunhuan' :
+					'dj-icon-suijibofang'
+			},
+			// 播放模式标题
+			modeTitle() {
+				return this.currentMod === playMode.sequence ? '顺序播放' :
+					this.currentMod === playMode.loop ?
+					'单曲循环' :
+					'随机播放'
 			},
 			// 是否静音
 			mutedIcon() {
@@ -87,15 +130,26 @@
 				'currentSong',
 				'currentIndex',
 				'currentPlaying',
+				'currentMod'
 			])
 		},
 		watch: {
+			// 监听歌曲列表,清空时暂停正在播放的
+			playList(list){
+				if(list.length==0){
+					const audio = this.$refs.audio
+					audio.currentTime = 0
+					audio.pause()
+					return
+				}
+			},
 			// 监听播放歌曲信息,切歌操作
 			currentSong(newsong, oldsong) {
 				// 判断当前播放歌曲有无信息
 				if (!newsong.id || !newsong.url || newsong.id === oldsong.id) {
 					return
 				}
+			
 				this.songReady = false
 				// 改变DOM数据后执行的延迟回调$nextTick
 				this.$nextTick(() => {
@@ -106,7 +160,7 @@
 						// 初始化播放音量
 						audio.volume = this.volume
 						//初始化进度条时间
-						audio.currentTime = 0;
+						audio.currentTime = 0
 						// 播放
 						audio.play()
 						// //监听音频改变
@@ -159,21 +213,35 @@
 				if (!this.songReady) {
 					return
 				}
+				// 如果播放列表只有一首歌,就将进度清零重新播放
 				if (this.playList.length === 1) {
 					this.loopSong()
 					return
 				} else {
-					let index = this.currentIndex - 1
-					if (index === -1) {
-						index = this.playList.length - 1
+					let index
+					if (this.currentMod == playMode.sequence) {
+						index = this.currentIndex - 1
+						if (index === -1) {
+							index = this.playList.length - 1
+						}
+					} else if (this.currentMod == playMode.loop) {
+						this.loopSong()
+						return
+					} else {
+						index = Math.floor(Math.random() * this.playList.length)
+						if(index==this.currentIndex){
+							this.loopSong()
+							return
+						}
 					}
 					this.upcurrentIndex(index)
-					// 暂停时点的上一首，调用切换函数更改状态
-					if (!this.currentPlaying) {
-						this.togglePlay()
-					}
+				}
+				// 暂停时点的上一首，调用切换函数更改状态
+				if (!this.currentPlaying) {
+					this.togglePlay()
 				}
 			},
+			
 			// 下一首
 			nextSong() {
 				if (!this.songReady) {
@@ -183,42 +251,64 @@
 					this.loopSong()
 					return
 				} else {
-					let index = this.currentIndex + 1
-					if (index === this.playList.length) {
-						index = 0
+					let index
+					if (this.currentMod == playMode.sequence) {
+						index = this.currentIndex + 1
+						if (index === this.playList.length) {
+							index = 0
+						}
+					} else if (this.currentMod == playMode.loop) {
+						this.loopSong()
+						return
+					} else {
+						index = Math.floor(Math.random() * this.playList.length)
+						if(index==this.currentIndex){
+							this.loopSong()
+							return
+						}
 					}
 					this.upcurrentIndex(index)
-					if (!this.currentPlaying) {
-						this.togglePlay()
-					}
+				}
+				if (!this.currentPlaying) {
+					this.togglePlay()
 				}
 			},
+			
 			// 单曲循环播放
 			loopSong() {
+				if(!this.songReady){
+					return
+				}
 				this.$refs.audio.currentTime = 0
 				this.$refs.audio.play()
 				this.upplaYing(true)
 			},
+			
 			// 歌曲是否准备完成
 			audioReady() {
 				this.audioduration = this.$refs.audio.duration
 				clearTimeout(this.timer)
 				this.songReady = true
 			},
+			
 			// 歌曲错误
 			audioError() {
+				this.$message.error('播放错误，请重试！')
 				clearTimeout(this.timer)
 				this.songReady = true
 			},
+			
 			// 歌曲暂停
 			audioPaused() {
 				// 时间播放完会自动执行
 				this.upplaYing(false)
 			},
+			
 			// 进度条拖动改变播放进度
 			changeProgress(e) {
 				this.$refs.audio.currentTime = e
 			},
+			
 			// 监听播放时间改变
 			updateTime() {
 				if (!this.isDrag) {
@@ -226,6 +316,7 @@
 					this.currentTimes = this.$refs.audio.currentTime
 				}
 			},
+			
 			// 控制静音
 			changeMuted() {
 				if (this.isMuted) {
@@ -236,25 +327,61 @@
 					this.$refs.audio.muted = true
 				}
 			},
+			
 			// 改变音量
 			changeVolume(e) {
 				// slider组件默认事件,回调函数是改变后的值
 				this.volume = e / 100
 				this.$refs.audio.volume = e / 100
 			},
+			
 			// 歌曲播放完成
 			audioEnd() {
-				this.$message.success('放完啦！')
-				// this.currentTime = 0
-				// if (this.mode === playMode.loop) {
-				// 	this.loopSong()
-				// } else {
-				// 	this.nextSong()
-				// }
+				this.currentTimes = 0
+				if (this.currentMod === playMode.loop) {
+					this.loopSong()
+				} else {
+					this.nextSong()
+				}
 			},
+
+			// 展开播放列表
+			openPlaylist() {
+				// this.showLyric = false
+				if (this.showPlaylist) {
+					this.showPlaylist = false
+				} else {
+					this.showPlaylist = true
+				}
+			},
+			
+			// 更换播放模式
+			changeMode() {
+				const mode = (this.currentMod + 1) % 3
+				this.upplayMod(mode)
+			},
+			
+			// 点击列表里的播放
+			selectPlay(index){
+				this.upcurrentIndex(index)
+			},
+			
+			// 清空播放列表
+			clearPlaylist(){
+				this.clearPlaylist()
+			},
+			
+			// 删除播放列表某一项
+			deletePlaylist(index){
+				this.deletePlaylist(index)
+			},
+			
 			...mapMutations([
 				'upplaYing',
-				'upcurrentIndex'
+				'upcurrentIndex',
+				'upplayMod',
+				'clearPlaylist',
+				'deletePlaylist'
 			]),
 		}
 	}
@@ -282,6 +409,11 @@
 
 	/* 弹性容器 */
 	.flex-row {
+		width: 100%;
+		height: 53px;
+		position: fixed;
+		bottom: 0;
+		z-index: 2;
 		display: flex;
 		flex-wrap: nowrap;
 		justify-content: space-around;
@@ -357,7 +489,7 @@
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
-		padding-bottom: 0.5%;
+		padding-top: 0.5%;
 	}
 
 	.progress-wrap p {
@@ -370,7 +502,7 @@
 		display: flex;
 		align-items: center;
 		margin-left: 3%;
-		padding-bottom: 0.5%;
+		padding-top: 0.5%;
 	}
 
 	.volume-wrap i {
@@ -388,7 +520,7 @@
 		margin: 0 7%;
 		font-size: 20px;
 	}
-	
+
 	/* 移动 */
 	@media screen and (max-width: 992px) {
 		.hidden-hd {
@@ -405,10 +537,113 @@
 			width: 40%;
 		}
 	}
-	.playpage{
+
+	/* 歌曲播放页 */
+	.playpage {
 		height: calc(100% - 104px);
 		background: #000;
 		position: fixed;
 		top: 53px;
+	}
+
+	/* 播放列表容器 */
+	.playlist-box {
+		width: 380px;
+		height: 450px;
+		background: #F9F9F9;
+		position: absolute;
+		right: 20px;
+		bottom: 65px;
+		border-radius: 3px;
+		padding: 10px 30px 30px;
+		overflow: hidden;
+	}
+
+	/* 播放列表标题 */
+	.playlist-box .title {
+		margin: 0 0 10px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	/* 播放列表清空图标 */
+	.playlist-box .title i {
+		font-size: 15px;
+		cursor: pointer;
+	}
+
+	.playlist-box .title i:hover {
+		color: red;
+	}
+
+	/* 播放列表 */
+	.playlist-box .list {
+		overflow-y: scroll;
+		max-height: calc(100% - 50px);
+	}
+
+	/* 滚动槽 */
+	.playlist-box .list::-webkit-scrollbar {
+		width: 0px;
+		height: 8px;
+	}
+
+	/* 播放列表行 */
+	.playlist-box .playlist-row {
+		display: flex;
+		align-items: center;
+		height: 45px;
+	}
+
+	.playlist-row:hover .flex-center i {
+		display: block;
+		margin-right: 15px;
+	}
+
+	/* 序号 */
+	.playlist-box .flex-center {
+		width: 17px;
+		overflow: hidden;
+		margin-right: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.playlist-box .num {
+		font-size: 13px;
+		color: #4a4a4a;
+	}
+
+	/* 播放列表播放暂停图标 */
+	.playlist-row .flex-center i {
+		color: #fa2800;
+		font-size: 15px;
+		display: none;
+		text-align: left;
+	}
+
+	/* 歌曲名 */
+	.playlist-row .ellipsis {
+		font-size: 13px;
+		cursor: pointer;
+		flex: 1;
+		text-align: left;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		margin-bottom: 0 !important;
+	}
+
+	/* 叉 */
+	.playlist-row i {
+		font-size: 12px;
+		cursor: pointer;
+		margin-right: 0.3%;
+	}
+
+	.playlist-row i:hover {
+		color: red;
 	}
 </style>

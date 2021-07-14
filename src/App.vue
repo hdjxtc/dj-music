@@ -7,9 +7,7 @@
 			<div class="content">
 				<Contents />
 			</div>
-			<div class="container playbar" v-show="!$route.meta.isLogin">
-				<Playbar/>
-			</div>
+			<Playbar/>
 		</div>
 	</div>
 </template>

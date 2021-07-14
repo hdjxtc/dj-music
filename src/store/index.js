@@ -15,6 +15,8 @@ export default new Vuex.Store({
 		currentindex: -1,
 		// 播放状态
 		playing: false,
+		// 播放模式
+		mode: 0
 	},
 	getters: {
 		// 获取登录状态
@@ -27,12 +29,11 @@ export default new Vuex.Store({
 		},
 		// 获取播放列表
 		playList(state) {
-			// console.log('播放列表',state.playlist)
-			return state.playlist
+			return state.playlist || {}
 		},
 		// 获取前播放歌曲
 		currentSong(state) {
-			// console.log('当前播放',state.playlist[state.currentindex])
+			// console.log(state.playlist[state.currentindex])
 			return state.playlist[state.currentindex] || {}
 		},
 		// 获取当前播放歌曲索引
@@ -43,7 +44,10 @@ export default new Vuex.Store({
 		currentPlaying(state){
 			return state.playing
 		},
-
+		// 获取播放模式
+		currentMod(state){
+			return state.mode
+		}
 	},
 	mutations: {
 		// 更改登录状态
@@ -56,17 +60,49 @@ export default new Vuex.Store({
 		},
 		// 更改歌曲信息
 		upplayList(state, list) {
-			state.playlist = list
-		},
-		// 更改播放索引
-		upcurrentIndex(state, index) {
-			// console.log(index)
-			state.currentindex = index
+			let isrepeat = true
+			// 判断当前点击播放的歌曲在歌曲信息里有没有
+			state.playlist.map((item,index)=>{
+				if(item.id==list.id){
+					isrepeat = false
+					state.currentindex = index
+				}
+			})
+			if(isrepeat){
+				state.playlist.push(list)
+				state.currentindex = state.playlist.length - 1
+			}
 		},
 		// 更改播放状态
 		upplaYing(state,flag){
 			state.playing = flag
 		},
+		// 更改播放歌曲下标
+		upcurrentIndex(state,index){
+			state.currentindex = index
+		},
+		// 更换播放模式
+		upplayMod(state,mode){
+			state.mode = mode
+		},
+		// 清除播放列表
+		clearPlaylist(state){
+			let currentSong = state.playlist[state.currentindex]
+			state.playlist = [currentSong]
+			state.currentindex = state.playlist.length - 1
+		},
+		// 删除播放列表某一项
+		deletePlaylist(state,index){
+			if(index<state.currentindex){
+				state.currentindex = state.currentindex - 1
+			}
+			// 如果正在播放的是并且删掉的是最后一个
+			if(state.currentindex==state.playlist.length - 1){
+				state.currentindex = 0
+			}
+			state.playlist.splice(index,1)
+			
+		}
 	},
 	actions: {
 		// 选中播放歌曲
@@ -74,8 +110,7 @@ export default new Vuex.Store({
 			// console.log(context)
 			// console.log(list)
 			// console.log(index)
-			commit('upplayList',list)
-			commit('upcurrentIndex',index)
+			commit('upplayList',list[index])
 			commit('upplaYing',true)
 		},
 	},
