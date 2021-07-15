@@ -108,7 +108,7 @@
 				let loginstate = JSON.parse(window.localStorage.getItem('loginStatu'))
 				if(loginstate==null||false){
 					if(scope.row.fee==1){
-						this.$message.warning('555,非会员此歌曲只能试听~')
+						this.$message.warning('此歌曲非会员只能试听哦~')
 					}
 				}
 				let id = scope.row.id

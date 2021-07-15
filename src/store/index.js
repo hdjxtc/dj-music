@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+// 存储store到本地存储
+import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -65,6 +66,8 @@ export default new Vuex.Store({
 			state.playlist.map((item,index)=>{
 				if(item.id==list.id){
 					isrepeat = false
+					// 当播放地址失效时更新地址
+					state.playlist[index].url = list.url
 					state.currentindex = index
 				}
 			})
@@ -114,5 +117,17 @@ export default new Vuex.Store({
 			commit('upplaYing',true)
 		},
 	},
+	plugins:[
+		createPersistedState({
+			// 定义要存储的数据，不保持播放状态，让他每次初始化为false,即暂停状态
+			reducer(val){
+				return {
+					currentindex: val.currentindex,
+					mode: val.mode,
+					playlist: val.playlist
+				}
+			}
+		})
+	],
 	modules: {}
 })

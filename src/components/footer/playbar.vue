@@ -1,6 +1,8 @@
 <template>
 	<transition name="fade">
 		<div class="container shadow flex-row" v-show="playList.length > 0 && !$route.meta.isLogin">
+			<!-- 歌词 -->
+			<Lyric/>
 			<!-- 歌曲封面 -->
 			<div class="author" @click="playpage=true">
 				<img :src="currentSong.image" alt="dj-music" class="shadow" />
@@ -54,7 +56,7 @@
 							:style="item.id==currentSong.id?'color:red':''">
 							<div class="flex-center">
 								<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
-								<i class="iconfont dj-icon-zanting play-btn" @click="selectPlay(index)"></i>
+								<i class="iconfont play-btn" :class="index==currentIndex&&currentPlaying?'dj-icon-bofang':'dj-icon-zanting'" @click="selectPlays(index)"></i>
 							</div>
 							<p class="ellipsis" style="flex: 2;margin-right: 10%">{{item.name}}</p>
 							<p class="ellipsis" style="margin-right: 5%">{{item.singer}}</p>
@@ -71,12 +73,14 @@
 <script>
 	import {
 		mapGetters,
-		mapMutations
+		mapMutations,
+		mapActions
 	} from 'vuex'
 	// 循环模式
 	import {
 		playMode
 	} from '@/common/playmod'
+	import Lyric from './lyric'
 	// 歌词
 	// import Lyric from 'lyric-parser'
 	export default {
@@ -89,8 +93,8 @@
 				volume: 0.3,
 				// 音量条默认显示值
 				volumeNum: 30,
-				// 歌曲是否准备好，防止过快切换报错(The play() request was interrupted by a call to pause()，上一个的播报还没结束，这一个播报就覆盖上来了),每次切换都要判断
-				songReady: false,
+				// 歌曲是否准备好，防止过快切换报错(The play() request was interrupted by a call to pause()，上一个的播报还没结束，这一个播报就覆盖上来了),每次切换都要判断,一开始默认可以操作，因为有历史记录
+				songReady: true,
 				// 是否静音
 				isMuted: false,
 				// 是否在拖动进度条
@@ -102,6 +106,9 @@
 				// 歌曲播放页
 				playpage: false
 			}
+		},
+		components: {
+			Lyric
 		},
 		computed: {
 			// 监听播放暂停改图标
@@ -172,9 +179,20 @@
 					// 若歌曲 5s 未播放则不会执行audioReady，则认为超时，修改状态确保可以切换歌曲。
 					clearTimeout(this.timer)
 					this.timer = setTimeout(() => {
-						this.$message.warning('当前网络不佳！')
+						this.$message.warning('当前网络不佳！请稍后重试！')
+						// 播放地址获取失败后重新获取
+						let id = this.currentSong.id
+						this.$api.get(`/song/url?id=${id}`).then(res => {
+							let list = res.data
+							let index = 0
+							this.selectPlay({
+								list,
+								index
+							})
+						})
+						this.upplaYing(!this.currentPlaying)
 						this.songReady = true
-					}, 6000)
+					}, 8000)
 				})
 			},
 			// 监听播放歌曲状态，实现播放暂停
@@ -286,14 +304,24 @@
 			
 			// 歌曲是否准备完成
 			audioReady() {
-				this.audioduration = this.$refs.audio.duration
 				clearTimeout(this.timer)
+				this.audioduration = this.$refs.audio.duration
 				this.songReady = true
 			},
 			
 			// 歌曲错误
 			audioError() {
-				this.$message.error('播放错误，请重试！')
+				// this.$message.error('播放错误，请稍后！')
+				// 播放地址失效后重新获取
+				let id = this.currentSong.id
+				this.$api.get(`/song/url?id=${id}`).then(res => {
+					let list = res.data
+					let index = 0
+					this.selectPlay({
+						list,
+						index
+					})
+				})
 				clearTimeout(this.timer)
 				this.songReady = true
 			},
@@ -337,8 +365,8 @@
 			
 			// 歌曲播放完成
 			audioEnd() {
-				this.currentTimes = 0
 				if (this.currentMod === playMode.loop) {
+					this.currentTimes = 0
 					this.loopSong()
 				} else {
 					this.nextSong()
@@ -361,8 +389,12 @@
 				this.upplayMod(mode)
 			},
 			
-			// 点击列表里的播放
-			selectPlay(index){
+			// 点击列表里的播放暂停
+			selectPlays(index){
+				if(this.currentIndex==index){
+					this.togglePlay()
+					return
+				}
 				this.upcurrentIndex(index)
 			},
 			
@@ -383,6 +415,9 @@
 				'clearPlaylist',
 				'deletePlaylist'
 			]),
+			...mapActions([
+				'selectPlay',
+			])
 		}
 	}
 </script>

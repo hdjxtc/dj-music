@@ -7,19 +7,19 @@
 			</el-input>
 		</div>
 		<div class="tis" v-if="type==1">
-			搜索{{keyword}}，找到 <b class="num">{{songCount}}</b> 条单曲
+			<b class="keyword">{{keyword}}</b>，共找到 <b class="num">{{songCount}}</b> 条单曲
 		</div>
 		<div class="tis" v-if="type==100">
-			搜索{{keyword}}，找到 <b class="num">{{artistCount}}</b> 个歌手
+			<b class="keyword">{{keyword}}</b>，共找到 <b class="num">{{artistCount}}</b> 个歌手
 		</div>
 		<div class="tis" v-if="type==10">
-			搜索{{keyword}}，找到 <b class="num">{{albumCount}}</b> 张专辑
+			<b class="keyword">{{keyword}}</b>，共找到 <b class="num">{{albumCount}}</b> 张专辑
 		</div>
 		<div class="tis" v-if="type==1014">
-			搜索{{keyword}}，找到 <b class="num">{{videoCount}}</b> 个视频
+			<b class="keyword">{{keyword}}</b>，共找到 <b class="num">{{videoCount}}</b> 个视频
 		</div>
 		<div class="tis" v-if="type==1000">
-			搜索{{keyword}}，找到 <b class="num">{{playlistCount}}</b> 个歌单
+			<b class="keyword">{{keyword}}</b>，共找到 <b class="num">{{playlistCount}}</b> 个歌单
 		</div>
 		<el-tabs type="card" @tab-click="changeType">
 			<!-- 单曲 -->
@@ -283,7 +283,7 @@
 
 	.tis {
 		font-size: 14px;
-		color: #999;
+		color: #767676;
 		text-align: left;
 		margin: 0 0 1% 2.5%;
 	}
@@ -291,7 +291,12 @@
 	.num {
 		color: #c20c0c;
 	}
-
+	.keyword{
+		color: #409EFF;
+		font-size: 18px;
+		font-weight: normal
+	}
+	
 	.singer-list {
 		display: flex;
 		flex-wrap: wrap;
