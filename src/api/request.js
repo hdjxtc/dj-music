@@ -5,7 +5,7 @@ import config from './config'
 const {api_base_url} = config
 
 let api = axios.create({
-	timeout: 1000 * 8,
+	timeout: 1000 * 10,
 	baseURL: api_base_url
 })
 
@@ -48,7 +48,7 @@ api.interceptors.response.use(response => {
 	}
 }, error => {
 	Message.error({
-		message: '当前网络不佳，请重试!'
+		message: '当前网络不佳!'
 	});
 	// console.log(error)
 })

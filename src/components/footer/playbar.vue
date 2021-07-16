@@ -1,10 +1,9 @@
 <template>
 	<transition name="fade">
 		<div class="container shadow flex-row" v-show="playList.length > 0 && !$route.meta.isLogin">
-			<!-- 歌词 -->
-			<Lyric/>
 			<!-- 歌曲封面 -->
 			<div class="author" @click="playpage=true">
+				<img src="../../assets/img/zhankai.png" class="zhankai">
 				<img :src="currentSong.image" alt="dj-music" class="shadow" />
 			</div>
 			<!-- 歌曲信息 -->
@@ -38,16 +37,20 @@
 				<el-tooltip :content="modeTitle" effect="light">
 					<i class="iconfont" :class="modeIcon" @click="changeMode"></i>
 				</el-tooltip>
-				<i class="iconfont dj-icon-geci" title="歌词"></i>
-				<i class="iconfont dj-icon-bofangduilie" title="播放列表" @click="openPlaylist"></i>
+				<i class="iconfont dj-icon-geci" title="歌词" @click="openLyric"  :style="showLyric?'color:red':''"></i>
+				<i class="iconfont dj-icon-bofangduilie" title="播放列表" @click="openPlaylist" :style="showPlaylist?'color:red':''"></i>
 			</div>
 			<audio ref="audio" :src="currentSong.url" @playing="audioReady" @error="audioError" @timeupdate="updateTime"
 				@pause="audioPaused" @ended="audioEnd" :muted="isMuted"></audio>
-			<div class="container playpage" v-show="playpage" @click="playpage=false">歌曲播放页</div>
-
+			<!-- 歌词 -->
+			<transition name="fade">
+				<div class="lyriclist" v-show="showLyric">
+					<Lyric :lyriclist="lyriclist" :currenttime="currentTimes"/>
+				</div>
+			</transition>
 			<!-- 播放列表 -->
 			<transition name="fade">
-				<div class="playlist-box shadow" v-if="showPlaylist">
+				<div class="playlist-box shadow" v-show="showPlaylist">
 					<div class="title">播放列表
 						<i class="iconfont dj-icon-shanchu" title="清空" @click="clearPlaylist"></i>
 					</div>
@@ -64,6 +67,12 @@
 							<i class="iconfont dj-icon-guanbi" title="删除" @click="deletePlaylist(index)"></i>
 						</div>
 					</div>
+				</div>
+			</transition>
+			<transition name="slide">
+				<div class="container playpage" v-show="playpage" @click="playpage=false">
+					<img src="../../assets/img/shousuo.png" class="shousuo">
+					<!-- 组件 -->
 				</div>
 			</transition>
 		</div>
@@ -89,22 +98,26 @@
 			return {
 				// 当前进度
 				currentTimes: 0,
+				// 歌曲最大时间
+				audioduration: 0,
 				// 音量值
 				volume: 0.3,
 				// 音量条默认显示值
 				volumeNum: 30,
-				// 歌曲是否准备好，防止过快切换报错(The play() request was interrupted by a call to pause()，上一个的播报还没结束，这一个播报就覆盖上来了),每次切换都要判断,一开始默认可以操作，因为有历史记录
+				// 歌曲是否准备好，防止过快切换报错(The play() request was interrupted by a call to pause()，上一个的播放操作还没结束，这一个播放就覆盖上来了),每次切换都要判断,一开始默认可以操作，因为有历史记录
 				songReady: true,
 				// 是否静音
 				isMuted: false,
 				// 是否在拖动进度条
 				isDrag: false,
-				// 歌曲最大时间
-				audioduration: 0,
 				// 播放列表
 				showPlaylist: false,
 				// 歌曲播放页
-				playpage: false
+				playpage: false,
+				// 是否显示歌词
+				showLyric: false,
+				// 歌词信息
+				lyriclist: null,
 			}
 		},
 		components: {
@@ -156,7 +169,9 @@
 				if (!newsong.id || !newsong.url || newsong.id === oldsong.id) {
 					return
 				}
-			
+				// 获取歌词
+				this.getLyric()
+				
 				this.songReady = false
 				// 改变DOM数据后执行的延迟回调$nextTick
 				this.$nextTick(() => {
@@ -179,26 +194,18 @@
 					// 若歌曲 5s 未播放则不会执行audioReady，则认为超时，修改状态确保可以切换歌曲。
 					clearTimeout(this.timer)
 					this.timer = setTimeout(() => {
-						this.$message.warning('当前网络不佳！请稍后重试！')
-						// 播放地址获取失败后重新获取
-						let id = this.currentSong.id
-						this.$api.get(`/song/url?id=${id}`).then(res => {
-							let list = res.data
-							let index = 0
-							this.selectPlay({
-								list,
-								index
-							})
-						})
-						this.upplaYing(!this.currentPlaying)
+						this.$message.warning('当前网络不佳！请稍后！')
 						this.songReady = true
-					}, 8000)
+					}, 5000)
 				})
 			},
 			// 监听播放歌曲状态，实现播放暂停
 			currentPlaying(isPlaying) {
 				if (!this.songReady) {
 					return
+				}
+				if(isPlaying){
+					this.getLyric()
 				}
 				this.$nextTick(() => {
 					const audio = this.$refs.audio
@@ -232,14 +239,14 @@
 					return
 				}
 				// 如果播放列表只有一首歌,就将进度清零重新播放
-				if (this.playList.length === 1) {
+				if (this.playList.length == 1) {
 					this.loopSong()
 					return
 				} else {
 					let index
 					if (this.currentMod == playMode.sequence) {
 						index = this.currentIndex - 1
-						if (index === -1) {
+						if (index == -1) {
 							index = this.playList.length - 1
 						}
 					} else if (this.currentMod == playMode.loop) {
@@ -265,14 +272,14 @@
 				if (!this.songReady) {
 					return
 				}
-				if (this.playList.length === 1) {
+				if (this.playList.length == 1) {
 					this.loopSong()
 					return
 				} else {
 					let index
 					if (this.currentMod == playMode.sequence) {
 						index = this.currentIndex + 1
-						if (index === this.playList.length) {
+						if (index == this.playList.length) {
 							index = 0
 						}
 					} else if (this.currentMod == playMode.loop) {
@@ -312,6 +319,7 @@
 			// 歌曲错误
 			audioError() {
 				// this.$message.error('播放错误，请稍后！')
+				this.getLyric()
 				// 播放地址失效后重新获取
 				let id = this.currentSong.id
 				this.$api.get(`/song/url?id=${id}`).then(res => {
@@ -408,6 +416,23 @@
 				this.deletePlaylist(index)
 			},
 			
+			// 展开歌词
+			openLyric(){
+				if(this.showLyric){
+					this.showLyric = false
+				}else{
+					this.getLyric()
+					this.showLyric = true
+				}
+			},
+			// 获取歌词
+			async getLyric(){
+				await this.$api.get(`/lyric?id=${this.currentSong.id}`).then(res=>{
+					this.lyriclist = res.lrc.lyric
+				}).catch(()=>{
+					this.lyriclist = "暂无歌词"
+				})
+			},
 			...mapMutations([
 				'upplaYing',
 				'upcurrentIndex',
@@ -423,25 +448,6 @@
 </script>
 
 <style scoped>
-	/* 动画 */
-	.fade-enter {
-		opacity: 0;
-		transform: translate3d(0, 30px, 0);
-	}
-
-	.fade-enter-active {
-		transition: .5s;
-	}
-
-	.fade-leave-to {
-		opacity: 0;
-		transform: translate3d(0, 30px, 0);
-	}
-
-	.fade-leave-active {
-		transition: .5s;
-	}
-
 	/* 弹性容器 */
 	.flex-row {
 		width: 100%;
@@ -576,7 +582,7 @@
 	/* 歌曲播放页 */
 	.playpage {
 		height: calc(100% - 104px);
-		background: #000;
+		background: #f9f9f9;
 		position: fixed;
 		top: 53px;
 	}
@@ -680,5 +686,41 @@
 
 	.playlist-row i:hover {
 		color: red;
+	}
+	
+	/* 歌词 */
+	.lyriclist{
+		width: 85%;
+		height: 80px;
+		overflow: hidden;
+		position: absolute;
+		bottom: 70px;
+		z-index: 3;
+	}
+	
+	/* 歌曲播放页 */
+	/* 展开按钮 */
+	.zhankai {
+		display: none;
+		position: absolute;
+		top: 1px;
+		left: 1px;
+		background-color: rgba(0, 0, 0, 0.6);
+		padding: 14px;
+	}
+	.author:hover .zhankai {
+		display: block;
+	}
+	/* 收缩 */
+	.shousuo {
+		position: absolute;
+		right: 33px;
+		top: 0;
+		width: 35px;
+		height: 35px;
+		padding: 6px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		cursor: pointer;
 	}
 </style>

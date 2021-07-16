@@ -1,19 +1,12 @@
 <template>
 	<div class="empty flex-column">
-		<img src="../../assets/img/dj-music.png" alt="">
-		<p>{{ emptyText }}</p>
+		<img src="../../assets/img/empty.png" alt="">
 	</div>
 </template>
 
 <script>
 	export default {
 		name: 'empty',
-		props: {
-			emptyText: {
-				type: String,
-				default: '哎呀，这里什么都没有~'
-			}
-		},
 	}
 </script>
 
