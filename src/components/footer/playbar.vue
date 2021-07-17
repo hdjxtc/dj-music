@@ -2,7 +2,7 @@
 	<transition name="fade">
 		<div class="container shadow flex-row" v-show="playList.length > 0 && !$route.meta.isLogin">
 			<!-- 歌曲封面 -->
-			<div class="author" @click="playpage=true">
+			<div class="author" @click="openplaypage">
 				<img src="../../assets/img/zhankai.png" class="zhankai">
 				<img :src="currentSong.image" alt="dj-music" class="shadow" />
 			</div>
@@ -45,7 +45,7 @@
 			<!-- 歌词 -->
 			<transition name="fade">
 				<div class="lyriclist" v-show="showLyric">
-					<Lyric :lyriclist="lyriclist" :currenttime="currentTimes"/>
+					<Lyric :lyriclist="lyriclist" :currenttime="currentTimes" :currentSong="currentSong"/>
 				</div>
 			</transition>
 			<!-- 播放列表 -->
@@ -69,10 +69,12 @@
 					</div>
 				</div>
 			</transition>
+			<!-- 歌曲详情页 -->
 			<transition name="slide">
-				<div class="container playpage" v-show="playpage" @click="playpage=false">
-					<img src="../../assets/img/shousuo.png" class="shousuo">
+				<div class="container playpage" v-show="playpage">
+					<img src="../../assets/img/shousuo.png" class="shousuo" @click="playpage=false">
 					<!-- 组件 -->
+					<Playpage :currentSong="currentSong" :currentPlaying="currentPlaying" :lyriclist="lyriclist" :currenttime="currentTimes"/>
 				</div>
 			</transition>
 		</div>
@@ -80,6 +82,7 @@
 </template>
 
 <script>
+	import Playpage from '../contents/playpage'
 	import {
 		mapGetters,
 		mapMutations,
@@ -121,7 +124,8 @@
 			}
 		},
 		components: {
-			Lyric
+			Lyric,
+			Playpage
 		},
 		computed: {
 			// 监听播放暂停改图标
@@ -191,12 +195,12 @@
 						// 	this.currentTimes = audio.currentTime
 						// })
 					}
-					// 若歌曲 5s 未播放则不会执行audioReady，则认为超时，修改状态确保可以切换歌曲。
+					// 若歌曲 8s 未播放则不会执行audioReady，则认为超时，修改状态确保可以切换歌曲。
 					clearTimeout(this.timer)
 					this.timer = setTimeout(() => {
 						this.$message.warning('当前网络不佳！请稍后！')
 						this.songReady = true
-					}, 5000)
+					}, 8000)
 				})
 			},
 			// 监听播放歌曲状态，实现播放暂停
@@ -214,6 +218,10 @@
 					}
 				})
 			},
+			// 监听路由跳转关闭歌曲页面
+			$route(){
+				this.playpage = false
+			}
 		},
 		methods: {
 			// 格式化时间
@@ -429,9 +437,18 @@
 			async getLyric(){
 				await this.$api.get(`/lyric?id=${this.currentSong.id}`).then(res=>{
 					this.lyriclist = res.lrc.lyric
-				}).catch(()=>{
-					this.lyriclist = "暂无歌词"
 				})
+				.catch(()=>{
+					// this.lyriclist = "暂无歌词"
+					return
+				})
+			},
+			// 展开歌曲页
+			openplaypage(){
+				this.showLyric = false
+				this.showPlaylist = false
+				this.playpage = true
+				this.getLyric()
 			},
 			...mapMutations([
 				'upplaYing',
@@ -585,7 +602,24 @@
 		background: #f9f9f9;
 		position: fixed;
 		top: 53px;
+		overflow-y: scroll;
 	}
+	.playpage::-webkit-scrollbar {
+		width: 7px;
+		height: 6px;
+	}
+	
+	.playpage::-webkit-scrollbar-track {
+		border-radius: 3px;
+		background: rgba(135, 245, 255, 0.2);
+		-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 255, 0.18);
+	}
+	.playpage::-webkit-scrollbar-thumb {
+		border-radius: 3px;
+		background: linear-gradient(45deg, #66e3ff,#6dcaf4, #66e3ff);
+		-webkit-box-shadow: inset 0 0 10px rgba(78, 255, 0, 0.2);
+	}
+	
 
 	/* 播放列表容器 */
 	.playlist-box {
@@ -598,6 +632,7 @@
 		border-radius: 3px;
 		padding: 10px 30px 30px;
 		overflow: hidden;
+		z-index: 2;
 	}
 
 	/* 播放列表标题 */
@@ -695,7 +730,7 @@
 		overflow: hidden;
 		position: absolute;
 		bottom: 70px;
-		z-index: 3;
+		z-index: 2;
 	}
 	
 	/* 歌曲播放页 */
@@ -714,12 +749,11 @@
 	/* 收缩 */
 	.shousuo {
 		position: absolute;
-		right: 33px;
-		top: 0;
+		right: 5px;
+		top: 5px;
 		width: 35px;
 		height: 35px;
 		padding: 6px;
-		border: 1px solid #ccc;
 		border-radius: 4px;
 		cursor: pointer;
 	}

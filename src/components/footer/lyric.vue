@@ -1,5 +1,5 @@
 <template>
-	<div class="lyricbox" ref="scroll">
+	<div class="lyricbox">
 		<ul>
 			<li v-for="(item,index) in lyricarray" :key="index" :class="index==lyricindex?'current':index==lyricindex+1?'next':''"> {{item[1]}}</li>
 		</ul>
@@ -22,24 +22,48 @@
 				lasttime: 999,
 			}
 		},
+		mounted(){
+			// 设置默认值
+			this.lyricarray = [[0,'暂无歌词']]
+		},
 		props: {
+			// 歌词信息
 			lyriclist: {
 				type: String,
 				default: '暂无歌词'
 			},
+			// 当前时间
 			currenttime: {
 				type: Number,
 				default: 0
-			}
+			},
+			// 当前歌曲
+			currentSong: {
+				type: Object
+			},
 		},
 		watch: {
+			// 监听当前歌曲
+			currentSong() {
+				this.lyricarray = [[0,'暂无歌词']]
+			},
 			lyriclist() {
 				// 格式化歌词
 				this.lyricarray = parseLyric(this.lyriclist);
 				if(this.lyricarray.length==0){
 					this.lyricarray = [[0,'暂无歌词']]
+				}else{
+					// 将空数据去除
+					this.lyricarray.map((item,index)=>{
+						if(!item[1]){
+							this.lyricarray.splice(index,1)
+						}
+						if(index==6){
+							this.start = item[0]
+						}
+					})
+					this.lasttime = this.lyricarray[this.lyricarray.length-1][0]
 				}
-				this.lasttime = this.lyricarray[this.lyricarray.length-1][0]
 			},
 			currenttime(current) {
 				// console.log(current)
@@ -57,6 +81,10 @@
 							}
 						}
 					}	
+					// 渲染最后一行
+					if(current > this.lasttime){
+						this.lyricindex = this.lyricarray.length-1
+					}
 				}
 			},
 		}
@@ -81,7 +109,7 @@
 	/* 当前歌词 */
 	.lyricbox .current {
 		font-size: 30px;
-		color: #99ff4b;
+		color: #49ff17;
 		text-shadow: 1px 1px rgb(0 0 0 / 70%);
 		text-align: left;
 		position: absolute;
