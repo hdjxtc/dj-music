@@ -45,26 +45,34 @@
 		methods: {
 			// // 获取推荐新音乐
 			async getNewSongs() {
-				const res = await this.$api.get("/personalized/newsong");
-				let list = []
-				res.result.map(item => {
-					list.push(item.id)
-				})
-				// console.log('list',list)
-				this.getSongDetail(list)
+				try {
+					const res = await this.$api.get("/personalized/newsong");
+					let list = []
+					res.result.map(item => {
+						list.push(item.id)
+					})
+					// console.log('list',list)
+					this.getSongDetail(list)
+				} catch (error) {
+					console.log(error)
+				}
 			},
 			// 获取歌曲信息，拿歌曲作者、图片等
 			async getSongDetail(lists) {
-				let timestamp = new Date().valueOf()
-				lists = lists.join(',')
-				const res = await this.$api.get("/song/detail", {
-					params: {
-						ids: lists,
-						timestamp: timestamp
-					},
-				});
-				this.songList = this.hanlesonglist(res.songs)
-				// console.log(this.songList)
+				try {
+					let timestamp = new Date().valueOf()
+					lists = lists.join(',')
+					const res = await this.$api.get("/song/detail", {
+						params: {
+							ids: lists,
+							timestamp: timestamp
+						},
+					});
+					this.songList = this.hanlesonglist(res.songs)
+					// console.log(this.songList)
+				} catch (error) {
+					console.log(error)
+				}
 			},
 			// 处理歌曲
 			hanlesonglist(list) {
@@ -78,15 +86,19 @@
 			},
 			// 播放歌曲
 			playSong(list, index) {
-				let id = list[index].id
-				this.$api.get(`/song/url?id=${id}`).then(res => {
-					list[index].url = res.data[0].url
-					// console.log(res)
-					this.selectPlay({
-						list,
-						index
+				try {
+					let id = list[index].id
+					this.$api.get(`/song/url?id=${id}`).then(res => {
+						list[index].url = res.data[0].url
+						// console.log(res)
+						this.selectPlay({
+							list,
+							index
+						})
 					})
-				})
+				} catch (error) {
+					console.log(error)
+				}
 			},
 			// 调用vuex的Actions改数据
 			...mapActions([

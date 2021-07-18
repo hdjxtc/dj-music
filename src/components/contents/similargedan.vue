@@ -83,13 +83,18 @@
 		font-size: 14px;
 		text-align: left;
 		margin-top: 3px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.info h2 {
 		width: 100%;
 		font-size: 13px;
-		margin-bottom: 10px;
 		font-weight: 600;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.info h2:hover,

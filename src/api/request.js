@@ -47,10 +47,10 @@ api.interceptors.response.use(response => {
 		return
 	}
 }, error => {
-	Message.error({
-		message: '当前网络不佳!'
-	});
-	// console.log(error)
+	// Message.error({
+	// 	message: '当前网络不佳!'
+	// });
+	console.log(error)
 })
 
 export default api

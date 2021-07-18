@@ -16,6 +16,28 @@
 .el-backtop {
 	background: none !important;
 	box-shadow: none !important;
+	right: 9%!important;
+}
+/* 返回顶部移动端 */
+@media screen and (max-width: 1199px) {
+	.el-backtop{
+		right: 13%!important;;
+	}
+}
+@media screen and (max-width: 992px) {
+	.el-backtop{
+		right: 17%!important;;
+	}
+}
+@media screen and (max-width: 768px) {
+	.el-backtop{
+		right: 19%!important;;
+	}
+}
+@media screen and (max-width: 576px){
+	.el-backtop{
+		right: 8%!important;;
+	}
 }
 
 /* 登录输入框 */

@@ -9,7 +9,7 @@
 					<img :src="item.album.picUrl || item.cover" alt="404" />
 				</div>
 				<div class="info">
-					<h2 class="ellipsis" :title="item.name" @click="playsong(item.id)">{{item.name}}</h2>
+					<h2 class="ellipsis" :title="item.name" @click="getSongDetail(item.id)">{{item.name}}</h2>
 					<span @click="toSinger(item.id)"><small>{{singer[index]}}</small></span>
 				</div>
 			</li>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+	import {mapActions} from 'vuex'
+	import {createSong} from '@/model/song'
 	export default {
 		name: 'similarsong',
 		data() {
@@ -31,10 +33,50 @@
 			}
 		},
 		methods: {
-			// 播放歌曲
-			playsong(id) {
-				console.log(id)
+			// 获取歌曲信息，拿歌曲作者、图片等
+			async getSongDetail(id) {
+				try {
+					let timestamp = new Date().getTime()
+					const res = await this.$api.get("/song/detail", {
+						params: {
+							ids: id,
+							timestamp: timestamp
+						},
+					});
+					this.playSong(this.hanlesonglist(res.songs),0)
+				} catch (error) {
+					console.log(error)
+				}
 			},
+			// 处理歌曲
+			hanlesonglist(list) {
+				let ret = []
+				list.map(item => {
+					if (item.id) {
+						ret.push(createSong(item))
+					}
+				})
+				return ret
+			},
+			// 播放歌曲
+			playSong(list, index) {
+				try {
+					let id = list[index].id
+					this.$api.get(`/song/url?id=${id}`).then(res => {
+						list[index].url = res.data[0].url
+						// console.log(res)
+						this.selectPlay({
+							list,
+							index
+						})
+					})
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			...mapActions([
+				'selectPlay',
+			]),
 			// 跳转歌手页面
 			toSinger(id) {
 				this.$router.push({
@@ -48,11 +90,13 @@
 		},
 		watch: {
 			similarsongs(news) {
-				news.map(item => {
-					item.artists.map(items => {
-						this.singer.push(items.name)
+				if(news){
+					news.map(item => {
+						item.artists.map(items => {
+							this.singer.push(items.name)
+						})
 					})
-				})
+				}
 			}
 		}
 	}
@@ -102,13 +146,18 @@
 		font-size: 14px;
 		text-align: left;
 		margin-top: 3px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.info h2 {
 		width: 100%;
 		font-size: 13px;
-		margin-bottom: 10px;
 		font-weight: 600;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.info h2:hover,

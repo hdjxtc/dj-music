@@ -40,30 +40,4 @@
 		background: linear-gradient(45deg, #66e3ff,#6dcaf4, #66e3ff);
 		-webkit-box-shadow: inset 0 0 10px rgba(78, 255, 0, 0.2);
 	}
-	
-	
-	.el-backtop{
-		right: 9%!important;
-	}
-	/* 返回顶部移动端 */
-	@media screen and (max-width: 1199px) {
-		.el-backtop{
-			right: 13%!important;;
-		}
-	}
-	@media screen and (max-width: 992px) {
-		.el-backtop{
-			right: 17%!important;;
-		}
-	}
-	@media screen and (max-width: 768px) {
-		.el-backtop{
-			right: 19%!important;;
-		}
-	}
-	@media screen and (max-width: 576px){
-		.el-backtop{
-			right: 8%!important;;
-		}
-	}
 </style>

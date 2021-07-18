@@ -75,6 +75,10 @@
 					<img src="../../assets/img/shousuo.png" class="shousuo" @click="playpage=false">
 					<!-- 组件 -->
 					<Playpage :currentSong="currentSong" :currentPlaying="currentPlaying" :lyriclist="lyriclist" :currenttime="currentTimes"/>
+					<!-- 返回顶部 -->
+					<el-backtop target=".playpage" :bottom="70">
+						<img src="../../assets/img/gotop.png" >
+					</el-backtop>
 				</div>
 			</transition>
 		</div>
@@ -173,6 +177,11 @@
 				if (!newsong.id || !newsong.url || newsong.id === oldsong.id) {
 					return
 				}
+				// 解决播放列表里只改下标不改状态的bug
+				// if (!this.currentPlaying) {
+					// this.togglePlay()
+				// }
+				
 				// 获取歌词
 				this.getLyric()
 				
@@ -188,12 +197,9 @@
 						//初始化进度条时间
 						audio.currentTime = 0
 						// 播放
-						audio.play()
-						// //监听音频改变
-						// audio.addEventListener("timeupdate", () => {
-						// 	//获取歌曲时间,同步到进度条
-						// 	this.currentTimes = audio.currentTime
-						// })
+						if(this.currentPlaying){
+							audio.play()
+						}
 					}
 					// 若歌曲 8s 未播放则不会执行audioReady，则认为超时，修改状态确保可以切换歌曲。
 					clearTimeout(this.timer)
@@ -412,6 +418,7 @@
 					return
 				}
 				this.upcurrentIndex(index)
+				this.upplaYing(true)
 			},
 			
 			// 清空播放列表
@@ -748,9 +755,9 @@
 	}
 	/* 收缩 */
 	.shousuo {
-		position: absolute;
-		right: 5px;
-		top: 5px;
+		position: fixed;
+		right: 8%;
+		top: 8%;
 		width: 35px;
 		height: 35px;
 		padding: 6px;

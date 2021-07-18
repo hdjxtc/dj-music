@@ -1,7 +1,7 @@
 <template>
 	<div class="playpagebox container">
 		<div class="top">
-			<div class="blur" :style="{backgroundImage: 'url(' + currentSong.image + ')',filter: 'blur(100px)'}"></div>
+			<div class="blur" :style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}"></div>
 			<div class="left">
 				<div class="playbar" ref="playbar">
 					<img src="../../assets/img/playbar.png">
@@ -19,6 +19,7 @@
 			</div>
 			<div class="center">
 				<div class="center-top">
+					<!-- 歌曲信息 -->
 					<div class="musictitle">
 						<h4>
 							{{currentSong.name}}
@@ -36,21 +37,25 @@
 					</div>
 				</div>
 				<div class="center-bottom" ref="scroll">
+					<!-- 歌词 -->
 					<div class="lyricbox">
 						<ul>
 							<li v-for="(item,index) in lyricarray" :key="index" :class="index==lyricindex?'current':''">
-								{{item[1]}}</li>
+								{{item[1]}}
+							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="right">
-				<Similargedan :similarplaylist="similarplaylist"/>
-				<Similarsong :similarsongs="similarsongs"/>
+				<!-- 相似歌曲相似歌单 -->
+				<Similargedan :similarplaylist="similarplaylist" />
+				<Similarsong :similarsongs="similarsongs" />
 			</div>
 		</div>
 		<div class="bottom">
-			<Comment />
+			<!-- 评论 -->
+			<Comment :currentSong="currentSong"/>
 		</div>
 	</div>
 </template>
@@ -79,7 +84,7 @@
 				// 相似歌曲
 				similarsongs: null,
 				// 相似歌单
-				similarplaylist: null
+				similarplaylist: null,
 			}
 		},
 		props: {
@@ -219,20 +224,24 @@
 				}
 			},
 			// 获取相似歌曲
-			getSimilarsong(){
+			getSimilarsong() {
 				let id = this.currentSong.id
-				this.$api.get(`/simi/song?id=${id}`).then(res=>{
+				this.$api.get(`/simi/song?id=${id}`).then(res => {
 					this.similarsongs = res.songs
+				}).catch(err => {
+					console.log(err)
 				})
 			},
 			// 获取相似歌单
-			getSimilarplaylist(){
+			getSimilarplaylist() {
 				let id = this.currentSong.id
-				this.$api.get(`/simi/playlist?id=${id}`).then(res=>{
+				this.$api.get(`/simi/playlist?id=${id}`).then(res => {
 					this.similarplaylist = res.playlists
+				}).catch(err => {
+					console.log(err)
 				})
 			},
-		}
+		},
 	}
 </script>
 
@@ -277,27 +286,26 @@
 		left: 65px;
 	}
 
-	.btnBox {
-		margin-top: 90px;
-	}
-
 	.top .left {
 		margin: 0 50px;
+		height: 680px;
 	}
 
+	/* 歌曲标题 */
 	.top .center {
 		text-align: left;
 		margin-top: -1%;
 		margin-right: 50px;
 	}
 
-	/* 歌曲标题 */
-	.top .center .musictitle {
-		font-size: 32px;
-	}
-
 	.top .center-top {
 		margin-left: 8%;
+		width: 365px;
+	}
+
+	.top .center .musictitle {
+		width: 365px;
+		font-size: 32px;
 	}
 
 	.top .center .musictitle h4 {
@@ -308,7 +316,7 @@
 	/* 歌曲信息 */
 	.top .center .musicinfo {
 		color: #444444;
-		text-shadow: 1px 1px rgb(255 255 255 / 60%);
+		/* text-shadow: 1px 1px rgb(255 255 255 / 60%); */
 	}
 
 	.top .center .musicinfo h6 {
@@ -320,23 +328,24 @@
 		color: #2761e6;
 		transition: .3s;
 	}
-	.top .center .musicinfo a:hover{
+
+	.top .center .musicinfo a:hover {
 		color: #e60045;
 	}
-	
+
 
 	/* 滚动条 */
 	.center-bottom {
 		width: 400px;
 		height: 400px;
 		overflow-y: scroll;
-		overflow-x: hidden;
+		/* overflow-x: hidden; */
 		white-space: nowrap;
 	}
 
 	.center-bottom::-webkit-scrollbar {
 		width: 3px;
-		height: 3px;
+		height: 4px;
 	}
 
 	.center-bottom::-webkit-scrollbar-track {
@@ -354,6 +363,7 @@
 	/* 歌曲图下按钮 */
 	.btnBox {
 		margin-top: 90px;
+		display: flex;
 	}
 
 	/* 歌词行 */
@@ -362,8 +372,8 @@
 		list-style: none;
 		line-height: 31px;
 		letter-spacing: 1px;
-		color: #fff;
-		text-shadow: 1px 1px rgb(0 0 0 / 60%);
+		color: #000;
+		text-shadow: 1px 1px rgb(255 255 255 / 60%)
 	}
 
 	/* 当前歌词 */
@@ -381,5 +391,96 @@
 		right: 0;
 		z-index: -1;
 		opacity: 0.7;
+	}
+	.right{
+		width: 350px;
+	}
+	.bottom{
+		text-align: left;
+		margin: -150px 3rem 0 3rem;
+	}
+	
+	/* 移动 */
+	@media screen and (max-width: 1400px) {
+		.right{
+			display: none;
+		}
+		.left{
+			margin: 0 10%!important;
+		}
+	}
+	@media screen and (max-width: 992px) {
+		.top{
+			padding: 0;
+		}
+		.btnBox{
+			display: none;
+		}
+		.center{
+			position: absolute;
+			left: 35%;
+			margin-top: 3%!important;
+		}
+		.left{
+			visibility: hidden;
+			height: 900px!important;
+		}
+		.blur{
+			height: 100%;
+			left: 0;
+			filter: blur(0)!important;
+			background-size: contain!important;
+		}
+	}
+	@media screen and (max-width: 768px) {
+		.bottom{
+			margin: -150px 0.5rem 0 0.5rem;
+		}
+		.btnBox{
+			display: none;
+		}
+		.blur{
+			background-size: cover!important;
+		}
+		.center{
+			position: absolute;
+			left: 15%;
+			margin-top: 15%!important;
+		}
+	}
+	@media screen and (max-width: 576px) {
+		.bottom{
+			margin: -150px 0.5rem 0 0.5rem;
+		}
+		.btnBox{
+			display: none;
+		}
+	}
+	@media screen and (max-width: 485px) {
+		.center{
+			text-align: center!important;
+			left: 5%;
+		}
+	}
+	@media screen and (max-width: 440px) {
+		.center{
+			left: 0;
+		}
+	}
+	@media screen and (max-width: 440px) {
+		.center{
+			left: 0;
+		}
+	}
+	@media screen and (max-width: 410px) {
+		.center-bottom{
+			width: 330px;
+		}
+		.center-top{
+			margin-left: 5%!important;
+		}
+		.center-top,.center .musictitle{
+			width: 100%!important;
+		}
 	}
 </style>

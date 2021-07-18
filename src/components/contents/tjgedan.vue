@@ -45,13 +45,17 @@
 		methods: {
 			//获取音乐图片
 			async getNewSongs() {
-				await this.$api.get("personalized")
-					.then((res) => {
-						this.total = res.total;
-						this.songList = res.result;
-						this.loading = false
-						// console.log(res.data.result);
-					});
+				try {
+					await this.$api.get("personalized")
+						.then((res) => {
+							this.total = res.total;
+							this.songList = res.result;
+							this.loading = false
+							// console.log(res.data.result);
+						});
+				} catch (error) {
+					console.log(error)
+				}
 			}
 		}
 	}

@@ -36,9 +36,13 @@
 		methods: {
 			//获取轮播图
 			async getSwiter() {
-				const res = await this.$api.post("banner");
-				this.bannerinfo = res.banners;
-				// console.log(res.banners)
+				try {
+					const res = await this.$api.post("banner");
+					this.bannerinfo = res.banners;
+					// console.log(res.banners)
+				} catch (error) {
+					console.log(error)
+				}
 			},
 		}
 	}
