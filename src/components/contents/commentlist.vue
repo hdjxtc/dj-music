@@ -21,7 +21,7 @@
 							<i class="iconfont dj-icon-dianzan" @click="commentLike(item.commentId, item.liked)" :class="item.liked ? 'active' : ''"></i>
 							<span>({{item.likedCount}})</span>
 							<i class="iconfont dj-icon-pinglun" @click="commentHandle(item.commentId)"></i>
-							<a href="javascript:;" class="delete" v-if="item.user.userId == userInfo.userId" @click="deletecomment(item.commentId)">删除评论</a>
+							<a href="javascript:;" class="delete" v-if="userInfo!=null && item.user.userId==userInfo.userId" @click="deletecomment(item.commentId)">删除评论</a>
 						</div>
 					</h2>
 					<!-- 评论内容 -->

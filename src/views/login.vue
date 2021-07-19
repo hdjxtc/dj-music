@@ -224,4 +224,5 @@
 			padding-top: 40%;
 		}
 	}
+	
 </style>

@@ -3,7 +3,7 @@
 		<div class="top">
 			<div class="blur" :style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}"></div>
 			<div class="left">
-				<div class="playbar" ref="playbar">
+				<div class="playbar hidden-hd" ref="playbar">
 					<img src="../../assets/img/playbar.png">
 				</div>
 				<div class="songimg" ref="songimg">
@@ -36,7 +36,12 @@
 						</h6>
 					</div>
 				</div>
-				<div class="center-bottom" ref="scroll">
+				<div class="center-bottom" ref="scroll" 
+					@mousedown="isDrags = true"
+					@mouseup="isDrags = false"
+					@touchstart="isDrags = true"
+					@touchend="isDrags = false"
+				>
 					<!-- 歌词 -->
 					<div class="lyricbox">
 						<ul>
@@ -85,6 +90,8 @@
 				similarsongs: null,
 				// 相似歌单
 				similarplaylist: null,
+				// 是否在拖动歌词
+				isDrags: false,
 			}
 		},
 		props: {
@@ -191,11 +198,13 @@
 			},
 			lyricindex() {
 				// 歌词滚动
-				this.$nextTick(() => {
-					if (this.lyricindex > 5) {
-						this.$refs.scroll.scrollTo(0, 30.4 * (this.lyricindex - 5))
-					}
-				})
+				if(!this.isDrags){
+					this.$nextTick(() => {
+						if (this.lyricindex > 5) {
+							this.$refs.scroll.scrollTo(0, 30.4 * (this.lyricindex - 5))
+						}
+					})
+				}
 			}
 		},
 		methods: {
@@ -309,14 +318,16 @@
 	}
 
 	.top .center .musictitle h4 {
+		color: #fff;
+		text-shadow: 1px 1px rgb(0 0 0 / 60%);
 		display: inline-block;
 		font-weight: 600;
 	}
 
 	/* 歌曲信息 */
 	.top .center .musicinfo {
-		color: #444444;
-		/* text-shadow: 1px 1px rgb(255 255 255 / 60%); */
+		color: #fff;
+		text-shadow: 1px 1px rgb(0 0 0 / 60%);
 	}
 
 	.top .center .musicinfo h6 {
@@ -341,10 +352,11 @@
 		overflow-y: scroll;
 		/* overflow-x: hidden; */
 		white-space: nowrap;
+		cursor: default;
 	}
 
 	.center-bottom::-webkit-scrollbar {
-		width: 3px;
+		width: 0;
 		height: 4px;
 	}
 
@@ -413,7 +425,7 @@
 		.top{
 			padding: 0;
 		}
-		.btnBox{
+		.btnBox,.hidden-hd{
 			display: none;
 		}
 		.center{
@@ -421,15 +433,25 @@
 			left: 35%;
 			margin-top: 3%!important;
 		}
+		.center-top{
+			margin-bottom: 20%;
+		}
 		.left{
-			visibility: hidden;
 			height: 900px!important;
+			margin: 15% 28%!important;
 		}
 		.blur{
 			height: 100%;
 			left: 0;
-			filter: blur(0)!important;
 			background-size: contain!important;
+		}
+		.lyricbox ul li{
+			font-size: 15px;
+			color: #fff;
+			text-shadow: 1px 1px rgb(0 0 0 / 60%)
+		}
+		.center-bottom::-webkit-scrollbar {
+			height: 0;
 		}
 	}
 	@media screen and (max-width: 768px) {
@@ -442,10 +464,16 @@
 		.blur{
 			background-size: cover!important;
 		}
+		.left{
+			margin: 15% 20%!important;
+		}
 		.center{
 			position: absolute;
-			left: 15%;
+			left: 33%;
 			margin-top: 15%!important;
+		}
+		.center-top{
+			margin-top: -20%;
 		}
 	}
 	@media screen and (max-width: 576px) {
@@ -455,32 +483,75 @@
 		.btnBox{
 			display: none;
 		}
+		.center-top{
+			margin-top: -20%;
+			margin-bottom: 25%;
+		}
+		.top .songimg{
+			width: 250px;
+			height: 250px;
+		}
+		.top .songimg img{
+			top: 50px!important;
+			left: 50px!important;
+		}
+		.left{
+			margin: 15% 26%!important;
+		}
 	}
 	@media screen and (max-width: 485px) {
 		.center{
 			text-align: center!important;
-			left: 5%;
-		}
-	}
-	@media screen and (max-width: 440px) {
-		.center{
 			left: 0;
 		}
 	}
 	@media screen and (max-width: 440px) {
 		.center{
-			left: 0;
+			left: -5%;
 		}
 	}
-	@media screen and (max-width: 410px) {
-		.center-bottom{
-			width: 330px;
-		}
+	@media screen and (max-width: 415px) {
 		.center-top{
 			margin-left: 5%!important;
+			margin-top: -5%;
 		}
 		.center-top,.center .musictitle{
 			width: 100%!important;
+		}
+		.left{
+			margin: 15% 20%!important;
+		}
+	}
+	@media screen and (max-width: 391px) {
+		.center{
+			left: -10%;
+		}
+		.left{
+			margin: 15% 17%!important;
+		}
+	}
+	@media screen and (max-width: 376px) {
+		.center{
+			left: -13%;
+		}
+		.left{
+			margin: 15% 15%!important;
+		}
+	}
+	@media screen and (max-width: 348px) {
+		.center{
+			left: -15%;
+		}
+		.left{
+			margin: 15% 13%!important;
+		}
+	}
+	@media screen and (max-width: 318px) {
+		.center{
+			left: -20%;
+		}
+		.left{
+			margin: 15% 10%!important;
 		}
 	}
 </style>

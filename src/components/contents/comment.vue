@@ -155,7 +155,7 @@
 							this.getSongcomments(this.currentSong.id)
 						}
 					} catch (error) {
-						this.$message.warning("该资源不允许评论！")
+						// this.$message.warning("该资源不允许评论！")
 						console.log(error)
 					}
 				}

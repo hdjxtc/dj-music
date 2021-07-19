@@ -24,7 +24,7 @@
 		<el-tabs type="card" @tab-click="changeType">
 			<!-- 单曲 -->
 			<el-tab-pane label="单曲">
-				<Songlist :songlist="songList" />
+				<Songlist :songlist="songList" :width1="400" :width2="300" :width3="300" v-loading="loading"/>
 				<div class="feny" v-if="songCount">
 					<Feny :total="songCount" @pageChange="pageChange" />
 				</div>
@@ -91,6 +91,8 @@
 				albums: [],
 				videos: [],
 				playList: [],
+				// 数据加载时动画
+				loading: true,
 			};
 		},
 		components: {
@@ -187,6 +189,7 @@
 			},
 			//获取歌曲列表
 			async getMusicList(songid) {
+				this.loading = true
 				let timestamp = new Date().valueOf()
 				let ids = songid.join(',')
 				try {
@@ -200,6 +203,8 @@
 					// console.log(res.songs)
 					this.songList = this.normalizeSongs(res.songs)
 					// console.log(this.songList)
+					// 结束动画
+					this.loading = false
 				} catch (err) {
 					this.$message.error(err)
 				}

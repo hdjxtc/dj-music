@@ -21,22 +21,22 @@
 /* 返回顶部移动端 */
 @media screen and (max-width: 1199px) {
 	.el-backtop{
-		right: 13%!important;;
+		right: 13%!important;
 	}
 }
 @media screen and (max-width: 992px) {
 	.el-backtop{
-		right: 17%!important;;
+		right: 17%!important;
 	}
 }
 @media screen and (max-width: 768px) {
 	.el-backtop{
-		right: 19%!important;;
+		right: 19%!important;
 	}
 }
 @media screen and (max-width: 576px){
 	.el-backtop{
-		right: 8%!important;;
+		right: 8%!important;
 	}
 }
 
@@ -75,7 +75,15 @@
 	height: 5px !important;
 	background-color: #66e3ff !important;
 }
-
+/* 饿了么弹框 */
+.descBox{
+	height: 80%;
+	overflow: scroll;
+}
+.descBox::-webkit-scrollbar {
+	width: 0;
+	height: 4px;
+}
 /* 动画 */
 .fade-enter-active,
 .fade-leave-active,
@@ -102,4 +110,10 @@
 .slide-leave-to {
 	opacity: 0;
 	transform: translate3d(-100%, 100%, 0);
+}
+
+/* 歌单歌曲列表 */
+.playlistdetailbox .left .el-table{
+	width: 100%!important;
+	margin: 0!important;
 }

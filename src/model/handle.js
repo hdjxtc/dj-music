@@ -26,6 +26,16 @@ export default {
 	// 	if (!name) return
 	// 	window.localStorage.removeItem(name)
 	// },
+
+	//清除所有cookie函数
+	clearCookie() {
+		var keys = document.cookie.match(/[^ =;]+(?=\=)/g)
+		if (keys) {
+			for (var i = keys.length; i--;){
+				document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+			}
+		}
+	},
 	// 日期格式化
 	dateFormat(str, type) {
 		let date = new Date(str)

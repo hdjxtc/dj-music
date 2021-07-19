@@ -21,13 +21,14 @@ export default new Vuex.Store({
 	},
 	getters: {
 		// 获取登录状态
-		loginStatu(state){
+		loginStatu(state) {
 			return state.loginstatu || JSON.parse(window.localStorage.getItem('loginStatu'))
 		},
 		// 获取登录用户信息
-		userInfo(state){
-			return state.userinfo ||  JSON.parse(window.localStorage.getItem('userInfo'))
+		userInfo(state) {
+			return state.userinfo || JSON.parse(window.localStorage.getItem('userInfo'))
 		},
+
 		// 获取播放列表
 		playList(state) {
 			return state.playlist || {}
@@ -42,11 +43,11 @@ export default new Vuex.Store({
 			return state.currentindex
 		},
 		// 获取播放状态
-		currentPlaying(state){
+		currentPlaying(state) {
 			return state.playing
 		},
 		// 获取播放模式
-		currentMod(state){
+		currentMod(state) {
 			return state.mode
 		}
 	},
@@ -63,48 +64,48 @@ export default new Vuex.Store({
 		upplayList(state, list) {
 			let isrepeat = true
 			// 判断当前点击播放的歌曲在歌曲信息里有没有
-			state.playlist.map((item,index)=>{
-				if(item.id==list.id){
+			state.playlist.map((item, index) => {
+				if (item.id == list.id) {
 					isrepeat = false
 					// 当播放地址失效时更新地址
 					state.playlist[index].url = list.url
 					state.currentindex = index
 				}
 			})
-			if(isrepeat){
+			if (isrepeat) {
 				state.playlist.push(list)
 				state.currentindex = state.playlist.length - 1
 			}
 		},
 		// 更改播放状态
-		upplaYing(state,flag){
+		upplaYing(state, flag) {
 			state.playing = flag
 		},
 		// 更改播放歌曲下标
-		upcurrentIndex(state,index){
+		upcurrentIndex(state, index) {
 			state.currentindex = index
 		},
 		// 更换播放模式
-		upplayMod(state,mode){
+		upplayMod(state, mode) {
 			state.mode = mode
 		},
 		// 清除播放列表
-		clearPlaylist(state){
+		clearPlaylist(state) {
 			let currentSong = state.playlist[state.currentindex]
 			state.playlist = [currentSong]
 			state.currentindex = state.playlist.length - 1
 		},
 		// 删除播放列表某一项
-		deletePlaylist(state,index){
-			if(index<state.currentindex){
+		deletePlaylist(state, index) {
+			if (index < state.currentindex) {
 				state.currentindex = state.currentindex - 1
 			}
 			// 如果正在播放的是并且删掉的是最后一个
-			if(state.currentindex==state.playlist.length - 1){
+			if (state.currentindex == state.playlist.length - 1) {
 				state.currentindex = 0
 			}
-			state.playlist.splice(index,1)
-			
+			state.playlist.splice(index, 1)
+
 		}
 	},
 	actions: {
@@ -113,14 +114,14 @@ export default new Vuex.Store({
 			// console.log(context)
 			// console.log(list)
 			// console.log(index)
-			commit('upplayList',list[index])
-			commit('upplaYing',true)
+			commit('upplayList', list[index])
+			commit('upplaYing', true)
 		},
 	},
-	plugins:[
+	plugins: [
 		createPersistedState({
 			// 定义要存储的数据，不保持播放状态，让他每次初始化为false,即暂停状态
-			reducer(val){
+			reducer(val) {
 				return {
 					currentindex: val.currentindex,
 					mode: val.mode,

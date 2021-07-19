@@ -147,7 +147,6 @@
 				hots: [],
 				drawer: false,
 				innerDrawer: false,
-				dialogVisible: false
 			}
 		},
 		computed: {
@@ -155,6 +154,11 @@
 				'loginStatu',
 				'userInfo'
 			])
+		},
+		mounted() {
+			// 解决了第一次进来的初始值与退出登录的值一样,点退出登录数据没改变getters不更新的bug
+			this.$store.commit('upStatu', this.loginStatu)
+			this.$store.commit('upUserinfo', this.userInfo)
 		},
 		methods: {
 			// 搜索
@@ -195,11 +199,15 @@
 			signout() {
 				this.drawer = false
 				this.innerDrawer = false
+				// 清除本地存储
 				window.localStorage.clear()
+				// 清除cookie
+				this.handle.clearCookie()
 				this.$message({
 					message: '退出成功',
 					type: 'success'
 				});
+				// 更新store数据
 				this.$store.commit('upStatu',false)
 				this.$store.commit('upUserinfo',null)
 			},

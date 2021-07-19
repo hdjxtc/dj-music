@@ -2,7 +2,7 @@
 	<div class="tjgedan">
 		<div class="mainBox">
 			<ul class="bigBox" v-for="(item, index) in songList" :key="index">
-				<li class="eachBox" @click="eachClick(item.id)">
+				<li class="eachBox" @click="toDetail(item.id)">
 					<div class="picBox">
 						<el-skeleton :loading="loading" animated :throttle="500">
 							<template slot="template">
@@ -56,6 +56,15 @@
 				} catch (error) {
 					console.log(error)
 				}
+			},
+			// 歌单详情页
+			toDetail(id) {
+				this.$router.push({
+					name: 'playlistdetail',
+					query: {
+						id: id
+					}
+				})
 			}
 		}
 	}

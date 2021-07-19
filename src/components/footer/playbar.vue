@@ -2,12 +2,12 @@
 	<transition name="fade">
 		<div class="container shadow flex-row" v-show="playList.length > 0 && !$route.meta.isLogin">
 			<!-- 歌曲封面 -->
-			<div class="author" @click="openplaypage">
+			<div v-show="!playpage" class="author" @click="openplaypage">
 				<img src="../../assets/img/zhankai.png" class="zhankai">
 				<img :src="currentSong.image" alt="dj-music" class="shadow" />
 			</div>
 			<!-- 歌曲信息 -->
-			<div class="info">
+			<div v-show="!playpage" class="info hidden-hd">
 				<h2 class="name">{{ currentSong.name }}</h2>
 				<p class="singer">{{ currentSong.singer }}</p>
 			</div>
@@ -18,11 +18,21 @@
 				<i class="iconfont dj-icon-xiayiqu icon-next" @click="nextSong"></i>
 			</div>
 			<!-- 进度条 -->
-			<div class="progress-wrap hidden-hd" id="progress-wrap" @mousedown="isDrag = true"
-				@mouseup="isDrag = false">
+			<!-- pc和移动对应的点击抬起事件 -->
+			<div class="progress-wrap" id="progress-wrap" 
+				@mousedown="isDrag = true"
+				@mouseup="isDrag = false"
+				@touchstart="isDrag = true"
+				@touchend="isDrag = false"
+			>
 				<p class="current-time">{{ formatTime(currentTimes) }}</p>
-				<el-slider v-model="currentTimes" :max="audioduration" :show-tooltip="false"
-					style="width: 70%;margin-left: 1%;" @change="changeProgress"></el-slider>
+				<el-slider 
+					v-model="currentTimes" 
+					:max="audioduration" 
+					:show-tooltip="false"
+					style="width: 70%;margin-left: 1%;" 
+					@change="changeProgress"
+				></el-slider>
 				<p class="duration-time">
 					{{formatTime(audioduration)}}
 				</p>
@@ -33,12 +43,12 @@
 				<el-slider v-model="volumeNum" style="width: 100%;margin-left: 3%;" @change="changeVolume"></el-slider>
 			</div>
 			<!-- 工具栏 -->
-			<div class="tool hidden-sm">
+			<div class="tool">
 				<el-tooltip :content="modeTitle" effect="light">
-					<i class="iconfont" :class="modeIcon" @click="changeMode"></i>
+					<i class="iconfont left" :class="[modeIcon,playpage?'leftopen':'']" @click="changeMode"></i>
 				</el-tooltip>
-				<i class="iconfont dj-icon-geci" title="歌词" @click="openLyric"  :style="showLyric?'color:red':''"></i>
-				<i class="iconfont dj-icon-bofangduilie" title="播放列表" @click="openPlaylist" :style="showPlaylist?'color:red':''"></i>
+				<i class="iconfont dj-icon-geci hidden-col" title="歌词" @click="openLyric"  :style="showLyric?'color:red':''"></i>
+				<i class="iconfont dj-icon-bofangduilie right" title="播放列表" @click="openPlaylist" :style="showPlaylist?'color:red':''"></i>
 			</div>
 			<audio ref="audio" :src="currentSong.url" @playing="audioReady" @error="audioError" @timeupdate="updateTime"
 				@pause="audioPaused" @ended="audioEnd" :muted="isMuted"></audio>
@@ -76,8 +86,8 @@
 					<!-- 组件 -->
 					<Playpage :currentSong="currentSong" :currentPlaying="currentPlaying" :lyriclist="lyriclist" :currenttime="currentTimes"/>
 					<!-- 返回顶部 -->
-					<el-backtop target=".playpage" :bottom="70">
-						<img src="../../assets/img/gotop.png" >
+					<el-backtop target=".playpage" :bottom="100">
+						<img src="../../assets/img/gotop.png">
 					</el-backtop>
 				</div>
 			</transition>
@@ -197,9 +207,7 @@
 						//初始化进度条时间
 						audio.currentTime = 0
 						// 播放
-						if(this.currentPlaying){
-							audio.play()
-						}
+						audio.play()
 					}
 					// 若歌曲 8s 未播放则不会执行audioReady，则认为超时，修改状态确保可以切换歌曲。
 					clearTimeout(this.timer)
@@ -230,6 +238,9 @@
 			}
 		},
 		methods: {
+			cs(){
+				alert('这是一个测试')
+			},
 			// 格式化时间
 			formatTime(interval) {
 				// 取整
@@ -361,6 +372,7 @@
 			
 			// 监听播放时间改变
 			updateTime() {
+				// 用户滚动歌词时不作操作
 				if (!this.isDrag) {
 					// 获取歌曲时间,同步到进度条
 					this.currentTimes = this.$refs.audio.currentTime
@@ -591,15 +603,74 @@
 		.hidden-hd {
 			display: none;
 		}
+		.tool{
+			margin-top: 1.8%;
+		}
+		.el-slider{
+			width: 55%!important;
+		}
 	}
 
 	@media screen and (max-width: 768px) {
 		.hidden-sm {
 			display: none;
 		}
-
-		.info {
-			width: 40%;
+		.tool{
+			margin-top: 2.5%;
+		}
+		
+	}
+	@media screen and (max-width: 576px) {
+		.hidden-col {
+			display: none;
+		}
+		.tool{
+			margin-top: 2.2%;
+		}
+		.tool i{
+			font-size: 25px;
+		}
+		#progress-wrap{
+			position: fixed;
+			width: 100%;
+			padding: 0 10%;
+			bottom: 6.3%;
+			background: #f9f9f9;
+			z-index: 2;
+		}
+		.el-slider{
+			width: 70%!important;
+		}
+		.player-btn{
+			flex-grow: 50;
+		}
+		.tool .left{
+			position: fixed;
+			left: 13%;
+		}
+		.tool .leftopen{
+			left: 0;
+		}
+		.tool .right{
+			position: fixed;
+			right: 0;
+		}
+	}
+	@media screen and (max-width: 415px) {
+		.playlist-box{
+			width: 320px!important;
+			height: 390px!important;
+		}
+	}
+	@media screen and (max-width: 401px) {
+		.tool{
+			margin-top: 3.2%;
+		}
+	}
+	@media screen and (max-width: 345px) {
+		.playlist-box{
+			width: 390px!important;
+			height: 360px!important;
 		}
 	}
 
@@ -608,8 +679,9 @@
 		height: calc(100% - 104px);
 		background: #f9f9f9;
 		position: fixed;
-		top: 53px;
+		top: 52px;
 		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 	.playpage::-webkit-scrollbar {
 		width: 7px;
@@ -755,9 +827,9 @@
 	}
 	/* 收缩 */
 	.shousuo {
-		position: fixed;
-		right: 8%;
-		top: 8%;
+		position: absolute;
+		right: 0%;
+		top: 1%;
 		width: 35px;
 		height: 35px;
 		padding: 6px;
