@@ -62,11 +62,9 @@ export default {
 		let day = this.addZero(date.getDate(), 2)
 		return `${year}-${month}-${day}`
 	},
-	/**
-	 * 数字转整数 如 100000 转为10万
-	 * @param {需要转化的数} num
-	 * @param {需要保留的小数位数} point
-	 */
+	// 数字转整数 如 100000 转为10万
+	// param {需要转化的数} num
+	// param {需要保留的小数位数} point
 	tranNumber(num, point) {
 		let numStr = num.toString()
 		// 小于10万直接返回

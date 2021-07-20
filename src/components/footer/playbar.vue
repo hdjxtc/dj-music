@@ -487,7 +487,7 @@
 	/* 弹性容器 */
 	.flex-row {
 		width: 100%;
-		height: 53px;
+		height: 55px;
 		position: fixed;
 		bottom: 0;
 		z-index: 2;
@@ -679,7 +679,7 @@
 		height: calc(100% - 104px);
 		background: #f9f9f9;
 		position: fixed;
-		top: 52px;
+		top: 50px;
 		overflow-y: scroll;
 		overflow-x: hidden;
 	}

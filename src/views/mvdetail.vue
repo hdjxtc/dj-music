@@ -1,5 +1,5 @@
 <template>
-	<div class="videodetailbox">
+	<div class="mvdetailbox">
 		<!-- 左栏 -->
 		<div class="left shadow">
 			<!-- 视频 -->
@@ -10,7 +10,8 @@
 			<div class="video-footer">
 				<!-- 标题 -->
 				<h2 class="title flex-row">
-					{{ detail.title }}
+					<i class="iconfont dj-icon-MV iconmv"></i>
+					{{ detail.name }}
 				</h2>
 				<!-- 标签 -->
 				<div class="tag">
@@ -19,7 +20,7 @@
 				<!-- 时间和次数 -->
 				<p class="flex-row">
 					<span>发布：{{ handle.dateFormat(detail.publishTime, 'YYYY-MM-DD')}}</span>
-					<span v-if="detail.playTime">播放次数：{{ handle.tranNumber(detail.playTime, 1) }}</span>
+					<span v-if="detail.playCount">播放次数：{{ handle.tranNumber(detail.playCount, 1) }}</span>
 				</p>
 				<!-- 操作 -->
 				<div class="follow">
@@ -31,7 +32,7 @@
 					<!-- 收藏 -->
 					<div class="box">
 						<i class="iconfont dj-icon-yishoucang"></i>
-						{{ detail.subscribeCount }}
+						{{ detail.subCount }}
 					</div>
 					<!-- 转发 -->
 					<div class="box">
@@ -43,7 +44,7 @@
 				<div class="comment-box" style="margin-top: 50px;">
 					<div class="title flex-row">
 						<i class="el-icon-chat-dot-round" style="margin-right: 10px;"></i>Comments |
-						<span class="noticom"><a>&nbsp;{{videoDetailInfo.commentCount}} 条评论</a>
+						<span class="noticom"><a>&nbsp;{{commentTotal}} 条评论</a>
 						</span>
 					</div>
 					<!-- 评论框 -->
@@ -68,13 +69,7 @@
 					<span>视频简介</span>
 				</div>
 				<div class="content">
-					<div class="author">
-						<div class="avatar" @click="toUser(creator.userId)">
-							<img :src="creator.avatarUrl" />
-						</div>
-						<p class="name" @click="toUser(creator.userId)">{{ creator.nickname }}</p>
-					</div>
-					<p v-if="detail.description">{{ detail.description }}</p>
+					<p v-if="detail.desc">{{ detail.desc }}</p>
 					<p v-else>视频暂无简介</p>
 				</div>
 			</div>
@@ -85,23 +80,24 @@
 				<ul>
 					<li v-for="item of relatedList" :key="item.vid">
 						<div class="avatar">
-							<img :src="item.coverUrl" :alt="item.title" :title="item.title" />
+							<img :src="item.cover" :alt="item.name" :title="item.name" />
 							<div class="action">
-								<button v-if="!item.isLive" class="play flex-center" title="播放"
-									@click="toDetail(item.vid)">
+								<button class="play flex-center" title="播放" v-if="!item.isLive"
+									@click="toDetail(item.id)">
 									<i class="el-icon-caret-right" style="font-size: 16px;"></i>
 								</button>
 							</div>
 						</div>
 						<div class="info">
 							<h2 class="flex-row ellipsis">
+								<i class="iconfont dj-icon-MV iconmv" style="font-size: 20px;"></i>
 								{{ item.name }}
 							</h2>
 							<div class="author">
 								by
-								<span v-for="author of item.creator" :key="author.userId">
+								<span v-for="author of item.artists" :key="author.id">
 									<small>
-										{{ author.userName }}
+										{{ author.name }}
 									</small>
 								</span>
 							</div>
@@ -116,19 +112,16 @@
 <script>
 	import Commentbox from '@/components/contents/commentBox'
 	import Commentlist from '@/components/contents/commentlist'
-	import {
-		mapGetters
-	} from 'vuex'
+	import {mapGetters} from 'vuex'
 	export default {
 		name: 'videodetail',
 		data() {
 			return {
-				// 视频详情
+				// mv详情
 				detail: {},
-				creator: {},
-				// 视频点赞数据
+				// mv点赞数据
 				videoDetailInfo: {},
-				// 视频地址
+				// mv地址
 				videoUrl: '',
 				// 相关推荐
 				relatedList: [],
@@ -142,12 +135,12 @@
 				limit: 20,
 				// 偏移
 				offset: 0,
-				// 当前视频的id
+				// 当前mv的id
 				videoId: '',
+				// 评论数量
+				commentTotal: 0,
 				// 是否清空评论框内容
 				clearContent: false,
-				// 当前页
-				currentPage: 0,
 			}
 		},
 		components: {
@@ -173,41 +166,39 @@
 			}
 		},
 		methods: {
-			// 获取视频播放地址
+			// 获取mv播放地址
 			async getMvUrl(id) {
 				try {
-					let res = await this.$api.get(`/video/url?id=${id}`)
+					let res = await this.$api.get(`/mv/url?id=${id}`)
 					if (res.code === 200) {
-						this.videoUrl = res.urls[0].url
+						this.videoUrl = res.data.url
 					}
 				} catch (error) {
 					console.log(error)
 				}
 			},
-			// 获取视频详情
+			// 获取mv详情
 			async getMvDetail(id) {
 				try {
-					let res = await this.$api.get(`/video/detail?id=${id}`)
+					let res = await this.$api.get(`/mv/detail?mvid=${id}`)
 					if (res.code === 200) {
 						res.data.videoGroup.map(item => {
 							if (item.name.indexOf('#') != -1) {
-								// 过滤#
 								item.name = item.name.replace(/#/g, '')
 							}
 						})
 						this.detail = res.data
-						this.creator = res.data.creator
 						// console.log(this.detail)
 					}
 				} catch (error) {
 					console.log(error)
 				}
 			},
-			// 获取视频点赞转发评论数数据
+			// 获取mv点赞转发评论数数据
 			async getMvDetailInfo(id) {
 				try {
 					let timestamp = new Date().getTime()
-					let res = await this.$api.get(`/video/detail/info?vid=${id}&timestamp=${timestamp}`)
+					let res = await this.$api.get(`/mv/detail/info?mvid=${id}&timestamp=${timestamp}`)
 					if (res.code === 200) {
 						let detail = {
 							isLike: res.liked,
@@ -222,18 +213,18 @@
 					console.log(error)
 				}
 			},
-			// 获取相关视频
+			// 获取相关mv
 			async getMvRelated(id) {
 				try {
-					let res = await this.$api.get(`/related/allvideo?id=${id}`)
+					let res = await this.$api.get(`/simi/mv?mvid=${id}`)
 					if (res.code === 200) {
-						this.relatedList = res.data
+						this.relatedList = res.mvs
 					}
 				} catch (error) {
 					console.log(error)
 				}
 			},
-			// 获取视频评论
+			// 获取mv评论
 			async getMvComments(id) {
 				let timestamp = new Date().getTime()
 				let params = {
@@ -243,10 +234,11 @@
 					timestamp
 				}
 				try {
-					let res = await this.$api.get(`/comment/video`, {
-						params: params
-					})
+					// 过滤#
+					let res = await this.$api.get(`/comment/mv`,{params: params})
 					if (res.code === 200) {
+						// 赋值评论总数
+						this.commentTotal = res.total
 						// 是否有热评
 						if (res.hotComments) {
 							this.hotComments = res.hotComments
@@ -275,7 +267,7 @@
 				} else {
 					let timestamp = new Date().getTime()
 					let params = {
-						type: 5,
+						type: 1,
 						id: this.videoId,
 						content: content,
 						timestamp
@@ -289,9 +281,7 @@
 						params.commentId = this.currentCommentId
 					}
 					this.$api
-						.get(`/comment`, {
-							params: params
-						})
+						.get(`/comment`,{params: params})
 						.then(res => {
 							if (res.code === 200) {
 								this.$message.success('评论成功！')
@@ -303,7 +293,11 @@
 							}
 						})
 						.catch(err => {
-							console.log(err)
+							// 饿了么Notification通知
+							this.$notify.error({
+								title: err.data.dialog.title,
+								message: err.data.dialog.subtitle
+							})
 						})
 				}
 			},
@@ -313,7 +307,7 @@
 				let props = {
 					params: {
 						t: 0,
-						type: 5,
+						type: 1,
 						id: this.videoId,
 						commentId: commentId,
 						timestamp: timestamp,
@@ -335,7 +329,7 @@
 				let params = {
 					id: this.videoId,
 					cid: id,
-					type: 5,
+					type: 1,
 					timestamp
 				}
 				if (liked) {
@@ -346,9 +340,7 @@
 					params.t = 1
 				}
 				try {
-					let res = await this.$api.get(`/comment/like`, {
-						params: params
-					})
+					let res = await this.$api.get(`/comment/like`, { params: params })
 					if (res.code === 200) {
 						this.getMvComments(this.videoId)
 					}
@@ -356,11 +348,11 @@
 					console.log(error)
 				}
 			},
-			// 视频资源点赞
+			// mv资源点赞
 			async likeResource() {
-				// 对应视频资源
-				let type = 5
-				let t = 1
+				// 对应mv资源
+				let type = 1
+				let t = 2
 				if (this.videoDetailInfo.isLike) {
 					t = 2
 				} else {
@@ -377,24 +369,14 @@
 					console.log(error)
 				}
 			},
-			// 点击相关推荐视频播放
+			// 点击相关推荐mv播放
 			toDetail(id) {
 				this.$router.push({
-					name: 'videodetail',
+					name: 'mvdetail',
 					query: {
 						id
 					}
 				})
-			},
-			// 用户页
-			toUser(id) {
-				console.log(id)
-				// this.$router.push({
-				// 	name: 'personal',
-				// 	query: {
-				// 		id
-				// 	}
-				// })
 			},
 			// 初始化
 			initialize(id) {
@@ -420,15 +402,15 @@
 		align-items: center;
 	}
 
-	.videodetailbox {
+	.mvdetailbox {
 		display: flex;
 	}
-
-	.videodetailbox .active {
-		color: #FA2800 !important;
+	
+	.mvdetailbox .active {
+		color: #FA2800!important;
 	}
-
-	.videodetailbox .left {
+	
+	.mvdetailbox .left {
 		/* flex: 1; */
 		width: 950px;
 		padding: 15px;
@@ -436,12 +418,12 @@
 		margin-right: 20px;
 	}
 
-	.videodetailbox .video-container {
+	.mvdetailbox .video-container {
 		position: relative;
 		padding-top: 56.25%;
 	}
 
-	.videodetailbox .video-container video {
+	.mvdetailbox .video-container video {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -450,61 +432,61 @@
 		background: #000;
 	}
 
-	.videodetailbox .video-footer {
+	.mvdetailbox .video-footer {
 		margin-top: 10px;
 		text-align: left;
 	}
 
-	.videodetailbox .video-footer .title {
+	.mvdetailbox .video-footer .title {
 		font-size: 18px;
 		font-weight: 600;
 		margin-bottom: 10px;
 	}
 
-	.videodetailbox .video-footer .title .iconmv {
+	.mvdetailbox .video-footer .title .iconmv {
 		font-size: 21px;
 		color: #FA2800;
 		margin-right: 10px;
 	}
 
-	.videodetailbox .left .video-footer .tag {
+	.mvdetailbox .left .video-footer .tag {
 		margin-bottom: 8px;
 	}
 
-	.videodetailbox .left .video-footer .tag a {
+	.mvdetailbox .left .video-footer .tag a {
 		font-size: 12px;
 		color: #FA2800;
 		margin-right: 10px;
 		cursor: pointer;
 	}
 
-	.videodetailbox .left .video-footer p span {
+	.mvdetailbox .left .video-footer p span {
 		margin-right: 30px;
 		font-size: 12px;
 		color: #161e27;
 	}
 
-	.videodetailbox .left .video-footer .follow {
+	.mvdetailbox .left .video-footer .follow {
 		display: flex;
 		margin-top: 10px;
 	}
 
-	.videodetailbox .left .video-footer .follow .box {
+	.mvdetailbox .left .video-footer .follow .box {
 		color: #161e27;
 		cursor: pointer;
 		padding-right: 25px;
 	}
 
-	.videodetailbox .left .video-footer .follow .box i {
+	.mvdetailbox .left .video-footer .follow .box i {
 		font-size: 20px;
 		color: #161e27;
 	}
 
-	.videodetailbox .left .comments {
+	.mvdetailbox .left .comments {
 		margin-top: 25px;
 	}
 
-	.videodetailbox .left .comments .title {
+	.mvdetailbox .left .comments .title {
 		width: 100%;
 		height: 50px;
 		border-radius: 3px;
@@ -512,29 +494,29 @@
 		border-bottom: 1px solid #f1f1f1;
 	}
 
-	.videodetailbox .left .comments .title i {
+	.mvdetailbox .left .comments .title i {
 		color: #666;
 		font-size: 18px;
 		margin-right: 10px;
 	}
 
-	.videodetailbox .left .comments .title span {
+	.mvdetailbox .left .comments .title span {
 		margin-left: 5px;
 	}
 
-	.videodetailbox .left .comments .comment-box {
+	.mvdetailbox .left .comments .comment-box {
 		margin-top: 20px;
 	}
 
-	.videodetailbox .left .comments .comment-box p i {
+	.mvdetailbox .left .comments .comment-box p i {
 		margin-right: 10px;
 	}
 
-	.videodetailbox .left .comments .comment-box p span {
+	.mvdetailbox .left .comments .comment-box p span {
 		flex: 1;
 	}
 
-	.videodetailbox .left .comments .comment-box p .cancel-comment {
+	.mvdetailbox .left .comments .comment-box p .cancel-comment {
 		color: #d9dfff;
 		font-size: 12px;
 		background: none;
@@ -544,12 +526,12 @@
 		cursor: pointer;
 	}
 
-	.videodetailbox .left .comments .comment-box .comment-form {
+	.mvdetailbox .left .comments .comment-box .comment-form {
 		display: flex;
 		margin-top: 1.5em;
 	}
 
-	.videodetailbox .left .comments .comment-box .comment-form .avatar {
+	.mvdetailbox .left .comments .comment-box .comment-form .avatar {
 		width: 50px;
 		height: 50px;
 		border-radius: 3px;
@@ -558,16 +540,16 @@
 		flex-shrink: 0;
 	}
 
-	.videodetailbox .left .comments .comment-box .comment-form .avatar img {
+	.mvdetailbox .left .comments .comment-box .comment-form .avatar img {
 		width: 100%;
 		border-radius: 3px;
 	}
 
-	.videodetailbox .left .comments .comment-box .comment-form .comarea {
+	.mvdetailbox .left .comments .comment-box .comment-form .comarea {
 		flex: 1;
 	}
 
-	.videodetailbox .left .comments .comment-box .comment-form .comarea textarea {
+	.mvdetailbox .left .comments .comment-box .comment-form .comarea textarea {
 		width: 100%;
 		outline: none;
 		background: #f8f9ff;
@@ -580,11 +562,11 @@
 		height: 80px;
 	}
 
-	.videodetailbox .left .comments .comment-foot {
+	.mvdetailbox .left .comments .comment-foot {
 		margin-top: 15px;
 	}
 
-	.videodetailbox .left .comments .comment-foot .comment-btn {
+	.mvdetailbox .left .comments .comment-foot .comment-btn {
 		color: #fff;
 		padding: 10px 30px;
 		font-size: 0.75rem;
@@ -600,47 +582,46 @@
 		/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
 
-	.videodetailbox .left .comments .page-wrap {
+	.mvdetailbox .left .comments .page-wrap {
 		margin-top: 20px;
 	}
 
-	.videodetailbox .right {
+	.mvdetailbox .right {
 		width: 350px;
 	}
 
-	.videodetailbox .right .module {
+	.mvdetailbox .right .module {
 		padding: 15px;
 		width: 100%;
 		border-radius: 8px;
 		margin-bottom: 20px;
 	}
 
-	.videodetailbox .right .profile .author {
+	.mvdetailbox .right .profile .author {
 		display: flex;
 		align-items: center;
 		margin-bottom: 15px;
 		margin-top: 5px;
-		cursor: pointer;
 	}
 
-	.videodetailbox .right .profile .author .avatar {
+	.mvdetailbox .right .profile .author .avatar {
 		width: 40px;
 		height: 40px;
 		border-radius: 20px;
 		margin-right: 15px;
 	}
 
-	.videodetailbox .right .profile .author .avatar img {
+	.mvdetailbox .right .profile .author .avatar img {
 		width: 40px;
 		height: 40px;
 		border-radius: 20px;
 	}
 
-	.videodetailbox .right .profile .author p {
+	.mvdetailbox .right .profile .author p {
 		flex: 1;
 	}
 
-	.videodetailbox .right .profile .author .follow {
+	.mvdetailbox .right .profile .author .follow {
 		padding: 3px 10px;
 		font-size: 12px;
 		background: #FA2800;
@@ -650,33 +631,33 @@
 		border-radius: 18px;
 	}
 
-	.videodetailbox .right .profile .author .follow:hover {
+	.mvdetailbox .right .profile .author .follow:hover {
 		background: none;
 		color: #FA2800;
 	}
 
-	.videodetailbox .right .related {
+	.mvdetailbox .right .related {
 		padding-bottom: 5px;
 	}
 
-	.videodetailbox .right .related ul li {
+	.mvdetailbox .right .related ul li {
 		display: flex;
 		flex-direction: column;
 		margin-bottom: 15px;
 	}
 
-	.videodetailbox .right .related ul li .avatar {
+	.mvdetailbox .right .related ul li .avatar {
 		width: 100%;
 		margin-right: 15px;
 		flex-shrink: 0;
 		position: relative;
 	}
 
-	.videodetailbox .right .related ul li .avatar img {
+	.mvdetailbox .right .related ul li .avatar img {
 		width: 100%;
 	}
 
-	.videodetailbox .right .related ul li .avatar .action {
+	.mvdetailbox .right .related ul li .avatar .action {
 		display: none;
 		position: absolute;
 		top: 50%;
@@ -686,7 +667,7 @@
 		transform: translate(-50%, -50%);
 	}
 
-	.videodetailbox .right .related ul li .avatar .action .play {
+	.mvdetailbox .right .related ul li .avatar .action .play {
 		width: 32px;
 		height: 32px;
 		padding: 0;
@@ -697,11 +678,11 @@
 		background-color: #FA2800;
 	}
 
-	.videodetailbox .right .related ul li .avatar .action .play i {
+	.mvdetailbox .right .related ul li .avatar .action .play i {
 		font-size: 12px;
 	}
 
-	.videodetailbox .right .related ul li .info {
+	.mvdetailbox .right .related ul li .info {
 		height: 50px;
 		width: calc(100% - 50px);
 		text-align: left;
@@ -711,7 +692,7 @@
 		flex-direction: column; */
 	}
 
-	.videodetailbox .right .related ul li .info h2 {
+	.mvdetailbox .right .related ul li .info h2 {
 		font-size: 14px;
 		margin-bottom: 3px;
 		margin-top: 6px;
@@ -720,42 +701,42 @@
 		font-weight: 600;
 	}
 
-	.videodetailbox .right .related ul li .info h2 i {
+	.mvdetailbox .right .related ul li .info h2 i {
 		color: #FA2800;
 		font-size: 24px;
 		margin-right: 5px;
 	}
 
-	.videodetailbox .right .related ul li .info .author {
+	.mvdetailbox .right .related ul li .info .author {
 		font-size: 12px;
 		color: #8588c1;
 	}
 
-	.videodetailbox .right .related ul li .info .author span {
+	.mvdetailbox .right .related ul li .info .author span {
 		font-size: 12px;
 		color: #8588c1;
 	}
 
-	.videodetailbox .right .related ul li .info .author span::after {
+	.mvdetailbox .right .related ul li .info .author span::after {
 		content: '/';
 		margin-left: 5px;
 	}
 
-	.videodetailbox .right .related ul li .info .author span:last-child::after {
+	.mvdetailbox .right .related ul li .info .author span:last-child::after {
 		content: '';
 	}
 
-	.videodetailbox .right .related ul li:hover .action {
+	.mvdetailbox .right .related ul li:hover .action {
 		display: flex;
 	}
 
-	.videodetailbox .right .comment ul li {
+	.mvdetailbox .right .comment ul li {
 		padding: 10px 0;
 		width: 100%;
 		display: flex;
 	}
 
-	.videodetailbox .right .comment ul li .avatar {
+	.mvdetailbox .right .comment ul li .avatar {
 		width: 45px;
 		height: 45px;
 		border-radius: 50%;
@@ -763,28 +744,28 @@
 		flex-shrink: 0;
 	}
 
-	.videodetailbox .right .comment ul li .avatar img {
+	.mvdetailbox .right .comment ul li .avatar img {
 		width: 100%;
 		border-radius: 50%;
 	}
 
-	.videodetailbox .right .comment ul li .info {
+	.mvdetailbox .right .comment ul li .info {
 		flex: 1;
 	}
 
-	.videodetailbox .right .comment ul li .info h2 {
+	.mvdetailbox .right .comment ul li .info h2 {
 		font-size: 15px;
 		margin-right: 5px;
 		margin-bottom: 10px;
 	}
 
-	.videodetailbox .right .comment ul li .info h2 small {
+	.mvdetailbox .right .comment ul li .info h2 small {
 		font-size: 12px;
 		color: #a5a5c1;
 		font-weight: 200;
 	}
 
-	.videodetailbox .right .comment ul li .info p {
+	.mvdetailbox .right .comment ul li .info p {
 		width: 100%;
 		font-size: 12px;
 		color: #666;
@@ -795,7 +776,7 @@
 		border-radius: 3px;
 	}
 
-	.videodetailbox .right .card-headers {
+	.mvdetailbox .right .card-headers {
 		border-left: 3px solid #FA2800;
 		height: 20px;
 		padding-left: 1rem;
@@ -803,29 +784,27 @@
 		font-weight: bold;
 	}
 
-	.videodetailbox .right .content {
+	.mvdetailbox .right .content {
 		color: #484e61;
 		font-size: 14px;
-		text-align: left;
 	}
 
-	.videodetailbox .right .content p {
+	.mvdetailbox .right .content p {
 		margin-bottom: 0 !important;
 	}
 
-	.videodetailbox .right .card-headers .icon-like {
+	.mvdetailbox .right .card-headers .icon-like {
 		font-size: 20px;
 	}
-
-	.comment-list ul li .info .content {
-		background: #f5efef4a !important;
+	.comment-list ul li .info .content{
+		background: #f5efef4a!important;
 	}
 	
 	@media screen and (max-width: 768px) {
-		.videodetailbox{
+		.mvdetailbox{
 			display: block;
 		}
-		.videodetailbox .left,.videodetailbox .right{
+		.mvdetailbox .left,.mvdetailbox .right{
 			width: 100%;
 		}
 	}

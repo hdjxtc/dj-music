@@ -1,5 +1,5 @@
 <template>
-	<div class="playpagebox container">
+	<div class="playpagebox container" v-if="currentSong">
 		<div class="top">
 			<div class="blur" :style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}"></div>
 			<div class="left">
@@ -24,8 +24,8 @@
 						<h4>
 							{{currentSong.name}}
 						</h4>
-						<i class="iconfont dj-icon-bofangmv" style="cursor: pointer; margin-left: 3%;"
-							v-if="currentSong.mv!==0" @click="playMv(currentSong.mv)" title="MV"></i>
+						<i class="iconfont dj-icon-MV" style="cursor: pointer; margin-left: 3%;"
+							v-if="currentSong.mv!==0" @click="toDetail(currentSong.mv)" title="MV"></i>
 					</div>
 					<div class="musicinfo">
 						<h6>
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+	import {mapMutations} from 'vuex'
 	import Similarsong from './similarsong'
 	import Similargedan from './similargedan'
 	import Comment from './comment'
@@ -174,8 +175,10 @@
 			// 监听播放时间
 			currenttime(current) {
 				// 当拖动进度条归零
-				if (current < this.start) {
-					this.$refs.scroll.scrollTo(0, 0)
+				if(!this.isDrags){
+					if (current < this.start) {
+						this.$refs.scroll.scrollTo(0, 0)
+					}
 				}
 				// 只有一条数据时不操作
 				if (!(this.lyricarray.length == 1)) {
@@ -208,9 +211,16 @@
 			}
 		},
 		methods: {
-			// 播放视频
-			playMv(mv) {
-				console.log(mv)
+			// 视频详情
+			toDetail(id) {
+				// 播放视频暂停播放
+				this.upplaYing(false)
+				this.$router.push({
+					name: 'mvdetail',
+					query: {
+						id
+					}
+				})
 			},
 			// 判断播放状态
 			getMusicState() {
@@ -250,6 +260,9 @@
 					console.log(err)
 				})
 			},
+			...mapMutations([
+				'upplaYing',
+			]),
 		},
 	}
 </script>
@@ -485,7 +498,7 @@
 		}
 		.center-top{
 			margin-top: -20%;
-			margin-bottom: 25%;
+			margin-bottom: 20%;
 		}
 		.top .songimg{
 			width: 250px;
@@ -514,6 +527,7 @@
 		.center-top{
 			margin-left: 5%!important;
 			margin-top: -5%;
+			margin-top: 10%;
 		}
 		.center-top,.center .musictitle{
 			width: 100%!important;

@@ -6,7 +6,15 @@
 			<li class="item" v-for="item of commentList" :key="item.commentId">
 				<!-- 头像 -->
 				<div class="avatar">
-					<img :src="item.user.avatarUrl" :alt="item.user.nickname" :title="item.user.nickname" />
+					<!-- <img :src="item.user.avatarUrl" :alt="item.user.nickname" :title="item.user.nickname" /> -->
+					<el-image :key="item.user.avatarUrl" :src="item.user.avatarUrl" :title="item.user.nickname" lazy>
+						<div slot="placeholder" class="image-slot flex-center flex-column">
+							<i class="el-icon-loading"></i>
+						</div>
+						<div slot="error" class="image-slot flex-center">
+							<i class="el-icon-picture-outline"></i>
+						</div>
+					</el-image>
 				</div>
 				<!-- 评论信息 -->
 				<div class="info">
@@ -187,7 +195,7 @@
 		color: #4a4a4a;
 		line-height: 1.6;
 		padding: 8px 10px;
-		background: #f5f5f5;
+		background: #f5efef4a;
 		margin-top: 5px;
 		border-radius: 3px;
 	}

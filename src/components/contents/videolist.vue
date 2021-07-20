@@ -36,6 +36,9 @@
 </template>
 
 <script>
+	import {
+		mapMutations
+	} from 'vuex'
 	export default {
 		name: 'videolist',
 		props: {
@@ -46,14 +49,30 @@
 		methods: {
 			// 视频详情
 			toDetail(id) {
-				// this.stopPlay()播放视频移除播放   vuex待优化
-				this.$router.push({
-					name: 'videodetail',
-					query: {
-						id
-					}
-				})
+				// 播放视频暂停播放
+				this.upplaYing(false)
+				let type = parseInt(id)
+				if (isNaN(type) || id.length > 10) {
+					// 视频
+					this.$router.push({
+						name: 'videodetail',
+						query: {
+							id
+						}
+					})
+				} else {
+					// mv
+					this.$router.push({
+						name: 'mvdetail',
+						query: {
+							id
+						}
+					})
+				}
 			},
+			...mapMutations([
+				'upplaYing',
+			]),
 		},
 	}
 </script>

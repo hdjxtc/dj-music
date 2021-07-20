@@ -1,18 +1,27 @@
 <template>
-	<div class="songlist">
+	<div class="songlist" v-if="songlist">
 		<!-- highlight-current-row高亮显示选中行 -->
 		<el-table :data="songlist" style="width: 95%;margin:0 auto">
 			<el-table-column type="index" label="序号" width="60px" align="center"> </el-table-column>
 			<el-table-column :show-overflow-tooltip="true" label="歌曲" :width="width1" align="left" header-align="center">
 				<template slot-scope="scope">
-					<img :src="scope.row.image" style="height: 50px;width: 50px;"/>
+					<!-- <img :src="scope.row.image" style="height: 50px;width: 50px;"/> -->
+					<!-- 懒加载 -->
+					<el-image :key="scope.row.image" :src="scope.row.image" style="height: 50px;width: 50px;vertical-align: middle;" lazy>
+						<div slot="placeholder" class="image-slot flex-center flex-column">
+							<i class="el-icon-loading"></i>
+						</div>
+						<div slot="error" class="image-slot flex-center">
+							<i class="el-icon-picture-outline"></i>
+						</div>
+					</el-image>
 					<span style="margin-left: 10%;cursor: pointer;" @click="playSong(scope,songlist)">{{scope.row.name}}</span>
 					<i class="iconfont dj-icon-zanting" style="cursor: pointer; margin-left: 3%;"
 						@click="playSong(scope,songlist)" title="播放"></i>
 					<i class="iconfont dj-icon-bofangmv" style="cursor: pointer; margin-left: 3%;"
-						v-if="scope.row.mv!==0" @click="playMv(scope.row.mv)" title="MV"></i>
+						v-if="scope.row.mv!==0" @click="toDetail(scope.row.mv)" title="MV"></i>
 					<i class="iconfont dj-icon-huiyuan" style="cursor: pointer; margin-left: 3%;color: #fbcc21;"
-						v-if="scope.row.fee==1" @click="playMv(scope.row.mv)" title="会员"></i>
+						v-if="scope.row.fee==1" title="会员"></i>
 				</template>
 			</el-table-column>
 			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" :width="width2" align="center">
@@ -30,7 +39,7 @@
 </template>
 
 <script>
-	import {mapGetters,mapActions} from 'vuex'
+	import {mapGetters,mapMutations,mapActions} from 'vuex'
 	export default {
 		name: 'songlist',
 		props: {
@@ -137,14 +146,21 @@
 					}
 				})
 			},
-			// 播放mv
-			async playMv(id) {
-				await this.$api.get(`/mv/url?id=${id}`).then(res => {
-					this.$message.success(res.data.url)
-				}).catch(err => {
-					this.$message.error(err)
+			// 视频详情
+			toDetail(id) {
+				// 播放视频暂停播放
+				this.upplaYing(false)
+				// mv
+				this.$router.push({
+					name: 'mvdetail',
+					query: {
+						id
+					}
 				})
 			},
+			...mapMutations([
+				'upplaYing',
+			]),
 			...mapActions([
 				// 点击选择播放
 				'selectPlay',

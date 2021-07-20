@@ -13,6 +13,7 @@ import Personal from '../views/personal.vue'
 import Singerpage from '../views/singerpage.vue'
 import Albumpage from '../views/albumpage.vue'
 import Videodetail from '../views/videodetail.vue'
+import Mvdetail from '../views/mvdetail.vue'
 import Playlistdetail from '../views/playlistdetail.vue'
 
 Vue.use(VueRouter)
@@ -96,6 +97,12 @@ const routes = [
 		path: '/videodetail',
 		name: 'videodetail',
 		component: Videodetail
+	},
+	// mv详情页
+	{
+		path: '/mvdetail',
+		name: 'mvdetail',
+		component: Mvdetail
 	},
 	// 歌单详情页
 	{

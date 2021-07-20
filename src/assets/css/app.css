@@ -77,12 +77,21 @@
 }
 /* 饿了么弹框 */
 .descBox{
-	height: 80%;
+	height: 70%;
 	overflow: scroll;
+}
+@media screen and (max-width: 576px) {
+	.descBox{
+		width: 70%;
+	}
 }
 .descBox::-webkit-scrollbar {
 	width: 0;
 	height: 4px;
+}
+/* 饿了么懒加载图标 */
+.el-table td div{
+	line-height: 4;
 }
 /* 动画 */
 .fade-enter-active,

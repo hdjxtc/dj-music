@@ -2,8 +2,8 @@
 	<li @click="toSinger(item.id)">
 		<div class="cover">
 			<div class="image shadow">
-				<el-image :key="item.img1v1Url" :src="item.img1v1Url">
-					<div slot="placeholder" class="image-slot flex-center flex-column" lazy>
+				<el-image :key="item.img1v1Url" :src="item.img1v1Url" lazy>
+					<div slot="placeholder" class="image-slot flex-center flex-column">
 						<i class="el-icon-loading"></i>
 					</div>
 					<div slot="error" class="image-slot flex-center">

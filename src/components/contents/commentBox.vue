@@ -116,12 +116,12 @@
 	}
 	/* 取消回复 */
 	.cancel-comment {
-		color: #d9dfff;
+		color: #d9df;
 		font-size: 12px;
 		background: none;
 		padding: 6px 10px;
 		border-radius: 2px;
-		border: 1px solid #dee3ff;
+		border: 1px solid #d9df;
 		cursor: pointer;
 		margin-right: 30px;
 	}

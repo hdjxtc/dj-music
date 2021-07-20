@@ -10,7 +10,15 @@
 						</div>
 					</div>
 					<div class="avatar" @click="playSong(songList,index)">
-						<img :src="item.image">
+						<!-- <img :src="item.image"> -->
+						<el-image :key="item.image" :src="item.image" lazy>
+							<div slot="placeholder" class="image-slot flex-center flex-column">
+								<i class="el-icon-loading"></i>
+							</div>
+							<div slot="error" class="image-slot flex-center">
+								<i class="el-icon-picture-outline"></i>
+							</div>
+						</el-image>
 					</div>
 					<div class="info">
 						<p class="name ellipsi">{{item.name}}</p>

@@ -1,10 +1,10 @@
 <template>
-	<div class="playlistdetailbox">
+	<div class="playlistdetailbox" v-if="detail">
 		<!-- 左栏 -->
 		<div class="left shadow">
 			<div class="top">
 				<div class="avatar">
-					<img :src="detail.coverImgUrl + '?param=200y200'" alt="" />
+					<img :src="detail.coverImgUrl" alt="" />
 				</div>
 				<div class="info">
 					<div class="title flex-between">
@@ -12,7 +12,7 @@
 					</div>
 					<div class="user flex-row">
 						<div class="avatar" @click="toUser(creator.userId)">
-							<img :src="creator.avatarUrl + '?param=100y100'" alt="" />
+							<img :src="creator.avatarUrl" alt="" />
 						</div>
 						<p class="nickname" @click="toUser(creator.userId)">{{creator.nickname}}</p>
 						<p class="createTime" v-if="detail.createTime">
@@ -60,12 +60,12 @@
 				<ul>
 					<li v-for="item of relatedList" :key="item.id" @click="toDetail(item.id)">
 						<div class="avatar">
-							<img :src="item.coverImgUrl + '?param=150y150'" :alt="item.nickname"
+							<img :src="item.coverImgUrl" :alt="item.nickname"
 								:title="item.nickname" />
 						</div>
 						<div class="info">
 							<h2 class="ellipsis" :title="item.name">{{ item.name }}</h2>
-							<span>By. <small> {{ item.creator.nickname }}</small></span>
+							<span>by <small> {{ item.creator.nickname }}</small></span>
 						</div>
 					</li>
 				</ul>
@@ -77,7 +77,7 @@
 				<ul v-if="comments.length > 0">
 					<li class="item" v-for="item of comments" :key="item.time">
 						<div class="avatar" @click="toUser(item.user.userId)">
-							<img :src="item.user.avatarUrl + '?param=150y150'" :alt="item.user.nickname" :title="item.user.nickname" />
+							<img :src="item.user.avatarUrl" :alt="item.user.nickname" :title="item.user.nickname" />
 						</div>
 						<div class="info">
 							<h2 @click="toUser(item.user.userId)">
@@ -136,8 +136,7 @@
 			}
 		},
 		watch: {
-			$route(newId, oldId) {
-				console.log(newId, oldId)
+			$route() {
 				let id = this.$route.query.id || this.singer.id
 				if (id) {
 					this.initialize(id)
@@ -665,5 +664,19 @@
 	.desc p{
 		margin-bottom: 0;
 		text-align: left;
+	}
+	@media screen and (max-width: 1200px) {
+		.playlistdetailbox{
+			display: block;
+		}
+		.playlistdetailbox .right{
+			width: 100%;
+		}
+	}
+	@media screen and (max-width: 768px) {
+		.playlistdetailbox .left .top{
+			display: block;
+			text-align: left;
+		}
 	}
 </style>
