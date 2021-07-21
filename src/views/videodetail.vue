@@ -4,7 +4,14 @@
 		<div class="left shadow">
 			<!-- 视频 -->
 			<div class="video-container">
-				<video :src="videoUrl" controls="controls" autoplay controlslist="nodownload"></video>
+				<video 
+					v-show="!isDrawer"
+					:src="videoUrl" 
+					controls="controls" 
+					autoplay 
+					controlslist="nodownload"
+				>
+				</video>
 			</div>
 			<!-- 视频底部 -->
 			<div class="video-footer">
@@ -48,17 +55,35 @@
 					</div>
 					<!-- 评论框 -->
 					<transition name="fade">
-						<Commentbox v-if="currentCommentId == ''" :currentCommentId="currentCommentId"
-							:clearContent="clearContent" @commentSubmit="commentSubmit" />
+						<Commentbox 
+							v-if="currentCommentId == ''" 
+							:currentCommentId="currentCommentId"
+							:clearContent="clearContent" 
+							@commentSubmit="commentSubmit" 
+						/>
 					</transition>
 				</div>
 				<!-- 评论列表 -->
-				<Commentlist v-if="hotComments.length > 0" title="精彩评论" :commentList="hotComments"
-					:currentCommentId="currentCommentId" @commentHandle="commentHandle" @cancelComment="cancelComment"
-					@commentSubmit="commentSubmit" @commentLike="commentLike" />
-				<Commentlist title="最新评论" :commentList="newestComment" :currentCommentId="currentCommentId"
-					@deletecomment="deletecomments" @commentHandle="commentHandle" @cancelComment="cancelComment"
-					@commentSubmit="commentSubmit" @commentLike="commentLike" />
+				<Commentlist 
+					v-if="hotComments.length > 0" 
+					title="精彩评论" 
+					:commentList="hotComments"
+					:currentCommentId="currentCommentId" 
+					@commentHandle="commentHandle" 
+					@cancelComment="cancelComment"
+					@commentSubmit="commentSubmit" 
+					@commentLike="commentLike" 
+				/>
+				<Commentlist 
+					title="最新评论" 
+					:commentList="newestComment" 
+					:currentCommentId="currentCommentId"
+					@deletecomment="deletecomments" 
+					@commentHandle="commentHandle" 
+					@cancelComment="cancelComment"
+					@commentSubmit="commentSubmit" 
+					@commentLike="commentLike" 
+				/>
 			</div>
 		</div>
 		<!-- 右栏 -->
@@ -116,9 +141,7 @@
 <script>
 	import Commentbox from '@/components/contents/commentBox'
 	import Commentlist from '@/components/contents/commentlist'
-	import {
-		mapGetters
-	} from 'vuex'
+	import {mapGetters} from 'vuex'
 	export default {
 		name: 'videodetail',
 		data() {
@@ -155,7 +178,11 @@
 			Commentlist
 		},
 		computed: {
-			...mapGetters(['userInfo', 'loginStatu'])
+			...mapGetters([
+				'userInfo', 
+				'loginStatu',
+				'isDrawer'
+			])
 		},
 		watch: {
 			$route() {

@@ -42,5 +42,6 @@ export function createVideo(videoData) {
 		playCount: videoData.playCount,
 		duration: videoData.duration,
 		image: videoData.image,
+		isLive: videoData.isLive || false
 	}
 }

@@ -1,7 +1,7 @@
 <template>
 	<div class="mv-box">
 		<ul class="mv-list" v-if="videos.length > 0">
-			<li v-for="(item,index) of videos" :key="item.id">
+			<li v-for="(item,index) of videos" :key="index" :style="isVideo?'flex: 0 0 25%;':'flex: 0 0 20%;'">
 				<div class="cover">
 					<div class="image">
 						<el-image :key="index" :src="item.image" lazy>
@@ -18,7 +18,11 @@
 						<span>{{ handle.tranNumber(item.playCount, 0) }}</span>
 					</div>
 					<div class="action">
-						<button class="play flex-center" title="播放" @click="toDetail(item.id)">
+						<button v-if="!item.isLive" class="play flex-center" title="播放" @click="toDetail(item.id)">
+							<i class="el-icon-caret-right"></i>
+						</button>
+						<!-- 直播 -->
+						<button v-else class="play flex-center" title="直播" @click="toLive(item.id)">
 							<i class="el-icon-caret-right"></i>
 						</button>
 					</div>
@@ -44,9 +48,17 @@
 		props: {
 			videos: {
 				type: Array
-			}
+			},
+			isVideo: {
+				type: Boolean
+			},
 		},
 		methods: {
+			// 直播跳转
+			toLive(id) {
+				let url = `https://iplay.163.com/live?id=${id}`
+				window.open(url, '_blank')
+			},
 			// 视频详情
 			toDetail(id) {
 				// 播放视频暂停播放
@@ -91,7 +103,6 @@
 
 	.mv-box .mv-list li {
 		list-style: none;
-		flex: 0 0 20%;
 		min-width: 20%;
 		padding: 0 15px 30px;
 	}
@@ -218,19 +229,19 @@
 
 	@media screen and (max-width: 992px) {
 		.mv-box .mv-list li {
-			flex: 0 0 33.3%;
+			flex: 0 0 33.3%!important;
 		}
 	}
 
 	@media screen and (max-width: 550px) {
 		.mv-box .mv-list li {
-			flex: 0 0 50%;
+			flex: 0 0 50%!important;
 		}
 	}
 
 	@media screen and (max-width: 341px) {
 		.mv-box .mv-list li {
-			flex: 0 0 100%;
+			flex: 0 0 100%!important;
 		}
 	}
 </style>

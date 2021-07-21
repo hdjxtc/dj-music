@@ -5,69 +5,52 @@
 			<div class="top">
 				<!-- 封面 -->
 				<div class="avatar">
-					<img :src="detail.coverImgUrl" alt="" />
+					<img :src="detail.picUrl" alt="" />
 				</div>
-				<!-- 歌单信息 -->
+				<!-- 专辑信息 -->
 				<div class="info">
 					<div class="title flex-between">
 						<span>{{detail.name}}</span>
 					</div>
 					<div class="user flex-row">
-						<div class="avatar" @click="toUser(creator.userId)">
-							<img :src="creator.avatarUrl" alt="" />
+						<div class="avatar">
+							<img :src="creator.picUrl" alt="" />
 						</div>
-						<p class="nickname" @click="toUser(creator.userId)">{{creator.nickname}}</p>
-						<p class="createTime" v-if="detail.createTime">
-							{{handle.dateFormat(detail.createTime, 'YYYY-MM-DD')}}创建
+						<p class="nickname">{{creator.name}}</p>
+						<p class="createTime" v-if="detail.publishTime">
+							{{handle.dateFormat(detail.publishTime, 'YYYY-MM-DD')}}创建
 						</p>
 					</div>
-					<div class="tag flex-row" v-if="detail.tags && detail.tags.length > 0">
-						标签：
-						<a v-for="item of detail.tags" :key="item" @click="tag(item)">{{item}}</a>
+					<div class="tag flex-row">
+						发行公司：
+						{{detail.company}}
 					</div>
 					<div class="desc">
 						<p class="ellipsis-two" v-html="detail.description"></p>
-						<span 
-							class="flex-row"
-							@click="openDesc(detail.name, detail.description)" 
-							v-if="txtLength(detail.description) > 50"
-						>全部
-						<i class="el-icon-arrow-right"></i></span>
+						<span class="flex-row" @click="openDesc(detail.name, detail.description)"
+							v-if="txtLength(detail.description) > 50">全部
+							<i class="el-icon-arrow-right"></i></span>
 					</div>
 				</div>
 			</div>
-			<div class="content" v-loading="loading">
-				<Songlist :songlist="songs" :width1="300" :width2="200" :width3="200"/>
+			<div class="content">
+				<Songlist :songlist="songs" :width1="300" :width2="200" :width3="200" />
 			</div>
 		</div>
 		<!-- 右栏 -->
 		<div class="right">
-			<div class="like module shadow">
-				<div class="card-headers flex-row">
-					<span>喜欢这个歌单的人</span>
-				</div>
-				<ul v-if="subscribers.length > 0">
-					<li v-for="item of subscribers" :key="item.userId">
-						<div class="avatar" @click="toUser(item.userId)">
-							<img :src="item.avatarUrl + '?param=150y150'" :alt="item.nickname" :title="item.nickname" />
-						</div>
-					</li>
-				</ul>
-				<p class="no-data-text" v-else style="padding-bottom: 10px;">还没有人喜欢</p>
-			</div>
 			<div class="related module shadow">
 				<div class="card-headers flex-row">
-					<span>相关推荐</span>
+					<span>热门专辑</span>
 				</div>
 				<ul>
-					<li v-for="item of relatedList" :key="item.id" @click="toDetail(item.id)">
+					<li v-for="item of hotAlbums" :key="item.id" @click="toDetail(item.id)">
 						<div class="avatar">
-							<img :src="item.coverImgUrl" :alt="item.nickname"
-								:title="item.nickname" />
+							<img :src="item.picUrl" :alt="item.name" :title="item.name" />
 						</div>
 						<div class="info">
 							<h2 class="ellipsis" :title="item.name">{{ item.name }}</h2>
-							<span>by <small> {{ item.creator.nickname }}</small></span>
+							<span>by <small> {{ item.artist.name }}</small></span>
 						</div>
 					</li>
 				</ul>
@@ -107,19 +90,10 @@
 				creator: {},
 				// 歌曲列表
 				songs: [],
-				// 收藏这个歌单的人
-				subscribers: [],
-				// 相关歌单
-				relatedList: [],
-				// 相似歌单
-				simiList: [],
+				// 热门专辑
+				hotAlbums: [],
 				// 评论
 				comments: [],
-				// 歌单最近的收藏者
-				s: 32,
-				artistId: '',
-				// 数据加载时动画
-				loading: true,
 			}
 		},
 		components: {
@@ -151,81 +125,20 @@
 			}
 		},
 		methods: {
-			// 标签跳转
-			tag(cat) {
-				this.$router.push({
-					name: 'gedan',
-					query: {
-						cat
-					}
-				})
-			},
-			// 获取歌单详情
-			async getPlayListDetail(id, s) {
+			// 获取专辑内容
+			async getalbumDetail(id) {
 				let timestamp = new Date().getTime()
 				try {
-					let res = await this.$api.get(`/playlist/detail?id=${id}&s=${s}&timestamp=${timestamp}`)
+					let res = await this.$api.get(`/album?id=${id}&timestamp=${timestamp}`)
 					// console.log(res)
 					if (res.code === 200) {
-						if (res.playlist.description !== null) {
-							res.playlist.description = res.playlist.description.replace(
-								/(\r\n|\n|\r)/gm,
-								'<br />'
-							)
-						}
-						this.detail = res.playlist
-						this.creator = res.playlist.creator
-						let trackIds = res.playlist.trackIds
-						// 数量超过一千，进行分割
-						let arrLength = 1000
-						let sliceArr = []
-						for (let i = 0; i < trackIds.length; i += arrLength) {
-							// slice返回被删除的元素
-							sliceArr.push(trackIds.slice(i, i + arrLength))
-						}
-						this.getSongDetail(sliceArr)
+						this.detail = res.album
+						this.creator = res.album.artist
+						this.songs = this.normalizeSongs(res.songs)
+						this.getartistAlbum()
 					}
-				} catch (error) {
-					// this.$message.error(error)
-				}
-			},
-			// 获取歌曲列表
-			async getSongDetail(sliceArr) {
-				this.loading = true
-				// 如果有分割,分别请求
-				let before = sliceArr[0]
-				let after = sliceArr[1]
-				let beforeIds = []
-				let afterIds = []
-				before.map(item => {
-					beforeIds.push(item.id)
-				})
-				// 拼接id
-				beforeIds = beforeIds.join(',')
-				if (after) {
-					after.map(item => {
-						afterIds.push(item.id)
-					})
-					afterIds = afterIds.join(',')
-				}
-				
-				let timestamp = new Date().getTime()
-				try {
-					if (after) {
-						let beforeRes = await this.$api.post(`/song/detail?ids=${beforeIds}&timestamp=${timestamp}`)
-						let afterRes = await this.$api.post(`/song/detail?ids=${afterIds}&timestamp=${timestamp+1}`)
-						let res = beforeRes.songs.concat(afterRes.songs)
-						this.songs = this.normalizeSongs(res)
-					} else {
-						let beforeRes = await this.$api.post(`/song/detail?ids=${beforeIds}&timestamp=${timestamp}`)
-						let res = beforeRes.songs
-						// 处理数据
-						this.songs = this.normalizeSongs(res)
-						// console.log(this.songs)
-					}
-					this.loading = false
-				} catch (error) {
-					// this.$message.error(error)
+				} catch (err) {
+					console.log(err)
 				}
 			},
 			// 处理歌曲
@@ -238,44 +151,33 @@
 				})
 				return ret
 			},
-			// 获取相关歌单推荐
-			async getRelatedPlaylist(id) {
-				try {
-					let res = await this.$api.get(`/related/playlist?id=${id}`)
-					if (res.code === 200) {
-						this.relatedList = res.playlists
-					}
-				} catch (error) {
-					// this.$message.error(error)
-				}
-			},
-			// 获取歌单收藏者
-			async getSubscribersPlaylist(id) {
+			// 获取歌手专辑(热门专辑)
+			async getartistAlbum() {
+				let timestamp = new Date().getTime()
 				let params = {
-					id,
-					limit: 28,
-					offset: 0
+					id: this.creator.id,
+					limit: 5,
+					offset: 0,
+					timestamp
 				}
 				try {
-					let res = await this.$api.get(`/playlist/subscribers`, {
-						params: params,
-					})
+					let res = await this.$api.get(`/artist/album`, { params: params })
 					if (res.code === 200) {
-						this.subscribers = res.subscribers
+						this.hotAlbums = res.hotAlbums
 					}
-				} catch (error) {
-					// this.$message.error(error)
+				} catch (err) {
+					console.log(err)
 				}
 			},
 			// 获取评论
-			async getCommentPlaylist(id) {
+			async getCommentAlbum(id) {
 				let params = {
 					id,
 					limit: 28,
 					offset: 0
 				}
 				try {
-					let res = await this.$api.get(`/comment/playlist`, {
+					let res = await this.$api.get(`/comment/album`, {
 						params: params,
 					})
 					if (res.code === 200) {
@@ -285,11 +187,12 @@
 							this.comments = res.comments
 						}
 					}
-				} catch (error) {
+				} catch (err) {
 					// this.$message.error(error)
+					console.log(err)
 				}
 			},
-			// 打开歌单介绍详情
+			// 打开专辑介绍详情
 			openDesc(title, content) {
 				// 饿了么弹框组件
 				this.$alert(content, title, {
@@ -305,30 +208,10 @@
 					dangerouslyUseHTMLString: true
 				})
 			},
-			// 收藏歌单
-			// async collectArtist() {
-			// 	let t = this.detail.subscribed ? 2 : 1
-			// 	let message = this.detail.subscribed ? '已取消收藏' : '收藏成功'
-			// 	try {
-			// 		let res = await this.$api.collectPlaylist(t, this.artistId)
-			// 		if (res.code === 200) {
-			// 			this.$message({
-			// 				message,
-			// 				type: 'success'
-			// 			})
-
-			// 			setTimeout(() => {
-			// 				this.getPlayListDetail(this.artistId, 100)
-			// 			}, 300)
-			// 		}
-			// 	} catch (error) {
-			// 		// this.$message.error(error)
-			// 	}
-			// },
-			// 相关推荐详情
+			// 热门专辑详情
 			toDetail(id) {
 				this.$router.push({
-					name: 'playlistdetail',
+					name: 'albumdetail',
 					query: {
 						id
 					}
@@ -347,23 +230,20 @@
 			// 初始化
 			initialize(id) {
 				// 歌单详情
-				this.getPlayListDetail(id, 100)
-				// 相关歌单
-				this.getRelatedPlaylist(id)
-				// 歌单收藏
-				this.getSubscribersPlaylist(id)
+				this.getalbumDetail(id)
 				// 评论
-				this.getCommentPlaylist(id)
+				this.getCommentAlbum(id)
 			}
 		},
 	}
 </script>
 
 <style scoped>
-	ul{
-		padding-left: 0!important;
+	ul {
+		padding-left: 0 !important;
 		list-style: none;
 	}
+
 	.playlistdetailbox {
 		display: flex;
 		align-items: flex-start;
@@ -578,6 +458,7 @@
 		font-size: 14px;
 		margin-bottom: 10px;
 		width: 100%;
+		font-weight: 600;
 	}
 
 	.playlistdetailbox .right .related ul li .info span {
@@ -648,35 +529,42 @@
 	.playlistdetailbox .right .card-headers .icon-like {
 		font-size: 20px;
 	}
-	
-	.flex-row{
+
+	.flex-row {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 	}
-	.nickname,.createTime{
+
+	.nickname,
+	.createTime {
 		margin-bottom: 0;
 	}
-	.ellipsis-two{
+
+	.ellipsis-two {
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		overflow: hidden;
 	}
-	.desc p{
+
+	.desc p {
 		margin-bottom: 0;
 		text-align: left;
 	}
+
 	@media screen and (max-width: 1200px) {
-		.playlistdetailbox{
+		.playlistdetailbox {
 			display: block;
 		}
-		.playlistdetailbox .right{
+
+		.playlistdetailbox .right {
 			width: 100%;
 		}
 	}
+
 	@media screen and (max-width: 768px) {
-		.playlistdetailbox .left .top{
+		.playlistdetailbox .left .top {
 			display: block;
 			text-align: left;
 		}

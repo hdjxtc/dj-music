@@ -8,22 +8,22 @@
 			<div class="nav-pc navpc-lg">
 				<div class="collapse navbar-collapse" id="target">
 					<ul class="navbar-nav">
-						<li class="nav-item">
+						<li class="nav-item" :class="$route.path=='/home'?'active':''">
 							<router-link :to="{ name: 'home' }" tag="a" class="nav-link">发现音乐</router-link>
 						</li>
-						<li class="nav-item">
-							<router-link :to="{ name: 'paihang' }" tag="a" class="nav-link">排行榜</router-link>
+						<li class="nav-item" :class="$route.path=='/ranking'?'active':''">
+							<router-link :to="{ name: 'ranking' }" tag="a" class="nav-link">排行榜</router-link>
 						</li>
-						<li class="nav-item">
-							<router-link :to="{ name: 'gedan' }" tag="a" class="nav-link">歌单</router-link>
+						<li class="nav-item" :class="$route.path=='/playlist'?'active':''">
+							<router-link :to="{ name: 'playlist' }" tag="a" class="nav-link">歌单</router-link>
 						</li>
-						<li class="nav-item">
-							<router-link :to="{ name: 'geshou' }" tag="a" class="nav-link">歌手</router-link>
+						<li class="nav-item" :class="$route.path=='/singer'?'active':''">
+							<router-link :to="{ name: 'singer' }" tag="a" class="nav-link">歌手</router-link>
 						</li>
-						<li class="nav-item">
-							<router-link :to="{ name: 'shiping' }" tag="a" class="nav-link">视频</router-link>
+						<li class="nav-item" :class="$route.path=='/video'?'active':''">
+							<router-link :to="{ name: 'video' }" tag="a" class="nav-link">视频</router-link>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item" :class="$route.path=='/mv'?'active':''">
 							<router-link :to="{ name: 'mv' }" tag="a" class="nav-link">MV</router-link>
 						</li>
 					</ul>
@@ -97,22 +97,22 @@
 						</span>
 					</div>
 					<ul class="navbar-nav navbar-nav-m">
-						<li class="nav-item" @click="drawer = false">
+						<li class="nav-item" @click="drawer = false" :class="$route.path=='/home'?'active':''">
 							<router-link :to="{ name: 'home' }" tag="a" class="nav-link">发现音乐</router-link>
 						</li>
-						<li class="nav-item" @click="drawer = false">
-							<router-link :to="{ name: 'paihang' }" tag="a" class="nav-link">排行榜</router-link>
+						<li class="nav-item" @click="drawer = false" :class="$route.path=='/ranking'?'active':''">
+							<router-link :to="{ name: 'ranking' }" tag="a" class="nav-link">排行榜</router-link>
 						</li>
-						<li class="nav-item" @click="drawer = false">
-							<router-link :to="{ name: 'gedan' }" tag="a" class="nav-link">歌单</router-link>
+						<li class="nav-item" @click="drawer = false" :class="$route.path=='/playlist'?'active':''">
+							<router-link :to="{ name: 'playlist' }" tag="a" class="nav-link">歌单</router-link>
 						</li>
-						<li class="nav-item" @click="drawer = false">
-							<router-link :to="{ name: 'geshou' }" tag="a" class="nav-link">歌手</router-link>
+						<li class="nav-item" @click="drawer = false" :class="$route.path=='/singer'?'active':''">
+							<router-link :to="{ name: 'singer' }" tag="a" class="nav-link">歌手</router-link>
 						</li>
-						<li class="nav-item" @click="drawer = false">
-							<router-link :to="{ name: 'shiping' }" tag="a" class="nav-link">视频</router-link>
+						<li class="nav-item" @click="drawer = false" :class="$route.path=='/video'?'active':''">
+							<router-link :to="{ name: 'video' }" tag="a" class="nav-link">视频</router-link>
 						</li>
-						<li class="nav-item" @click="drawer = false">
+						<li class="nav-item" @click="drawer = false" :class="$route.path=='/mv'?'active':''">
 							<router-link :to="{ name: 'mv' }" tag="a" class="nav-link">MV</router-link>
 						</li>
 					</ul>
@@ -138,7 +138,7 @@
 	</div>
 </template>
 <script>
-	import {mapGetters} from 'vuex'
+	import {mapGetters,mapMutations} from 'vuex'
 	export default {
 		name: 'navbar',
 		data() {
@@ -149,10 +149,15 @@
 				innerDrawer: false,
 			}
 		},
+		watch:{
+			drawer(){
+				this.upisDrawer(this.drawer)
+			}
+		},
 		computed: {
 			...mapGetters([
 				'loginStatu',
-				'userInfo'
+				'userInfo',
 			])
 		},
 		mounted() {
@@ -161,6 +166,9 @@
 			this.$store.commit('upUserinfo', this.userInfo)
 		},
 		methods: {
+			...mapMutations([
+				'upisDrawer'
+			]),
 			// 搜索
 			search() {
 				// 空格和未输入	this.keyword.split(' ').join('').length
@@ -192,7 +200,7 @@
 				this.drawer = false
 				this.innerDrawer = false
 				this.$router.push({
-					name: 'personal'
+					name: 'personalpage'
 				})
 			},
 			// 退出登录
@@ -216,6 +224,8 @@
 </script>
 
 <style scoped>
+	.nav-mb{
+	}
 	.form-inline .form-control {
 		width: auto;
 		border-radius: 10rem;
@@ -364,12 +374,15 @@
 			display: none !important;
 		}
 	}
-
+	
 	.navbar-toggler {
 		padding: .25rem 2rem !important;
 	}
 
 	.innerDrawer {
 		text-align: center;
+	}
+	.active a{
+		color: #fa2800!important;
 	}
 </style>

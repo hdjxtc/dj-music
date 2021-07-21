@@ -15,7 +15,7 @@
 								</div>
 							</el-image>
 						</div>
-						<!-- 分类 -->
+						<!-- 类别 -->
 						<div class="count">
 							<i class="arrow"></i>
 							<span>{{ item.subType || item.type }}</span>
@@ -46,7 +46,7 @@
 		methods: {
 			toDetail(id) {
 				this.$router.push({
-					name: 'albumpage',
+					name: 'albumdetail',
 					query: {
 						id
 					}

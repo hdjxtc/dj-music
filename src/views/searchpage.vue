@@ -47,7 +47,7 @@
 			</el-tab-pane>
 			<!-- 视频 -->
 			<el-tab-pane label="视频">
-				<Videolist :videos="videos" />
+				<Videolist :videos="videos" :isVideo="false"/>
 				<div class="feny" v-if="videoCount">
 					<Feny :total="videoCount" @pageChange="pageChange" />
 				</div>

@@ -4,7 +4,14 @@
 		<div class="left shadow">
 			<!-- 视频 -->
 			<div class="video-container">
-				<video :src="videoUrl" controls="controls" autoplay controlslist="nodownload"></video>
+				<video 
+					v-show="!isDrawer"
+					:src="videoUrl" 
+					controls="controls" 
+					autoplay 
+					controlslist="nodownload"
+				>
+				</video>
 			</div>
 			<!-- 视频底部 -->
 			<div class="video-footer">
@@ -148,7 +155,11 @@
 			Commentlist
 		},
 		computed: {
-			...mapGetters(['userInfo', 'loginStatu'])
+			...mapGetters([
+				'userInfo', 
+				'loginStatu',
+				'isDrawer'
+			])
 		},
 		watch: {
 			$route() {
@@ -235,7 +246,9 @@
 				}
 				try {
 					// 过滤#
-					let res = await this.$api.get(`/comment/mv`,{params: params})
+					let res = await this.$api.get(`/comment/mv`, {
+						params: params
+					})
 					if (res.code === 200) {
 						// 赋值评论总数
 						this.commentTotal = res.total
@@ -281,7 +294,9 @@
 						params.commentId = this.currentCommentId
 					}
 					this.$api
-						.get(`/comment`,{params: params})
+						.get(`/comment`, {
+							params: params
+						})
 						.then(res => {
 							if (res.code === 200) {
 								this.$message.success('评论成功！')
@@ -340,7 +355,9 @@
 					params.t = 1
 				}
 				try {
-					let res = await this.$api.get(`/comment/like`, { params: params })
+					let res = await this.$api.get(`/comment/like`, {
+						params: params
+					})
 					if (res.code === 200) {
 						this.getMvComments(this.videoId)
 					}
@@ -405,11 +422,11 @@
 	.mvdetailbox {
 		display: flex;
 	}
-	
+
 	.mvdetailbox .active {
-		color: #FA2800!important;
+		color: #FA2800 !important;
 	}
-	
+
 	.mvdetailbox .left {
 		/* flex: 1; */
 		width: 950px;
@@ -421,6 +438,7 @@
 	.mvdetailbox .video-container {
 		position: relative;
 		padding-top: 56.25%;
+		background: #000;
 	}
 
 	.mvdetailbox .video-container video {
@@ -429,7 +447,6 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: #000;
 	}
 
 	.mvdetailbox .video-footer {
@@ -796,15 +813,18 @@
 	.mvdetailbox .right .card-headers .icon-like {
 		font-size: 20px;
 	}
-	.comment-list ul li .info .content{
-		background: #f5efef4a!important;
+
+	.comment-list ul li .info .content {
+		background: #f5efef4a !important;
 	}
-	
+
 	@media screen and (max-width: 768px) {
-		.mvdetailbox{
+		.mvdetailbox {
 			display: block;
 		}
-		.mvdetailbox .left,.mvdetailbox .right{
+
+		.mvdetailbox .left,
+		.mvdetailbox .right {
 			width: 100%;
 		}
 	}

@@ -70,9 +70,7 @@
 	import Similarsong from './similarsong'
 	import Similargedan from './similargedan'
 	import Comment from './comment'
-	import {
-		parseLyric
-	} from '@/model/parselyric'
+	import {parseLyric} from '@/model/parselyric'
 	export default {
 		name: "playpage",
 		data() {

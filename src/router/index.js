@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home.vue'
-import Paihang from '../views/paihang.vue'
-import Gedan from '../views/gedan.vue'
-import Geshou from '../views/geshou.vue'
-import Shiping from '../views/shiping.vue'
+import Ranking from '../views/ranking.vue'
+import Playlist from '../views/playlist.vue'
+import Singer from '../views/singer.vue'
+import Video from '../views/video.vue'
 import Mv from '../views/mv.vue'
 import Err from '../views/404.vue'
 import Searchpage from '../views/searchpage.vue'
 import Login from '../views/login.vue'
-import Personal from '../views/personal.vue'
+import Personalpage from '../views/personalpage.vue'
 import Singerpage from '../views/singerpage.vue'
-import Albumpage from '../views/albumpage.vue'
+import Albumdetail from '../views/albumdetail.vue'
 import Videodetail from '../views/videodetail.vue'
 import Mvdetail from '../views/mvdetail.vue'
 import Playlistdetail from '../views/playlistdetail.vue'
@@ -31,27 +31,27 @@ const routes = [
 	},
 	// 排行
 	{
-		path: '/paihang',
-		name: 'paihang',
-		component: Paihang
+		path: '/ranking',
+		name: 'ranking',
+		component: Ranking
 	},
 	// 歌单
 	{
-		path: '/gedan',
-		name: 'gedan',
-		component: Gedan
+		path: '/playlist',
+		name: 'playlist',
+		component: Playlist
 	},
 	// 歌手
 	{
-		path: '/geshou',
-		name: 'geshou',
-		component: Geshou
+		path: '/singer',
+		name: 'singer',
+		component: Singer
 	},
 	// 视频
 	{
-		path: '/shiping',
-		name: 'shiping',
-		component: Shiping
+		path: '/video',
+		name: 'video',
+		component: Video
 	},
 	// mv
 	{
@@ -76,9 +76,9 @@ const routes = [
 	},
 	// 个人主页
 	{
-		path: '/personal',
-		name: 'personal',
-		component: Personal
+		path: '/personalpage',
+		name: 'personalpage',
+		component: Personalpage
 	},
 	// 歌手个人详情页
 	{
@@ -88,9 +88,9 @@ const routes = [
 	},
 	// 专辑详情页
 	{
-		path: '/albumpage',
-		name: 'albumpage',
-		component: Albumpage
+		path: '/albumdetail',
+		name: 'albumdetail',
+		component: Albumdetail
 	},
 	// 视频详情页
 	{

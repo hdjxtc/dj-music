@@ -17,7 +17,9 @@ export default new Vuex.Store({
 		// 播放状态
 		playing: false,
 		// 播放模式
-		mode: 0
+		mode: 0,
+		// 移动端，是否打开侧边栏
+		isdrawer: false
 	},
 	getters: {
 		// 获取登录状态
@@ -49,6 +51,10 @@ export default new Vuex.Store({
 		// 获取播放模式
 		currentMod(state) {
 			return state.mode
+		},
+		// 获取侧边栏状态
+		isDrawer(state){
+			return state.isdrawer
 		}
 	},
 	mutations: {
@@ -105,8 +111,11 @@ export default new Vuex.Store({
 				state.currentindex = 0
 			}
 			state.playlist.splice(index, 1)
-
-		}
+		},
+		// 更改侧边栏状态
+		upisDrawer(state,flag) {
+			state.isdrawer = flag
+		},
 	},
 	actions: {
 		// 选中播放歌曲
