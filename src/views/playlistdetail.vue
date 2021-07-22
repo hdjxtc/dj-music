@@ -137,6 +137,9 @@
 		},
 		watch: {
 			$route() {
+				// 滚动条滚零
+				let contents = document.getElementById('contents')
+				contents.scrollTo(0,0)
 				let id = this.$route.query.id || this.singer.id
 				if (id) {
 					this.initialize(id)
@@ -144,6 +147,9 @@
 			}
 		},
 		mounted() {
+			// 滚动条滚零
+			let contents = document.getElementById('contents')
+			contents.scrollTo(0,0)
 			let id = this.$route.query.id
 			this.artistId = id
 			if (id) {

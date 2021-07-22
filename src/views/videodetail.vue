@@ -186,6 +186,9 @@
 		},
 		watch: {
 			$route() {
+				// 滚动条滚零
+				let contents = document.getElementById('contents')
+				contents.scrollTo(0,0)
 				let id = this.$route.query.id || this.videoId
 				if (id) {
 					this.initialize(id)
