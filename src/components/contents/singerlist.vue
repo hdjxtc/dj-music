@@ -30,7 +30,7 @@
 			// 跳转歌手页面
 			toSinger(id) {
 				this.$router.push({
-					name: 'singerpage',
+					name: 'singerdetail',
 					query: {
 						id: id
 					}

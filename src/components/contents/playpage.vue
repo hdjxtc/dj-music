@@ -29,10 +29,10 @@
 					</div>
 					<div class="musicinfo">
 						<h6>
-							专辑：<a href="#">{{currentSong.album}}</a>
+							专辑：<a href="javascript:;" @click="toAlbumdetail(currentSong.albumid)">{{currentSong.album}}</a>
 						</h6>
 						<h6>
-							歌手：<a href="#">{{currentSong.singer}}</a>
+							歌手：<a href="javascript:;" @click="toSingerdetail(currentSong.artistid)">{{currentSong.singer}}</a>
 						</h6>
 					</div>
 				</div>
@@ -116,7 +116,7 @@
 		mounted() {
 			// 控制唱片旋转
 			this.getMusicState()
-			// 设置默认值
+			// 第一次进入,设置默认值
 			this.lyricarray = [
 				[0, '暂无歌词']
 			]
@@ -133,6 +133,7 @@
 		watch: {
 			// 监听当前歌曲
 			currentSong() {
+				// 切歌,设置默认值
 				this.lyricarray = [
 					[0, '暂无歌词']
 				]
@@ -147,9 +148,9 @@
 				this.getMusicState()
 			},
 			// 监听歌词
-			lyriclist() {
+			async lyriclist() {
 				// 格式化歌词
-				this.lyricarray = parseLyric(this.lyriclist);
+				this.lyricarray = parseLyric(this.lyriclist)
 				if (this.lyricarray.length == 0) {
 					this.lyricarray = [
 						[0, '暂无歌词']
@@ -160,12 +161,12 @@
 						if (!item[1]) {
 							this.lyricarray.splice(index, 1)
 						}
-						if (index == 6) {
-							this.start = item[0]
-						}
+						// 开始滚动的时间改为第六句的时间
+						// if (index == 6) {
+						// 	this.start = item[0]
+						// }
 					})
 					// console.log('处理后',this.lyricarray)
-					// console.log(this.start)
 					// 最后一行的时间
 					this.lasttime = this.lyricarray[this.lyricarray.length - 1][0]
 				}
@@ -215,6 +216,25 @@
 				this.upplaYing(false)
 				this.$router.push({
 					name: 'mvdetail',
+					query: {
+						id
+					}
+				})
+			},
+			// 专辑详情
+			toAlbumdetail(id){
+				// console.log(id)
+				this.$router.push({
+					name: 'albumdetail',
+					query: {
+						id
+					}
+				})
+			},
+			// 歌手详情
+			toSingerdetail(id){
+				this.$router.push({
+					name: 'singerdetail',
 					query: {
 						id
 					}

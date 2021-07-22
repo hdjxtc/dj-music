@@ -7,9 +7,6 @@
 <script>
 	export default {
 		name: 'more',
-		data() {
-			return {}
-		},
 		methods: {
 			//获取滚动条当前的位置
 			getScrollTop() {
@@ -17,7 +14,7 @@
 				let contents = document.getElementById('contents')
 				// documentElement 返回文档的根节点,解决ie怪异模式无法正确获取到滚动条
 				if (document.documentElement && contents.scrollTop) {
-					scrollTop = contents.scrollTop+1
+					scrollTop = contents.scrollTop+5
 				} else if (document.body) {
 					scrollTop = document.body.scrollTop
 				}

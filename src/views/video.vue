@@ -4,7 +4,7 @@
 			<!-- 下拉 -->
 			<div class="title flex-center" @click="openFilter">
 				{{currenttag}}
-				<i class="el-icon-arrow-down"></i>
+				<i class="el-icon-arrow-down" :style="showFilter?'transform: rotate(0)':''"></i>
 				<transition name="fade">
 					<div class="filter-box shadow" v-if="showFilter">
 						<ul>
@@ -31,9 +31,7 @@
 			</div>
 		</div>
 		<!-- 视频列表 -->
-		<div class="content" v-loading="loading">
-			<Videolist :videos="videos" :isVideo="true" />
-		</div>
+		<Videolist :videos="videos" :isVideo="true" />
 		<!-- 切换 -->
 		<div class="page bottom-action">
 			<button :disabled="offset == 0" class="btn flex-center trainsition" @click="prev">
@@ -46,7 +44,9 @@
 	</div>
 </template>
 <script>
-	import {createVideo} from '@/model/song'
+	import {
+		createVideo
+	} from '@/model/song'
 	import Videolist from '@/components/contents/videolist'
 	export default {
 		name: 'videos',
@@ -68,8 +68,6 @@
 				hasmore: true,
 				// 是否打开下拉标签
 				showFilter: false,
-				// 数据加载时动画
-				loading: false,
 			}
 		},
 		components: {
@@ -98,7 +96,7 @@
 					this.getVideoAll()
 				}
 			},
-			// 获取视频分类列表
+			// 获取视频热门类别
 			async getVideoCategory() {
 				try {
 					let res = await this.$api.get(`/video/category/list`)
@@ -114,7 +112,7 @@
 					console.log(error)
 				}
 			},
-			// 获取所有视频标签列表
+			// 获取所有视频类别标签
 			async getVideoTag() {
 				try {
 					let res = await this.$api.get(`video/group/list`)
@@ -131,13 +129,11 @@
 			},
 			// 获取全部视频列表
 			async getVideoAll() {
-				this.loading = true
 				try {
 					let res = await this.$api.get(`/video/timeline/all?offset=${this.offset}`)
 					if (res.code === 200) {
 						// console.log(res)
 						this.videos = this.normalizeVideos(res.datas)
-						this.loading = false
 						// 是否还有数据
 						if (res.hasmore) {
 							this.hasmore = true
@@ -201,6 +197,7 @@
 			},
 			// 选择分类
 			choosetag(id, name) {
+				this.$message.info('请稍等~')
 				this.offset = 0
 				this.hasmore = true
 				this.currenttag = name
@@ -312,6 +309,7 @@
 		background: linear-gradient(45deg, #66e3ff, #6dcaf4, #66e3ff);
 		-webkit-box-shadow: inset 0 0 10px rgba(78, 255, 0, 0.2);
 	}
+
 	.videobox .filter .title .filter-box ul {
 		display: flex;
 		flex-wrap: wrap;
@@ -396,7 +394,7 @@
 		background-color: #fab6b6;
 		border-color: #fab6b6;
 	}
-	
+
 	.videobox .bottom-action {
 		display: flex;
 		align-items: center;
@@ -404,42 +402,48 @@
 		margin-bottom: 1rem;
 		margin-top: -3rem;
 	}
-	
+
 	@media screen and (max-width: 992px) {
 		.hot-tag {
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow-x: scroll;
 		}
+
 		.videobox .filter .title .filter-box {
 			width: 570px;
 			right: -481px;
 		}
 	}
+
 	@media screen and (max-width: 768px) {
 		.videobox .filter .title .filter-box {
 			width: 440px;
 			right: -351px;
 		}
 	}
+
 	@media screen and (max-width: 491px) {
 		.videobox .filter .title .filter-box {
 			width: 380px;
 			right: -291px;
 		}
 	}
+
 	@media screen and (max-width: 431px) {
 		.videobox .filter .title .filter-box {
 			width: 340px;
 			right: -251px;
 		}
 	}
+
 	@media screen and (max-width: 391px) {
 		.videobox .filter .title .filter-box {
 			width: 300px;
 			right: -208px;
 		}
 	}
+
 	@media screen and (max-width: 351px) {
 		.videobox .filter .title .filter-box {
 			width: 280px;

@@ -4,7 +4,7 @@
 			<li v-for="(item,index) of videos" :key="index" :style="isVideo?'flex: 0 0 25%;':'flex: 0 0 20%;'">
 				<div class="cover">
 					<div class="image">
-						<el-image :key="index" :src="item.image" lazy>
+						<el-image :key="index" :src="item.image">
 							<div slot="placeholder" class="image-slot flex-center flex-column">
 								<i class="el-icon-loading"></i>
 							</div>
@@ -40,9 +40,7 @@
 </template>
 
 <script>
-	import {
-		mapMutations
-	} from 'vuex'
+	import {mapMutations} from 'vuex'
 	export default {
 		name: 'videolist',
 		props: {

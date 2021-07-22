@@ -7,7 +7,7 @@
 			<div class="content">
 				<Contents />
 			</div>
-			<Playbar/>
+			<Playbar v-show="!($route.path=='/videodetail') && !($route.path=='/mvdetail')" />
 		</div>
 	</div>
 </template>
@@ -32,8 +32,8 @@
 	// import Playbar from './components/footer/playbar'
 	export default {
 		name: 'App',
-		data(){
-			return{
+		data() {
+			return {
 				loding: true
 			}
 		},

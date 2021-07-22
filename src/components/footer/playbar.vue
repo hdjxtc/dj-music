@@ -648,6 +648,7 @@
 			position: fixed;
 			left: 13%;
 		}
+		/* 用作响应式，打开歌曲播放页做定位 */
 		.tool .leftopen{
 			left: 0;
 		}

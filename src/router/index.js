@@ -10,7 +10,7 @@ import Err from '../views/404.vue'
 import Searchpage from '../views/searchpage.vue'
 import Login from '../views/login.vue'
 import Personalpage from '../views/personalpage.vue'
-import Singerpage from '../views/singerpage.vue'
+import Singerdetail from '../views/singerdetail.vue'
 import Albumdetail from '../views/albumdetail.vue'
 import Videodetail from '../views/videodetail.vue'
 import Mvdetail from '../views/mvdetail.vue'
@@ -82,9 +82,9 @@ const routes = [
 	},
 	// 歌手个人详情页
 	{
-		path: '/singerpage',
-		name: 'singerpage',
-		component: Singerpage
+		path: '/singerdetail',
+		name: 'singerdetail',
+		component: Singerdetail
 	},
 	// 专辑详情页
 	{

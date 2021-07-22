@@ -119,7 +119,7 @@
 <script>
 	import Commentbox from '@/components/contents/commentBox'
 	import Commentlist from '@/components/contents/commentlist'
-	import {mapGetters} from 'vuex'
+	import {mapGetters,mapMutations} from 'vuex'
 	export default {
 		name: 'videodetail',
 		data() {
@@ -170,6 +170,9 @@
 			}
 		},
 		mounted() {
+			// 滚动条滚零
+			let contents = document.getElementById('contents')
+			contents.scrollTo(0,0)
 			let id = this.$route.query.id
 			if (id) {
 				this.videoId = id
@@ -388,6 +391,12 @@
 			},
 			// 点击相关推荐mv播放
 			toDetail(id) {
+				this.$message.info('请稍等~')
+				// 暂停播放
+				this.upplaYing(false)
+				// 滚动条滚零
+				let contents = document.getElementById('contents')
+				contents.scrollTo(0,0)
 				this.$router.push({
 					name: 'mvdetail',
 					query: {
@@ -395,6 +404,9 @@
 					}
 				})
 			},
+			...mapMutations([
+				'upplaYing'
+			]),
 			// 初始化
 			initialize(id) {
 				this.getMvUrl(id)

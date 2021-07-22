@@ -327,6 +327,7 @@
 			// },
 			// 相关推荐详情
 			toDetail(id) {
+				this.$message.info('请稍等~')
 				this.$router.push({
 					name: 'playlistdetail',
 					query: {
