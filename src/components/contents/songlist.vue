@@ -140,6 +140,7 @@
 						})
 					}
 				}).catch(err=>{
+					this.$message.error('播放错误！')
 					console.log(err)
 					for (let i = 0, trs = tr.length; i < trs; i++) {
 						tr[i].className = 'el-table__row'

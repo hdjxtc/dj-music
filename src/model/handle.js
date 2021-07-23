@@ -7,26 +7,6 @@ export default {
 		// -slice取出
 		return (Array(len).join(0) + num).slice(-len)
 	},
-	// // localStorage存储
-	// setStorage(name, content) {
-	// 	let contentClone = content
-	// 	if (!name) return
-	// 	if (typeof content !== 'string') {
-	// 		contentClone = JSON.stringify(contentClone)
-	// 	}
-	// 	window.localStorage.setItem(name, contentClone)
-	// },
-	// // localStorage获取
-	// getStorage(name) {
-	// 	if (!name) return null
-	// 	return window.localStorage.getItem(name)
-	// },
-	// // localStorage删除
-	// removeStorage(name) {
-	// 	if (!name) return
-	// 	window.localStorage.removeItem(name)
-	// },
-
 	//清除所有cookie函数
 	clearCookie() {
 		var keys = document.cookie.match(/[^ =;]+(?=\=)/g)
