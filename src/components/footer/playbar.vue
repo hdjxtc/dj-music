@@ -1,6 +1,7 @@
 <template>
 	<transition name="fade">
-		<div class="container shadow flex-row" v-show="playList.length > 0 && !$route.meta.isLogin">
+		<div class="container shadow flex-row"
+			v-show="playList.length > 0 && !$route.meta.isLogin && !($route.path=='/videodetail') && !($route.path=='/mvdetail')">
 			<!-- 歌曲封面 -->
 			<div v-show="!playpage" class="author" @click="openplaypage">
 				<img src="../../assets/img/zhankai.png" class="zhankai">

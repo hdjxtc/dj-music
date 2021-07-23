@@ -7,7 +7,7 @@
 			<div class="content">
 				<Contents />
 			</div>
-			<Playbar v-show="!($route.path=='/videodetail') && !($route.path=='/mvdetail')" />
+			<Playbar />
 		</div>
 	</div>
 </template>

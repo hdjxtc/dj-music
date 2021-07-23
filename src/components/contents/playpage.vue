@@ -333,7 +333,6 @@
 
 	/* 歌曲标题 */
 	.top .center {
-		text-align: left;
 		margin-top: -1%;
 		margin-right: 50px;
 	}
@@ -341,6 +340,7 @@
 	.top .center-top {
 		margin-left: 8%;
 		width: 365px;
+		text-align: center;
 	}
 
 	.top .center .musictitle {
@@ -461,7 +461,7 @@
 		}
 		.center{
 			position: absolute;
-			left: 35%;
+			left: 20%;
 			margin-top: 3%!important;
 		}
 		.left{
@@ -486,9 +486,6 @@
 		.bottom{
 			margin: -150px 0.5rem 0 0.5rem;
 		}
-		.btnBox{
-			display: none;
-		}
 		.blur{
 			background-size: cover!important;
 		}
@@ -497,21 +494,11 @@
 		}
 		.center{
 			position: absolute;
-			left: 30%;
-			margin-top: 15%!important;
-		}
-		.center-top{
-			margin-top: -20%;
+			left: 10%;
+			margin-top: 5%!important;
 		}
 	}
 	@media screen and (max-width: 576px) {
-		.bottom{
-			margin: -150px 0.5rem 0 0.5rem;
-		}
-		.btnBox{
-			display: none;
-		}
-		
 		.top .songimg{
 			width: 250px;
 			height: 250px;
@@ -526,21 +513,16 @@
 	}
 	@media screen and (max-width: 485px) {
 		.center{
-			left: 0;
+			left: 25px;
 		}
 		.center-bottom{
 			text-align: center!important;
 		}
-		.top .center-top{
-			margin-left: 44%;
-		}
 	}
 	@media screen and (max-width: 415px) {
-		.center-top{
-			margin-top: -15%;
-		}
 		.center-top,.center .musictitle{
-			width: 100%!important;
+			width: 330px!important;
+			margin: 0 auto;
 		}
 		.left{
 			margin: 15% 20%!important;
@@ -548,23 +530,23 @@
 	}
 	@media screen and (max-width: 391px) {
 		.center{
-			left: -10%;
+			left: -7%;
 		}
 		.left{
 			margin: 15% 17%!important;
 		}
 	}
 	@media screen and (max-width: 376px) {
-		.center{
-			left: -13%;
-		}
 		.left{
 			margin: 15% 15%!important;
+		}
+		.center-bottom{
+			margin-left: -20px;
 		}
 	}
 	@media screen and (max-width: 348px) {
 		.center{
-			left: -15%;
+			left: -13%;
 		}
 		.left{
 			margin: 15% 13%!important;

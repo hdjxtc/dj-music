@@ -70,27 +70,27 @@
 				typeList: [{
 						key: 0,
 						value: '语种',
-						icon: 'niceyuyan'
+						icon: 'dj-icon-yuyan'
 					},
 					{
 						key: 1,
 						value: '风格',
-						icon: 'nicefengge'
+						icon: 'dj-icon-changjing'
 					},
 					{
 						key: 2,
 						value: '场景',
-						icon: 'nicekafeidengdai'
+						icon: 'dj-icon-yundong'
 					},
 					{
 						key: 3,
 						value: '情感',
-						icon: 'niceqingganqingshu'
+						icon: 'dj-icon-qinggan'
 					},
 					{
 						key: 4,
 						value: '主题',
-						icon: 'nicepifugexinghuazhuti-xianxing'
+						icon: 'dj-icon-zhuti'
 					}
 				],
 			}

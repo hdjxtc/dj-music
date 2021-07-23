@@ -2,6 +2,7 @@ module.exports = {
 	lintOnSave: false,
 	// lintOnSave: process.env.NODE_ENV !== 'production',
 	publicPath: './', //打包生成的静态文件的路径起点
+	productionSourceMap: false, // 生产打包时不输出map文件，增加打包速度
 	configureWebpack: {
 		// other webpack options to merge in ...
 	},
