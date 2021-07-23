@@ -307,4 +307,7 @@
 		flex-wrap: wrap;
 		padding: 2rem;
 	}
+	.searchbox .playall{
+		width: 95%;
+	}
 </style>

@@ -100,9 +100,7 @@
 		mapActions
 	} from 'vuex'
 	// 循环模式
-	import {
-		playMode
-	} from '@/common/playmod'
+	import {playMode} from '@/common/playmod'
 	import Lyric from './lyric'
 	// 歌词
 	// import Lyric from 'lyric-parser'

@@ -83,6 +83,36 @@ export default new Vuex.Store({
 				state.currentindex = state.playlist.length - 1
 			}
 		},
+		// 播放全部
+		playAllsong(state, list) {
+			// console.log(list)
+			// 数据是否为空
+			let isempty = false
+			// 数据是否存在
+			let ispush = true
+			// 添加数据的第一个下标
+			let currentindex = 0
+			if(list.length==0){
+				isempty = true
+			}
+			if(!isempty){
+				// 判断添加的歌曲里有没有已在播放列表的
+				list.map(item=>{
+					state.playlist.map(jitem=>{
+						if(item.id == jitem.id){
+							ispush = false
+						}
+					})
+					if(ispush){
+						state.playlist.push(item)
+						currentindex++
+					}
+					ispush = true
+				})
+				state.currentindex = state.playlist.length - currentindex
+			}
+			
+		},
 		// 更改播放状态
 		upplaYing(state, flag) {
 			state.playing = flag
@@ -126,6 +156,13 @@ export default new Vuex.Store({
 			commit('upplayList', list[index])
 			commit('upplaYing', true)
 		},
+		// 播放全部
+		playAll(context, list) {
+			// console.log(list)
+			context.commit('playAllsong',list)
+			context.commit('upplaYing', true)
+		}
+		
 	},
 	plugins: [
 		createPersistedState({
