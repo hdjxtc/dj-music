@@ -464,9 +464,6 @@
 			left: 35%;
 			margin-top: 3%!important;
 		}
-		.center-top{
-			margin-bottom: 20%;
-		}
 		.left{
 			height: 900px!important;
 			margin: 15% 28%!important;
@@ -500,7 +497,7 @@
 		}
 		.center{
 			position: absolute;
-			left: 33%;
+			left: 30%;
 			margin-top: 15%!important;
 		}
 		.center-top{
@@ -514,10 +511,7 @@
 		.btnBox{
 			display: none;
 		}
-		.center-top{
-			margin-top: -20%;
-			margin-bottom: 20%;
-		}
+		
 		.top .songimg{
 			width: 250px;
 			height: 250px;
@@ -532,20 +526,18 @@
 	}
 	@media screen and (max-width: 485px) {
 		.center{
-			text-align: center!important;
 			left: 0;
 		}
-	}
-	@media screen and (max-width: 440px) {
-		.center{
-			left: -5%;
+		.center-bottom{
+			text-align: center!important;
+		}
+		.top .center-top{
+			margin-left: 44%;
 		}
 	}
 	@media screen and (max-width: 415px) {
 		.center-top{
-			margin-left: 5%!important;
-			margin-top: -5%;
-			margin-top: 10%;
+			margin-top: -15%;
 		}
 		.center-top,.center .musictitle{
 			width: 100%!important;

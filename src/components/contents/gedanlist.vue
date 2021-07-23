@@ -4,7 +4,7 @@
 			<div class="wrapper">
 				<div class="cover">
 					<div class="image">
-						<el-image :key="index" :src="item.picUrl || item.coverImgUrl" lazy>
+						<el-image :key="index" :src="item.picUrl || item.coverImgUrl">
 							<div slot="placeholder" class="image-slot flex-center flex-column">
 								<i class="el-icon-loading"></i>
 							</div>

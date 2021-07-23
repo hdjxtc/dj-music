@@ -182,9 +182,9 @@
 				}
 			},
 			// 监听播放歌曲信息,切歌操作
-			currentSong(newsong, oldsong) {
+			currentSong(newsong,) {
 				// 判断当前播放歌曲有无信息
-				if (!newsong.id || !newsong.url || newsong.id === oldsong.id) {
+				if (!newsong.id || !newsong.url) {
 					return
 				}
 				// 解决播放列表里只改下标不改状态的bug
@@ -238,9 +238,6 @@
 			}
 		},
 		methods: {
-			cs(){
-				alert('这是一个测试')
-			},
 			// 格式化时间
 			formatTime(interval) {
 				// 取整
@@ -598,83 +595,6 @@
 		font-size: 20px;
 	}
 
-	/* 移动 */
-	@media screen and (max-width: 992px) {
-		.hidden-hd {
-			display: none;
-		}
-		.tool{
-			margin-top: 1.8%;
-		}
-		.el-slider{
-			width: 55%!important;
-		}
-	}
-
-	@media screen and (max-width: 768px) {
-		.hidden-sm {
-			display: none;
-		}
-		.tool{
-			margin-top: 2.5%;
-		}
-		
-	}
-	@media screen and (max-width: 576px) {
-		.hidden-col {
-			display: none;
-		}
-		.tool{
-			margin-top: 2.2%;
-		}
-		.tool i{
-			font-size: 25px;
-		}
-		#progress-wrap{
-			position: fixed;
-			width: 100%;
-			padding: 0 10%;
-			bottom: 6.3%;
-			background: #f9f9f9;
-			z-index: 2;
-		}
-		.el-slider{
-			width: 70%!important;
-		}
-		.player-btn{
-			flex-grow: 50;
-		}
-		.tool .left{
-			position: fixed;
-			left: 13%;
-		}
-		/* 用作响应式，打开歌曲播放页做定位 */
-		.tool .leftopen{
-			left: 0;
-		}
-		.tool .right{
-			position: fixed;
-			right: 0;
-		}
-	}
-	@media screen and (max-width: 415px) {
-		.playlist-box{
-			width: 320px!important;
-			height: 390px!important;
-		}
-	}
-	@media screen and (max-width: 401px) {
-		.tool{
-			margin-top: 3.2%;
-		}
-	}
-	@media screen and (max-width: 345px) {
-		.playlist-box{
-			width: 390px!important;
-			height: 360px!important;
-		}
-	}
-
 	/* 歌曲播放页 */
 	.playpage {
 		height: calc(100% - 104px);
@@ -836,5 +756,83 @@
 		padding: 6px;
 		border-radius: 4px;
 		cursor: pointer;
+		z-index: 2021;
+	}
+	
+	/* 移动 */
+	@media screen and (max-width: 992px) {
+		.hidden-hd {
+			display: none;
+		}
+		.tool{
+			margin-top: 1.8%;
+		}
+		.el-slider{
+			width: 55%!important;
+		}
+	}
+	
+	@media screen and (max-width: 768px) {
+		.hidden-sm {
+			display: none;
+		}
+		.tool{
+			margin-top: 2.5%;
+		}
+		
+	}
+	@media screen and (max-width: 576px) {
+		.hidden-col {
+			display: none;
+		}
+		.tool{
+			margin-top: 2.2%;
+		}
+		.tool i{
+			font-size: 25px;
+		}
+		#progress-wrap{
+			position: fixed;
+			width: 100%;
+			padding: 0 10%;
+			bottom: 54px;
+			background: #f9f9f9;
+			z-index: 2;
+		}
+		.el-slider{
+			width: 70%!important;
+		}
+		.player-btn{
+			flex-grow: 50;
+		}
+		.tool .left{
+			position: fixed;
+			left: 13%;
+		}
+		/* 用作响应式，打开歌曲播放页做定位 */
+		.tool .leftopen{
+			left: 0;
+		}
+		.tool .right{
+			position: fixed;
+			right: 0;
+		}
+	}
+	@media screen and (max-width: 415px) {
+		.playlist-box{
+			width: 320px!important;
+			height: 390px!important;
+		}
+	}
+	@media screen and (max-width: 401px) {
+		.tool{
+			margin-top: 3.2%;
+		}
+	}
+	@media screen and (max-width: 345px) {
+		.playlist-box{
+			width: 300px!important;
+			height: 360px!important;
+		}
 	}
 </style>
