@@ -3,7 +3,7 @@
 export default {
 	// 补0方法
 	addZero(num, len) {
-		// if (String(num).length > len) return num
+		if (String(num).length > len) return num
 		// -slice取出
 		return (Array(len).join(0) + num).slice(-len)
 	},

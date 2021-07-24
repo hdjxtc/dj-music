@@ -34,6 +34,7 @@
 		<Videolist :videos="videos" :isVideo="true" />
 		<!-- 切换 -->
 		<div class="page bottom-action">
+			<!-- 没有总条数，用分页拿不到total -->
 			<button :disabled="offset == 0" class="btn flex-center trainsition" @click="prev">
 				上一页
 			</button>
@@ -44,9 +45,7 @@
 	</div>
 </template>
 <script>
-	import {
-		createVideo
-	} from '@/model/song'
+	import {createVideo} from '@/model/song'
 	import Videolist from '@/components/contents/videolist'
 	export default {
 		name: 'videos',

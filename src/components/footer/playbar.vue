@@ -672,19 +672,23 @@
 		height: 45px;
 	}
 
-	.playlist-row:hover .flex-center i {
-		display: block;
-		margin-right: 15px;
-	}
-
 	/* 序号 */
 	.playlist-box .flex-center {
-		width: 17px;
+		width: 20px;
 		overflow: hidden;
 		margin-right: 20px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		position: relative;
+	}
+	
+	.playlist-row:hover .flex-center i {
+		display: block;
+		position: absolute;
+		bottom: -5px;
+		left: 0;
+		
 	}
 
 	.playlist-box .num {
@@ -695,7 +699,8 @@
 	/* 播放列表播放暂停图标 */
 	.playlist-row .flex-center i {
 		color: #fa2800;
-		font-size: 15px;
+		font-size: 20px;
+		background: #F9F9F9;
 		display: none;
 		text-align: left;
 	}

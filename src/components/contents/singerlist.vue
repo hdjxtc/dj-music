@@ -29,6 +29,7 @@
 		methods: {
 			// 跳转歌手页面
 			toSinger(id) {
+				this.$message.info('请稍后~')
 				this.$router.push({
 					name: 'singerdetail',
 					query: {

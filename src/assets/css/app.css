@@ -127,3 +127,29 @@
 	width: 100%!important;
 	margin: 0!important;
 }
+
+/* 歌手页性别图标 */
+.singerdetailbox .nickname .nv{
+	color: #ff557f;
+}
+.singerdetailbox .nickname .nan{
+	color: #00aaff;
+}
+/* 歌手页播放全部 */
+.singerdetailbox .playall{
+	width: 95%;
+}
+/* 歌手页导航 */
+.singerdetailbox .el-tabs--card>.el-tabs__header{
+	border-bottom: none;
+}
+.singerdetailbox .el-tabs--card>.el-tabs__header .el-tabs__nav{
+	border: none;
+}
+.singerdetailbox .el-tabs__item{
+	color: #2a2a2a;
+	font-weight: 600;
+}
+.singerdetailbox .el-tabs--card>.el-tabs__header .el-tabs__item {
+	border-left: none;
+}

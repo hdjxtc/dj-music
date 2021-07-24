@@ -401,6 +401,11 @@
 	.playbox .filter .type .item:hover {
 		color: #666;
 	}
+	
+	.playbox .block {
+		width: 100%;
+	}
+	
 	@media screen and (max-width: 992px) {
 		.hot-tag {
 			white-space: nowrap;
