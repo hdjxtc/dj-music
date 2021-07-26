@@ -101,7 +101,7 @@
 				'userInfo'
 			]),
 			age() {
-				return this.handle.getAstro(this.userInfo.birthday)
+				return this.handle.getAstro(this.userProfile.birthday)
 			}
 		},
 		components: {

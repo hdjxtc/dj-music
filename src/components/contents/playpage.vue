@@ -266,6 +266,7 @@
 				if(id!=undefined){
 					this.$api.get(`/simi/song?id=${id}`).then(res => {
 						this.similarsongs = res.songs
+						// console.log(res)
 					}).catch(err => {
 						console.log(err)
 					})
@@ -277,6 +278,7 @@
 				if(id!=undefined){
 					this.$api.get(`/simi/playlist?id=${id}`).then(res => {
 						this.similarplaylist = res.playlists
+						// console.log(res)
 					}).catch(err => {
 						console.log(err)
 					})

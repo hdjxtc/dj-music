@@ -58,14 +58,14 @@
 					<span>相关推荐</span>
 				</div>
 				<ul>
-					<li v-for="item of relatedList" :key="item.id" @click="toDetail(item.id)">
+					<li v-for="item of relatedList" :key="item.id">
 						<div class="avatar">
 							<img :src="item.coverImgUrl" :alt="item.nickname"
 								:title="item.nickname" />
 						</div>
 						<div class="info">
-							<h2 class="ellipsis" :title="item.name">{{ item.name }}</h2>
-							<span>by <small> {{ item.creator.nickname }}</small></span>
+							<h2 class="ellipsis" :title="item.name" @click="toDetail(item.id)">{{ item.name }}</h2>
+							<span @click="toUser(item.creator.userId)">by <small> {{ item.creator.nickname }}</small></span>
 						</div>
 					</li>
 				</ul>
@@ -235,6 +235,7 @@
 					let res = await this.$api.get(`/related/playlist?id=${id}`)
 					if (res.code === 200) {
 						this.relatedList = res.playlists
+						// console.log(res)
 					}
 				} catch (error) {
 					// this.$message.error(error)
@@ -536,6 +537,7 @@
 	.playlistdetailbox .right .like ul li .avatar {
 		width: 100%;
 		border-radius: 3px;
+		cursor: pointer;
 	}
 
 	.playlistdetailbox .right .like ul li .avatar img {
@@ -587,8 +589,11 @@
 		color: #8588c1;
 	}
 
-	.playlistdetailbox .right .related ul li .info:hover h2 {
-		color: red;
+	.playlistdetailbox .right .related ul li .info h2:hover {
+		color: #FA2800;
+	}
+	.playlistdetailbox .right .related ul li .info span:hover {
+		color: #FA2800;
 	}
 
 	.playlistdetailbox .right .comment ul li {

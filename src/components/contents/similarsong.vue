@@ -10,7 +10,7 @@
 				</div>
 				<div class="info">
 					<h2 class="ellipsis" :title="item.name" @click="getSongDetail(item.id)">{{item.name}}</h2>
-					<span @click="toSinger(item.id)"><small>{{singer[index]}}</small></span>
+					<span @click="toSinger(item.artists[0].id)"><small>{{singer[index]}}</small></span>
 				</div>
 			</li>
 		</ul>
@@ -80,12 +80,11 @@
 			// 跳转歌手页面
 			toSinger(id) {
 				this.$router.push({
-					name: 'singerpage',
+					name: 'singerdetail',
 					query: {
 						id: id
 					}
 				})
-				// this.setSinger(item)
 			},
 		},
 		watch: {

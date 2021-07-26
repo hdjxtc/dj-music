@@ -10,7 +10,7 @@
 				</div>
 				<div class="info">
 					<h2 class="ellipsis" :title="item.name" @click="toPlaylist(item.id)">{{item.name}}</h2>
-					<span @click="toUser(item.id)"><small>by {{item.creator.nickname}}</small></span>
+					<span @click="toUser(item.userId)"><small>by {{item.creator.nickname}}</small></span>
 				</div>
 			</li>
 		</ul>
@@ -28,7 +28,12 @@
 		methods: {
 			// 跳转到用户界面
 			toUser(id) {
-				console.log(id)
+				this.$router.push({
+					name: 'personalpage',
+					query: {
+						id
+					}
+				})
 			},
 			// 跳转歌单页面
 			toPlaylist(id) {

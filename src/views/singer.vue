@@ -168,6 +168,7 @@
 					let res = await this.$api.get(`/artist/list`,{params: this.params})
 					if (res.code === 200) {
 						this.singers = this.singers.concat(res.artists)
+						console.log(this.singers)
 						if (res.more) {
 							this.loading = true
 							this.loadStatus = true

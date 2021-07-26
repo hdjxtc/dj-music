@@ -153,10 +153,26 @@ export default {
 		// let newDate = new Date()
 		// newDate.setTime(timestamp)
 		let birthday = newDate.toLocaleDateString(timestamp)
+		// console.log(birthday)
 		let birthdayArr = birthday.split('/')
-		let year = birthdayArr[0].substring(birthdayArr[0].length - 2) + '后'
+		let year = birthdayArr[0].substring(birthdayArr[0].length - 2) + '年'
 		let month = birthdayArr[1]
 		let day = birthdayArr[2]
+		if(birthdayArr[0]=='1900'){
+			return (
+				'此人很懒，暂未设置~'
+			)
+		}
+		// function getAstro(m, d) {
+		// 	//各个星座的日期分界线，例如1月为："102223444433".charAt(0)即"1"，依此类推... 然后加上19(这里用- -19，因为'+'会当作字符串拼接操作而不是数学的加法)
+		// 	let b = "102223444433".charAt(m - 1) - -19;
+		// 	//如果日期小于分界线，就为1，否则为0
+		// 	let sub = d < b ? 1 : 0;
+		// 	//把月份换算成索引，得到0~12的数字，0 摩羯，1 水瓶，...，12是摩羯。
+		// 	let x = m - sub;
+		// 	//从索引*2的位置开始取出2个字符，即为星座名称
+		// 	return "魔羯水瓶双鱼牡羊金牛双子巨蟹狮子处女天秤天蝎射手魔羯".substr(x * 2, 2);
+		// }
 		return (
 			year +
 			' - ' +
