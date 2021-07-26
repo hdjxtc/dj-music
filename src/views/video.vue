@@ -196,7 +196,7 @@
 			},
 			// 选择分类
 			choosetag(id, name) {
-				this.$message.info('请稍等~')
+				this.$message.info('请稍后~')
 				this.offset = 0
 				this.hasmore = true
 				this.currenttag = name

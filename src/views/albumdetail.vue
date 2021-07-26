@@ -210,7 +210,7 @@
 			},
 			// 热门专辑详情
 			toDetail(id) {
-				this.$message.info('请稍等~')
+				this.$message.info('请稍后~')
 				this.$router.push({
 					name: 'albumdetail',
 					query: {

@@ -1,6 +1,6 @@
 <template>
-	<div class="gendanlist">
-		<div class="item" v-for="(item,index) of playList" :key="index" @click="toDetail(item.id)">
+	<div class="gendanlist" :class="num?'gendanlisttwo':''">
+		<div class="item" :class="num?'two':''" v-for="(item,index) of playList" :key="index" @click="toDetail(item.id)">
 			<div class="wrapper">
 				<div class="cover">
 					<div class="image">
@@ -35,6 +35,9 @@
 			playList: {
 				type: Array
 			},
+			num: {
+				type: Number
+			}
 		},
 		methods: {
 			toDetail(id) {
@@ -55,6 +58,10 @@
 		flex-wrap: wrap;
 		padding: 2rem;
 	}
+	
+	.gendanlisttwo {
+		padding: 0;
+	}
 
 	.gendanlist .item {
 		flex: 0 0 16.6%;
@@ -62,7 +69,11 @@
 		cursor: pointer;
 		padding: 0 15px 30px;
 	}
-
+	.gendanlist .two {
+		flex: 0 0 50%;
+		min-width: 50%;
+		padding: 0 3px 30px;
+	}
 	.gendanlist .item .wrapper {
 		position: relative;
 		padding-right: 10px;

@@ -4,9 +4,8 @@
 			<div class="logo">
 				<router-link :to="{name: 'home'}" tag="a"></router-link>
 			</div>
-			<!-- 汉堡包导航 -->
 			<div class="nav-pc navpc-lg">
-				<div class="collapse navbar-collapse" id="target">
+				<div class="collapse navbar-collapse">
 					<ul class="navbar-nav">
 						<li class="nav-item" :class="$route.path=='/home'?'active':''">
 							<router-link :to="{ name: 'home' }" tag="a" class="nav-link">发现音乐</router-link>
@@ -127,12 +126,11 @@
 							@keyup.enter="search()">
 					</div>
 				</el-drawer>
-				<button type="primary" class="navbar-toggler border-0" data-toggle="collapse" data-target="#target"
-					@click="drawer = true">
+				<div type="primary" class="navbar-toggler border-0" @click="drawer = true">
 					<!-- 三条杠 -->
 					<!-- <span class="navbar-toggler-icon" @click="drawer = true" type="primary"></span> -->
 					Menu
-				</button>
+				</div>
 			</div>
 		</nav>
 	</div>
@@ -224,8 +222,6 @@
 </script>
 
 <style scoped>
-	.nav-mb{
-	}
 	.form-inline .form-control {
 		width: auto;
 		border-radius: 10rem;

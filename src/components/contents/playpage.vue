@@ -1,5 +1,5 @@
 <template>
-	<div class="playpagebox container" v-if="currentSong">
+	<div class="playpagebox container">
 		<div class="top">
 			<div class="blur" :style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}"></div>
 			<div class="left">
@@ -25,7 +25,7 @@
 							{{currentSong.name}}
 						</h4>
 						<i class="iconfont dj-icon-MV" style="cursor: pointer; margin-left: 3%;"
-							v-if="currentSong.mv!==0" @click="toDetail(currentSong.mv)" title="MV"></i>
+							v-if="currentSong.mv!=''" @click="toDetail(currentSong.mv)" title="MV"></i>
 					</div>
 					<div class="musicinfo">
 						<h6>
@@ -263,20 +263,24 @@
 			// 获取相似歌曲
 			getSimilarsong() {
 				let id = this.currentSong.id
-				this.$api.get(`/simi/song?id=${id}`).then(res => {
-					this.similarsongs = res.songs
-				}).catch(err => {
-					console.log(err)
-				})
+				if(id!=undefined){
+					this.$api.get(`/simi/song?id=${id}`).then(res => {
+						this.similarsongs = res.songs
+					}).catch(err => {
+						console.log(err)
+					})
+				}
 			},
 			// 获取相似歌单
 			getSimilarplaylist() {
 				let id = this.currentSong.id
-				this.$api.get(`/simi/playlist?id=${id}`).then(res => {
-					this.similarplaylist = res.playlists
-				}).catch(err => {
-					console.log(err)
-				})
+				if(id!=undefined){
+					this.$api.get(`/simi/playlist?id=${id}`).then(res => {
+						this.similarplaylist = res.playlists
+					}).catch(err => {
+						console.log(err)
+					})
+				}
 			},
 			...mapMutations([
 				'upplaYing',

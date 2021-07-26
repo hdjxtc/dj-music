@@ -394,7 +394,7 @@
 			},
 			// 点击相关推荐mv播放
 			toDetail(id) {
-				this.$message.info('请稍等~')
+				this.$message.info('请稍后~')
 				// 暂停播放
 				this.upplaYing(false)
 				// 滚动条滚零

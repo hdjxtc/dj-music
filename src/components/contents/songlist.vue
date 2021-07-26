@@ -27,7 +27,7 @@
 					<i class="iconfont dj-icon-zanting" style="cursor: pointer; margin-left: 3%;"
 						@click="playSong(scope,songlist)" title="播放"></i>
 					<i class="iconfont dj-icon-bofangmv" style="cursor: pointer; margin-left: 3%;"
-						v-if="scope.row.mv!==0" @click="toDetail(scope.row.mv)" title="MV"></i>
+						v-if="scope.row.mv!=''" @click="toDetail(scope.row.mv)" title="MV"></i>
 					<i class="iconfont dj-icon-huiyuan" style="cursor: pointer; margin-left: 3%;color: #fbcc21;"
 						v-if="scope.row.fee==1" title="会员"></i>
 				</template>

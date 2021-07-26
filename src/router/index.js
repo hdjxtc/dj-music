@@ -27,43 +27,52 @@ const routes = [
 	{
 		path: '/home',
 		name: 'home',
-		component: Home
+		component: Home,
+		// 懒加载
+		// component: () => import('@/views/home')
+		// component: resolve => require(['@/views/home'], resolve)
 	},
 	// 排行
 	{
 		path: '/ranking',
 		name: 'ranking',
-		component: Ranking
+		// component: () => import('@/views/ranking')
+		component: Ranking,
 	},
 	// 歌单
 	{
 		path: '/playlist',
 		name: 'playlist',
-		component: Playlist
+		// component: () => import('@/views/playlist')
+		component: Playlist,
 	},
 	// 歌手
 	{
 		path: '/singer',
 		name: 'singer',
-		component: Singer
+		// component: () => import('@/views/singer')
+		component: Singer,
 	},
 	// 视频
 	{
 		path: '/video',
 		name: 'video',
-		component: Video
+		// component: () => import('@/views/video')
+		component: Video,
 	},
 	// mv
 	{
 		path: '/mv',
 		name: 'mv',
-		component: Mv
+		// component: () => import('@/views/mv')
+		component: Mv,
 	},
 	// 搜索
 	{
 		path: '/search',
 		name: 'search',
-		component: Searchpage
+		// component: () => import('@/views/searchpage')
+		component: Searchpage,
 	},
 	// 登录
 	{
@@ -72,49 +81,57 @@ const routes = [
 		meta: {
 			isLogin: true
 		},
-		component: Login
+		// component: () => import('@/views/login')
+		component: Login,
 	},
 	// 个人主页
 	{
 		path: '/personalpage',
 		name: 'personalpage',
-		component: Personalpage
+		// component: () => import('@/views/personalpage')
+		component: Personalpage,
 	},
 	// 歌手个人详情页
 	{
 		path: '/singerdetail',
 		name: 'singerdetail',
-		component: Singerdetail
+		// component: () => import('@/views/singerdetail')
+		component: Singerdetail,
 	},
 	// 专辑详情页
 	{
 		path: '/albumdetail',
 		name: 'albumdetail',
-		component: Albumdetail
+		// component: () => import('@/views/albumdetail')
+		component: Albumdetail,
 	},
 	// 视频详情页
 	{
 		path: '/videodetail',
 		name: 'videodetail',
-		component: Videodetail
+		// component: () => import('@/views/videodetail')
+		component: Videodetail,
 	},
 	// mv详情页
 	{
 		path: '/mvdetail',
 		name: 'mvdetail',
-		component: Mvdetail
+		// component: () => import('@/views/mvdetail')
+		component: Mvdetail,
 	},
 	// 歌单详情页
 	{
 		path: '/playlistdetail',
 		name: 'playlistdetail',
-		component: Playlistdetail
+		// component: () => import('@/views/playlistdetail')
+		component: Playlistdetail,
 	},
 	// 匹配错误页
 	{
 		path: '*',
 		name: '404',
-		component: Err
+		// component: () => import('@/views/404')
+		component: Err,
 	},
 ]
 

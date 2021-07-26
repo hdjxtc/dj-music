@@ -129,14 +129,18 @@
 }
 
 /* 歌手页性别图标 */
-.singerdetailbox .nickname .nv{
-	color: #ff557f;
+.nv{
+	color: #ff557f!important;
 }
-.singerdetailbox .nickname .nan{
-	color: #00aaff;
+.nan{
+	color: #00aaff!important;
 }
 /* 歌手页播放全部 */
 .singerdetailbox .playall{
+	width: 95%;
+}
+/* 个人主页播放全部 */
+.personalpagebox .playall{
 	width: 95%;
 }
 /* 歌手页导航 */

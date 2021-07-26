@@ -412,7 +412,7 @@
 			},
 			// 点击相关推荐视频播放
 			toDetail(id) {
-				this.$message.info('请稍等~')
+				this.$message.info('请稍后~')
 				// 播放视频暂停播放
 				this.upplaYing(false)
 				// 滚动条滚零

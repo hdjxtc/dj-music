@@ -333,7 +333,7 @@
 			// },
 			// 相关推荐详情
 			toDetail(id) {
-				this.$message.info('请稍等~')
+				this.$message.info('请稍后~')
 				this.$router.push({
 					name: 'playlistdetail',
 					query: {
@@ -343,13 +343,12 @@
 			},
 			// 用户页面
 			toUser(id) {
-				console.log(id)
-				// this.$router.push({
-				// 	name: 'personal',
-				// 	query: {
-				// 		id
-				// 	}
-				// })
+				this.$router.push({
+					name: 'personalpage',
+					query: {
+						id
+					}
+				})
 			},
 			// 初始化
 			initialize(id) {

@@ -454,4 +454,10 @@
 		font-weight: 600;
 		color: #1f2d3a;;
 	}
+	
+	@media screen and (max-width: 386px) {
+		.singerdetailbox .info li {
+			margin: 0 2%;
+		}
+	}
 </style>

@@ -135,7 +135,7 @@
 		methods: {
 			// 选择分类
 			chooseType(type, val) {
-				this.$message.info('请稍等~')
+				this.$message.info('请稍后~')
 				if (type == 'area') {
 					this.area = val
 					this.params.area = val

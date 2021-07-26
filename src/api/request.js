@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '@/store'
 // import router from '@/router'
 import {Message} from 'element-ui'
 import config from './config'
@@ -36,18 +37,25 @@ api.interceptors.response.use(response => {
 }, error => {
 	console.log(error)
 	// console.log(error.response)
-	if(error.response.status){
+	if (error.response.status) {
 		let status = error.response.status
 		if (status === 301) {
-			Message.warning({
-				message: '请先登录!',
-				duration: 2000
-			})
+			if (store.state.loginstatu == null) {
+				Message.warning({
+					message: '请先登录！',
+					duration: 2000
+				})
+			} else {
+				Message.warning({
+					message: '授权已过期，请重新登录！',
+					duration: 2000
+				})
+			}
 			// router.replace({
 			// 	path: '/login'
 			// })
 			return
-		} else if(status === 444){
+		} else if (status === 444) {
 			Message.error({
 				message: '该资源不允许评论！',
 				duration: 2000

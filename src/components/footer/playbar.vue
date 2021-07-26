@@ -173,6 +173,8 @@
 					const audio = this.$refs.audio
 					audio.currentTime = 0
 					audio.pause()
+					// 关闭播放列表
+					this.showPlaylist = false
 					return
 				}
 			},
