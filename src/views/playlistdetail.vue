@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="content" v-loading="loading">
-				<Songlist :songlist="songs" :width1="300" :width2="200" :width3="200"/>
+				<Songlist :songlist="songs" :width1="300" :width2="200" :width3="200" :subscribed="detail.subscribed" @collect="collect"/>
 			</div>
 		</div>
 		<!-- 右栏 -->
@@ -146,21 +146,11 @@
 				}
 			}
 		},
-		mounted() {
-			// 滚动条滚零
-			let contents = document.getElementById('contents')
-			contents.scrollTo(0,0)
-			let id = this.$route.query.id
-			this.artistId = id
-			if (id) {
-				this.initialize(id)
-			}
-		},
 		methods: {
 			// 标签跳转
 			tag(cat) {
 				this.$router.push({
-					name: 'gedan',
+					name: 'playlist',
 					query: {
 						cat
 					}
@@ -180,6 +170,7 @@
 							)
 						}
 						this.detail = res.playlist
+						// console.log(this.detail)
 						this.creator = res.playlist.creator
 						let trackIds = res.playlist.trackIds
 						// 数量超过一千，进行分割
@@ -312,25 +303,26 @@
 				})
 			},
 			// 收藏歌单
-			// async collectArtist() {
-			// 	let t = this.detail.subscribed ? 2 : 1
-			// 	let message = this.detail.subscribed ? '已取消收藏' : '收藏成功'
-			// 	try {
-			// 		let res = await this.$api.collectPlaylist(t, this.artistId)
-			// 		if (res.code === 200) {
-			// 			this.$message({
-			// 				message,
-			// 				type: 'success'
-			// 			})
-
-			// 			setTimeout(() => {
-			// 				this.getPlayListDetail(this.artistId, 100)
-			// 			}, 300)
-			// 		}
-			// 	} catch (error) {
-			// 		// this.$message.error(error)
-			// 	}
-			// },
+			async collect() {
+				let t = this.detail.subscribed ? 2 : 1
+				let message = this.detail.subscribed ? '已取消收藏' : '收藏成功'
+				try {
+					let res = await this.$api.get(`/playlist/subscribe?t=${t}&id=${this.artistId}` )
+					if (res.code === 200) {
+						this.$message({
+							message,
+							type: 'success'
+						})
+						// 重新拉取歌单详情
+						setTimeout(() => {
+							this.getPlayListDetail(this.artistId, 100)
+						}, 300)
+					}
+				} catch (error) {
+					// this.$message.error(error)
+					console.log(error)
+				}
+			},
 			// 相关推荐详情
 			toDetail(id) {
 				this.$message.info('请稍后~')
@@ -360,6 +352,16 @@
 				this.getSubscribersPlaylist(id)
 				// 评论
 				this.getCommentPlaylist(id)
+			}
+		},
+		mounted() {
+			// 滚动条滚零
+			let contents = document.getElementById('contents')
+			contents.scrollTo(0,0)
+			let id = this.$route.query.id
+			this.artistId = id
+			if (id) {
+				this.initialize(id)
 			}
 		},
 	}

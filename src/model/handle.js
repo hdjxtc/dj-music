@@ -148,8 +148,10 @@ export default {
 	},
 	// 获取是几几后
 	getAstro(timestamp) {
-		let newDate = new Date()
-		newDate.setTime(timestamp)
+		// console.log(timestamp)
+		let newDate = new Date(timestamp)
+		// let newDate = new Date()
+		// newDate.setTime(timestamp)
 		let birthday = newDate.toLocaleDateString(timestamp)
 		let birthdayArr = birthday.split('/')
 		let year = birthdayArr[0].substring(birthdayArr[0].length - 2) + '后'

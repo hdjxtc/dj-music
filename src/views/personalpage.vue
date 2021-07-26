@@ -267,7 +267,6 @@
 
 	/* 总盒 */
 	.personalpagebox {
-		padding: 2rem;
 		display: flex;
 		align-items: flex-start;
 	}
@@ -276,6 +275,7 @@
 	.personalpagebox .left {
 		width: 950px;
 		margin-right: 20px;
+		padding: 1rem;
 	}
 
 	/* 右栏 */
@@ -347,6 +347,7 @@
 	.personalpagebox .listenmusic {
 		padding: 20px;
 		margin-top: 50px;
+		padding-left: 5px;
 	}
 
 	.personalpagebox .listenmusic span {

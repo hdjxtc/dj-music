@@ -1,17 +1,21 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2665699 */
-  src: url('iconfont.woff2?t=1627110728156') format('woff2'),
-       url('iconfont.woff?t=1627110728156') format('woff'),
-       url('iconfont.ttf?t=1627110728156') format('truetype');
+  src: url('iconfont.woff2?t=1627298611022') format('woff2'),
+       url('iconfont.woff?t=1627298611022') format('woff'),
+       url('iconfont.ttf?t=1627298611022') format('truetype');
 }
 
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
-  color: #66E3FF;
+  color: #33E6FF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dj-icon-weishoucang:before {
+  content: "\e617";
 }
 
 .dj-icon-nan:before {

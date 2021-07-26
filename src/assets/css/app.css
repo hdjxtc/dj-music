@@ -139,10 +139,11 @@
 .singerdetailbox .playall{
 	width: 95%;
 }
-/* 个人主页播放全部 */
-.personalpagebox .playall{
-	width: 95%;
+/* 个人主页歌曲列表 */
+.personalpagebox .left .el-table{
+	width: 100%!important;
 }
+
 /* 歌手页导航 */
 .singerdetailbox .el-tabs--card>.el-tabs__header{
 	border-bottom: none;

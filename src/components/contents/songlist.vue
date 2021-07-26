@@ -1,9 +1,12 @@
 <template>
 	<div class="songlist" v-if="songlist">
 		<!-- highlight-current-row高亮显示选中行 -->
-		<div class="playall" @click="playAllsong(songlist)">
-			<div class="playallitem">
+		<div class="playall">
+			<div class="playallitem" :class="!(subscribed=='djtc')?'collplayall':''" @click="playAllsong(songlist)">
 				<i class="iconfont dj-icon-zanting"></i> 播放全部
+			</div>
+			<div v-if="!(subscribed=='djtc')" :class="subscribed?'collected':'collectitem'" @click="collect()">
+				<i class="iconfont" :class="subscribed?'dj-icon-yishoucang':'dj-icon-weishoucang'"></i> {{collectText}}
 			</div>
 		</div>
 		<el-table :data="songlist" style="width: 95%;margin:0 auto">
@@ -67,11 +70,18 @@
 			width3: {
 				type: Number
 			},
+			subscribed: {
+				type: [Boolean,String],
+				default: 'djtc'
+			}
 		},
 		computed: {
 			...mapGetters([
 				'currentSong'
-			])
+			]),
+			collectText() {
+				return this.subscribed ? '已收藏' : '收藏'
+			}
 		},
 		watch: {
 			// 正在播放的选中样式在搜索其他歌曲时清除
@@ -160,7 +170,7 @@
 				})
 			},
 			// 播放全部歌曲
-			playAllsong(list){
+			playAllsong(list) {
 				this.playAll(list)
 			},
 			// 视频详情
@@ -174,6 +184,10 @@
 						id
 					}
 				})
+			},
+			// 收藏歌单
+			async collect() {
+				this.$emit('collect')
 			},
 			...mapMutations([
 				'upplaYing',
@@ -192,23 +206,23 @@
 	.songlist {
 		margin: 0 auto;
 	}
-	
+
 	.songlist .el-table {
 		opacity: .7;
 	}
-	
+
 	.el-table {
 		color: #000;
 	}
-	
+
 	.playall {
 		width: 100%;
 		height: 50px;
 		margin: 0 auto;
 		position: relative;
 	}
-	
-	.playall .playallitem{
+
+	.playall .playallitem {
 		position: absolute;
 		right: 0;
 		bottom: 15px;
@@ -216,14 +230,50 @@
 		border-radius: 50px;
 		padding: 5px 10px;
 		cursor: pointer;
-		
+
 	}
-	
-	.playallitem , .playall i{
+	.playall .collplayall {
+		right: 110px;
+	}
+
+	/* 未收藏 */
+	.playall .collectitem {
+		position: absolute;
+		right: 0;
+		bottom: 15px;
+		background: #ccc;
+		border-radius: 50px;
+		padding: 5px 10px;
+		cursor: pointer;
+	}
+
+	.playall .collectitem i {
+		color: #000;
+	}
+
+	/* 已收藏 */
+	.playall .collected {
+		position: absolute;
+		right: 0;
+		bottom: 15px;
+		background: #FA2800;
+		border-radius: 50px;
+		padding: 5px 10px;
+		cursor: pointer;
 		color: #f4f4f4;
 	}
-	
-	.playall:hover .playallitem, .playall i{
+
+	.playall .collected i {
+		color: #f4f4f4;
+	}
+
+	.playallitem,
+	.playall i {
+		color: #f4f4f4;
+	}
+
+	.playall:hover .playallitem,
+	.playall i {
 		color: #fff;
 	}
 </style>
