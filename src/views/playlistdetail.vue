@@ -36,9 +36,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="content" v-loading="loading">
-				<Songlist :songlist="songs" :width1="300" :width2="200" :width3="200" :subscribed="detail.subscribed" @collect="collect"/>
-			</div>
+			<Songlist :songlist="songs" :width1="300" :width2="200" :width3="200" :subscribed="detail.subscribed" @collect="collect"/>
 		</div>
 		<!-- 右栏 -->
 		<div class="right">
@@ -118,8 +116,6 @@
 				// 歌单最近的收藏者
 				s: 32,
 				artistId: '',
-				// 数据加载时动画
-				loading: true,
 			}
 		},
 		components: {
@@ -188,7 +184,6 @@
 			},
 			// 获取歌曲列表
 			async getSongDetail(sliceArr) {
-				this.loading = true
 				// 如果有分割,分别请求
 				let before = sliceArr[0]
 				let after = sliceArr[1]
@@ -220,7 +215,6 @@
 						this.songs = this.normalizeSongs(res)
 						// console.log(this.songs)
 					}
-					this.loading = false
 				} catch (error) {
 					// this.$message.error(error)
 				}
