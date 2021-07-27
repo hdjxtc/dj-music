@@ -156,6 +156,7 @@ export default {
 		// console.log(birthday)
 		let birthdayArr = birthday.split('/')
 		let year = birthdayArr[0].substring(birthdayArr[0].length - 2) + '年'
+		// console.log(birthdayArr)
 		let month = birthdayArr[1]
 		let day = birthdayArr[2]
 		if(birthdayArr[0]=='1900'){

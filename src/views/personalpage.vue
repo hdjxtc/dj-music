@@ -57,13 +57,13 @@
 		<div class="right shadow">
 			<div class="createplaylist">
 				<span class="title">
-					我创建的歌单
+					{{isMe}}创建的歌单
 				</span>
 				<Gedanlist :playList="myCreatelist" :num="2" />
 			</div>
 			<div class="collectionsplaylist">
 				<span class="title">
-					我收藏的歌单
+					{{isMe}}收藏的歌单
 				</span>
 				<Gedanlist :playList="mycollectionlist" :num="2" />
 			</div>
@@ -72,8 +72,12 @@
 </template>
 
 <script>
-	import {mapGetters} from 'vuex'
-	import {createSong} from '@/model/song'
+	import {
+		mapGetters
+	} from 'vuex'
+	import {
+		createSong
+	} from '@/model/song'
 	import axios from 'axios'
 	import Gedanlist from '@/components/contents/gedanlist'
 	import Songlist from '@/components/contents/songlist'
@@ -102,6 +106,18 @@
 			]),
 			age() {
 				return this.handle.getAstro(this.userProfile.birthday)
+			},
+			isMe() {
+				let userid = this.$route.query.id
+				if (userid) {
+					if (this.userProfile.gender == 1) {
+						return '他'
+					} else {
+						return '她'
+					}
+				} else {
+					return '我'
+				}
 			}
 		},
 		components: {
@@ -110,6 +126,9 @@
 		},
 		watch: {
 			$route(newval) {
+				// 滚动条滚零
+				let contents = document.getElementById('contents')
+				contents.scrollTo(0,0)
 				if (newval.query.id) {
 					this.getUserDetail(newval.query.id)
 				} else {
@@ -167,7 +186,8 @@
 			async getUserArtist() {
 				try {
 					let timestamp = new Date().getTime()
-					let res = await this.$api.get(`/user/playlist?uid=${this.userProfile.userId}&timestamp=${timestamp}`)
+					let res = await this.$api.get(
+						`/user/playlist?uid=${this.userProfile.userId}&timestamp=${timestamp}`)
 					if (res.code === 200) {
 						// console.log(res)
 						let list = res.playlist
@@ -192,7 +212,8 @@
 			async getUserRecord() {
 				try {
 					let timestamp = new Date().getTime()
-					let res = await this.$api.get(`/user/record?uid=${this.userProfile.userId}&type=${this.type}&timestamp=${timestamp}`)
+					let res = await this.$api.get(
+						`/user/record?uid=${this.userProfile.userId}&type=${this.type}&timestamp=${timestamp}`)
 					if (res.code === 200) {
 						// 最近一周
 						if (this.type == 1) {
@@ -232,10 +253,17 @@
 			},
 		},
 		mounted() {
+			// 滚动条滚零
+			let contents = document.getElementById('contents')
+			contents.scrollTo(0,0)
 			let userid = this.$route.query.id
 			if (userid) {
 				this.getUserDetail(userid)
 			} else {
+				if(this.userInfo==null){
+					this.$message.warning('请先登录！')
+					return
+				}
 				this.getUserDetail(this.userInfo.userId)
 			}
 		}
@@ -370,5 +398,18 @@
 
 	.personalpagebox .listenmusic .active {
 		color: #FA2800;
+	}
+	@media screen and (max-width: 1200px) {
+		.personalpagebox{
+			display: block;
+		}
+		.personalpagebox .right{
+			width: 100%;
+		}
+	}
+	@media screen and (max-width: 476px) {
+		.personalpagebox .left .infobox{
+			display: block;
+		}
 	}
 </style>

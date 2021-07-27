@@ -143,6 +143,25 @@
 .personalpagebox .left .el-table{
 	width: 100%!important;
 }
+/* 个人主页歌单列表 */
+@media screen and (max-width: 1200px) {
+	.personalpagebox .right .gendanlist .two {
+		flex: 0 0 30%;
+		min-width: 30%;
+	}
+}
+@media screen and (max-width: 576px) {
+	.personalpagebox .right .gendanlist .two {
+		flex: 0 0 35%;
+		min-width: 35%;
+	}
+}
+@media screen and (max-width: 476px) {
+	.personalpagebox .right .gendanlist .two {
+		flex: 0 0 50%;
+		min-width: 50%;
+	}
+}
 
 /* 歌手页导航 */
 .singerdetailbox .el-tabs--card>.el-tabs__header{
