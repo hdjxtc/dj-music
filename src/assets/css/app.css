@@ -16,27 +16,31 @@
 .el-backtop {
 	background: none !important;
 	box-shadow: none !important;
-	right: 9%!important;
+	right: 9% !important;
 }
+
 /* 返回顶部移动端 */
 @media screen and (max-width: 1199px) {
-	.el-backtop{
-		right: 13%!important;
+	.el-backtop {
+		right: 13% !important;
 	}
 }
+
 @media screen and (max-width: 992px) {
-	.el-backtop{
-		right: 17%!important;
+	.el-backtop {
+		right: 17% !important;
 	}
 }
+
 @media screen and (max-width: 768px) {
-	.el-backtop{
-		right: 19%!important;
+	.el-backtop {
+		right: 19% !important;
 	}
 }
-@media screen and (max-width: 576px){
-	.el-backtop{
-		right: 8%!important;
+
+@media screen and (max-width: 576px) {
+	.el-backtop {
+		right: 8% !important;
 	}
 }
 
@@ -59,6 +63,7 @@
 .isplay td div i:nth-of-type(1) {
 	color: red;
 }
+
 /* 饿了么进度条默认样式 */
 .el-slider__runway {
 	height: 5px !important;
@@ -74,32 +79,78 @@
 	height: 5px !important;
 	background-color: #66e3ff !important;
 }
+
 /* 饿了么弹框 */
-.descBox{
-	height: 70%;
+.descBox {
+	height: auto;
 	overflow: scroll;
 }
 @media screen and (max-width: 576px) {
-	.descBox{
+	.descBox {
 		width: 70%;
 	}
 }
+
 .descBox::-webkit-scrollbar {
 	width: 0;
 	height: 4px;
 }
+
+/* 饿了么弹窗 */
+.mylike {
+	list-style: none;
+	display: flex;
+	margin-bottom: 15px;
+	cursor: pointer;
+}
+
+.mylike .author {
+	width: 50px;
+	height: 50px;
+	border-radius: 3px;
+	margin-right: 15px;
+}
+
+.mylike .author img {
+	width: 100%;
+	border-radius: 3px;
+}
+
+.mylike .info {
+	height: 50px;
+	font-size: 14px;
+	text-align: left;
+	margin-top: 3px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.mylike .info h2 {
+	width: 100%;
+	font-size: 13px;
+	font-weight: 600;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.mylike:hover{
+	background: #f2f2f2;
+}
+
 /* 饿了么懒加载图标 */
-.el-table td div{
+.el-table td div {
 	line-height: 4;
 }
+
 /* 动画 */
 /* 淡入淡出 */
 .fade-enter-active,
 .fade-leave-active,
 /* 滑动 */
 .slide-enter-active,
-.slide-leave-active
-{
+.slide-leave-active {
 	transition: .5s;
 }
 
@@ -107,6 +158,7 @@
 	opacity: 0;
 	transform: translate3d(0, 30px, 0);
 }
+
 .fade-leave-to {
 	opacity: 0;
 	transform: translate3d(0, 30px, 0);
@@ -123,26 +175,30 @@
 }
 
 /* 歌单歌曲列表 */
-.playlistdetailbox .left .el-table{
-	width: 100%!important;
-	margin: 0!important;
+.playlistdetailbox .left .el-table {
+	width: 100% !important;
+	margin: 0 !important;
 }
 
 /* 歌手页性别图标 */
-.nv{
-	color: #ff557f!important;
+.nv {
+	color: #ff557f !important;
 }
-.nan{
-	color: #00aaff!important;
+
+.nan {
+	color: #00aaff !important;
 }
+
 /* 歌手页播放全部 */
-.singerdetailbox .playall{
+.singerdetailbox .playall {
 	width: 95%;
 }
+
 /* 个人主页歌曲列表 */
-.personalpagebox .left .el-table{
-	width: 100%!important;
+.personalpagebox .left .el-table {
+	width: 100% !important;
 }
+
 /* 个人主页歌单列表 */
 @media screen and (max-width: 1200px) {
 	.personalpagebox .right .gendanlist .two {
@@ -150,12 +206,14 @@
 		min-width: 30%;
 	}
 }
+
 @media screen and (max-width: 576px) {
 	.personalpagebox .right .gendanlist .two {
 		flex: 0 0 35%;
 		min-width: 35%;
 	}
 }
+
 @media screen and (max-width: 476px) {
 	.personalpagebox .right .gendanlist .two {
 		flex: 0 0 50%;
@@ -164,16 +222,19 @@
 }
 
 /* 歌手页导航 */
-.singerdetailbox .el-tabs--card>.el-tabs__header{
+.singerdetailbox .el-tabs--card>.el-tabs__header {
 	border-bottom: none;
 }
-.singerdetailbox .el-tabs--card>.el-tabs__header .el-tabs__nav{
+
+.singerdetailbox .el-tabs--card>.el-tabs__header .el-tabs__nav {
 	border: none;
 }
-.singerdetailbox .el-tabs__item{
+
+.singerdetailbox .el-tabs__item {
 	color: #2a2a2a;
 	font-weight: 600;
 }
+
 .singerdetailbox .el-tabs--card>.el-tabs__header .el-tabs__item {
 	border-left: none;
 }

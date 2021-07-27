@@ -19,7 +19,9 @@ export default new Vuex.Store({
 		// 播放模式
 		mode: 0,
 		// 移动端，是否打开侧边栏
-		isdrawer: false
+		isdrawer: false,
+		// 我创建的歌单
+		mycreatelist: null
 	},
 	getters: {
 		// 获取登录状态
@@ -55,6 +57,10 @@ export default new Vuex.Store({
 		// 获取侧边栏状态
 		isDrawer(state){
 			return state.isdrawer
+		},
+		// 获取我创建的歌单
+		getMycreatelist(state) {
+			return state.mycreatelist
 		}
 	},
 	mutations: {
@@ -146,6 +152,10 @@ export default new Vuex.Store({
 		upisDrawer(state,flag) {
 			state.isdrawer = flag
 		},
+		// 添加我创建的歌单
+		addMycreatelist(state,list) {
+			state.mycreatelist = list
+		}
 	},
 	actions: {
 		// 选中播放歌曲

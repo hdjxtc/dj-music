@@ -72,12 +72,8 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from 'vuex'
-	import {
-		createSong
-	} from '@/model/song'
+	import {mapGetters} from 'vuex'
+	import {createSong} from '@/model/song'
 	import axios from 'axios'
 	import Gedanlist from '@/components/contents/gedanlist'
 	import Songlist from '@/components/contents/songlist'
@@ -128,7 +124,7 @@
 			$route(newval) {
 				// 滚动条滚零
 				let contents = document.getElementById('contents')
-				contents.scrollTo(0,0)
+				contents.scrollTo(0, 0)
 				if (newval.query.id) {
 					this.getUserDetail(newval.query.id)
 				} else {
@@ -202,6 +198,7 @@
 							}
 						})
 						this.myCreatelist = myCreatelist
+						this.$store.commit('addMycreatelist', myCreatelist)
 						this.mycollectionlist = mycollectionlist
 					}
 				} catch (error) {
@@ -255,12 +252,12 @@
 		mounted() {
 			// 滚动条滚零
 			let contents = document.getElementById('contents')
-			contents.scrollTo(0,0)
+			contents.scrollTo(0, 0)
 			let userid = this.$route.query.id
 			if (userid) {
 				this.getUserDetail(userid)
 			} else {
-				if(this.userInfo==null){
+				if (this.userInfo == null) {
 					this.$message.warning('请先登录！')
 					return
 				}
@@ -399,16 +396,19 @@
 	.personalpagebox .listenmusic .active {
 		color: #FA2800;
 	}
+
 	@media screen and (max-width: 1200px) {
-		.personalpagebox{
+		.personalpagebox {
 			display: block;
 		}
-		.personalpagebox .right{
+
+		.personalpagebox .right {
 			width: 100%;
 		}
 	}
+
 	@media screen and (max-width: 476px) {
-		.personalpagebox .left .infobox{
+		.personalpagebox .left .infobox {
 			display: block;
 		}
 	}

@@ -1,7 +1,9 @@
 <template>
 	<div class="playpagebox container">
 		<div class="top">
-			<div class="blur" :style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}"></div>
+			<div class="blur"
+				:style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}">
+			</div>
 			<div class="left">
 				<div class="playbar hidden-hd" ref="playbar">
 					<img src="../../assets/img/playbar.png">
@@ -11,10 +13,9 @@
 					<img :src="currentSong.image">
 				</div>
 				<div class="btnBox">
-					<el-button size="mini" icon="el-icon-circle-plus-outline">喜欢</el-button>
-					<el-button size="mini" icon="el-icon-star-off">收藏</el-button>
-					<el-button size="mini" icon="el-icon-thumb">分享</el-button>
-					<el-button size="mini" icon="el-icon-download">下载</el-button>
+					<el-button size="mini" icon="el-icon-circle-plus-outline" @click="clicklike">喜欢</el-button>
+					<el-button size="mini" icon="el-icon-download" @click="down">下载</el-button>
+					<el-button size="mini" icon="el-icon-chat-line-square" @click="comment">评论</el-button>
 				</div>
 			</div>
 			<div class="center">
@@ -29,19 +30,17 @@
 					</div>
 					<div class="musicinfo">
 						<h6>
-							专辑：<a href="javascript:;" @click="toAlbumdetail(currentSong.albumid)">{{currentSong.album}}</a>
+							专辑：<a href="javascript:;"
+								@click="toAlbumdetail(currentSong.albumid)">{{currentSong.album}}</a>
 						</h6>
 						<h6>
-							歌手：<a href="javascript:;" @click="toSingerdetail(currentSong.artistid)">{{currentSong.singer}}</a>
+							歌手：<a href="javascript:;"
+								@click="toSingerdetail(currentSong.artistid)">{{currentSong.singer}}</a>
 						</h6>
 					</div>
 				</div>
-				<div class="center-bottom" ref="scroll" 
-					@mousedown="isDrags = true"
-					@mouseup="isDrags = false"
-					@touchstart="isDrags = true"
-					@touchend="isDrags = false"
-				>
+				<div class="center-bottom" ref="scroll" @mousedown="isDrags = true" @mouseup="isDrags = false"
+					@touchstart="isDrags = true" @touchend="isDrags = false">
 					<!-- 歌词 -->
 					<div class="lyricbox">
 						<ul>
@@ -60,13 +59,17 @@
 		</div>
 		<div class="bottom">
 			<!-- 评论 -->
-			<Comment :currentSong="currentSong"/>
+			<Comment :currentSong="currentSong" />
 		</div>
 	</div>
 </template>
 
 <script>
-	import {mapMutations} from 'vuex'
+	import {
+		mapGetters,
+		mapMutations
+	} from 'vuex'
+	import axios from 'axios'
 	import Similarsong from './similarsong'
 	import Similargedan from './similargedan'
 	import Comment from './comment'
@@ -113,6 +116,13 @@
 				default: '暂无歌词'
 			}
 		},
+		computed: {
+			...mapGetters([
+				'getMycreatelist',
+				'loginStatu',
+				'userInfo'
+			])
+		},
 		mounted() {
 			// 控制唱片旋转
 			this.getMusicState()
@@ -124,6 +134,9 @@
 			this.getSimilarsong()
 			// 相似歌单
 			this.getSimilarplaylist()
+
+			// 赋值拼接字符串中的方法给window对象method里的方法才能正常调用
+			window.addlike = this.addlike
 		},
 		components: {
 			Similarsong,
@@ -174,7 +187,7 @@
 			// 监听播放时间
 			currenttime(current) {
 				// 当拖动进度条归零
-				if(!this.isDrags){
+				if (!this.isDrags) {
 					if (current < this.start) {
 						this.$refs.scroll.scrollTo(0, 0)
 					}
@@ -200,7 +213,7 @@
 			},
 			lyricindex() {
 				// 歌词滚动
-				if(!this.isDrags){
+				if (!this.isDrags) {
 					this.$nextTick(() => {
 						if (this.lyricindex > 5) {
 							this.$refs.scroll.scrollTo(0, 30.4 * (this.lyricindex - 5))
@@ -222,7 +235,7 @@
 				})
 			},
 			// 专辑详情
-			toAlbumdetail(id){
+			toAlbumdetail(id) {
 				// console.log(id)
 				this.$router.push({
 					name: 'albumdetail',
@@ -232,7 +245,7 @@
 				})
 			},
 			// 歌手详情
-			toSingerdetail(id){
+			toSingerdetail(id) {
 				this.$router.push({
 					name: 'singerdetail',
 					query: {
@@ -263,7 +276,7 @@
 			// 获取相似歌曲
 			getSimilarsong() {
 				let id = this.currentSong.id
-				if(id!=undefined){
+				if (id != undefined) {
 					this.$api.get(`/simi/song?id=${id}`).then(res => {
 						this.similarsongs = res.songs
 						// console.log(res)
@@ -275,7 +288,7 @@
 			// 获取相似歌单
 			getSimilarplaylist() {
 				let id = this.currentSong.id
-				if(id!=undefined){
+				if (id != undefined) {
 					this.$api.get(`/simi/playlist?id=${id}`).then(res => {
 						this.similarplaylist = res.playlists
 						// console.log(res)
@@ -284,8 +297,170 @@
 					})
 				}
 			},
+			// 获取用户歌单
+			async getUserArtist() {
+				// 获取用户歌单
+				try {
+					let timestamp = new Date().getTime()
+					let res = await this.$api.get(`/user/playlist?uid=${this.userInfo.userId}&timestamp=${timestamp}`)
+					if (res.code === 200) {
+						// console.log(res)
+						let list = res.playlist
+						let myCreatelist = []
+						list.map(item => {
+							// 拿出我创建的歌单
+							if (item.userId === this.userInfo.userId) {
+								myCreatelist.push(item)
+							}
+						})
+						// 存储到store
+						this.addMycreatelist(myCreatelist)
+						// console.log(this.getMycreatelist)
+					}
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			// 喜欢
+			async clicklike() {
+				// 登录后才能收藏歌曲
+				if (this.loginStatu) {
+					if (this.getMycreatelist == null) {
+						// console.log(this.userInfo.userId)
+						// 调用this.getUserArtist()造成没请求成功就执行下面的map遍历,控制台报错，所以直接用代码
+						try {
+							let timestamp = new Date().getTime()
+							let res = await this.$api.get(
+								`/user/playlist?uid=${this.userInfo.userId}&timestamp=${timestamp}`)
+							if (res.code === 200) {
+								// console.log(res)
+								let list = res.playlist
+								let myCreatelist = []
+								list.map(item => {
+									// 拿出我创建的歌单
+									if (item.userId === this.userInfo.userId) {
+										myCreatelist.push(item)
+									}
+								})
+								// 存储到store
+								this.addMycreatelist(myCreatelist)
+							}
+						} catch (error) {
+							console.log(error)
+						}
+					}
+					let ul = '<ul>'
+					await this.getMycreatelist.map(item => {
+						ul += `<li class="mylike" onClick="addlike(${item.id})">
+								<div class="author">
+									<img src="${item.coverImgUrl}" alt="${item.creator.nickname}" title="${item.creator.nickname}" />
+								</div>
+								<div class="info">
+									<h2 class="ellipsis" title="item.name">${item.name}</h2>
+									<span><small>by ${item.trackCount}</small></span>
+								</div>
+							</li>`
+					})
+					ul += '</ul>'
+					// console.log(ul)
+					// 饿了么弹框组件
+					this.$alert(ul, '添加到歌单', {
+						// 是否可通过点击遮罩关闭 MessageBox
+						closeOnClickModal: true,
+						// 是否可通过按下 ESC 键关闭 MessageBox
+						closeOnPressEscape: true,
+						// 是否显示确定按钮
+						showConfirmButton: false,
+						// 是否将 message 属性作为HTML片段处理
+						dangerouslyUseHTMLString: true,
+						// 自定义类名
+						customClass: 'descBox'
+					}).catch(err => {
+						console.log(err)
+					})
+				} else {
+					this.$message.warning('请先登录！')
+					return
+				}
+			},
+			// 收藏到我的歌单
+			addlike(pid) {
+				try {
+					let timestamp = new Date().getTime()
+					this.$api.get(`/playlist/tracks?op=add&pid=${pid}&tracks=${this.currentSong.id}&timestamp=${timestamp}`)
+						.then(res => {
+							// console.log(res)
+							// console.log(res.body)
+							if (res.body.code == 502) {
+								this.$message.warning(res.body.message)
+							} else {
+								this.$message.success('收藏成功！')
+								// 更新数据
+								this.getUserArtist()
+								// 主动触发esc关闭弹窗
+								setTimeout(()=>{
+									if (HTMLElement && !HTMLElement.prototype.pressKey) {
+										HTMLElement.prototype.pressKey = function(code) {
+											var evt = document.createEvent('UIEvents');
+											evt.keyCode = code;
+											evt.initEvent('keydown', true, true);
+											this.dispatchEvent(evt);
+										};
+									}
+									document.body.pressKey(27);
+								},2000)
+							}
+						}).catch(err => {
+							console.log(err)
+						})
+				} catch (err) {
+					console.log(err)
+				}
+			},
+			// 评论
+			comment() {
+				let playpage = document.getElementsByClassName('playpage')[0]
+				playpage.scrollTo(0, 700)
+			},
+			down() {
+				this.$message.success('请稍后~')
+				let downUrl = this.currentSong.url
+				// 文件名
+				let fileName = this.currentSong.name
+				axios({
+					method: 'get',
+					url: downUrl,
+					responseType: 'blob',
+					headers: {
+						'content-type': 'audio/mpeg'
+					}
+				}).then((res) => {
+					// 创建blob 设置blob文件类型 data 设置为后端返回的文件(例如mp3,jpeg) type:这里设置后端返回的类型 为 mp3
+					let blob = new Blob([res.data], {
+						type: res.data.type
+					})
+					// 创建A标签
+					let downa = document.createElement('a')
+					// 创建下载的链接
+					let href = window.URL.createObjectURL(blob)
+					// 下载地址
+					downa.href = href
+					// 下载文件名
+					downa.download = fileName
+					document.body.appendChild(downa)
+					// 模拟点击A标签
+					downa.click()
+					// 下载完成移除元素
+					document.body.removeChild(downa)
+					// 释放blob对象
+					window.URL.revokeObjectURL(href)
+				}).catch(function(error) {
+					console.log(error)
+				})
+			},
 			...mapMutations([
 				'upplaYing',
+				'addMycreatelist'
 			]),
 		},
 	}
@@ -412,7 +587,6 @@
 	/* 歌曲图下按钮 */
 	.btnBox {
 		margin-top: 90px;
-		display: flex;
 	}
 
 	/* 歌词行 */
@@ -441,129 +615,161 @@
 		z-index: -1;
 		opacity: 0.7;
 	}
-	.right{
+
+	.right {
 		width: 350px;
 	}
-	.bottom{
+
+	.bottom {
 		text-align: left;
 		margin: -150px 3rem 0 3rem;
 	}
-	
+
 	/* 移动 */
 	@media screen and (max-width: 1400px) {
-		.right{
+		.right {
 			display: none;
 		}
-		.left{
-			margin: 0 10%!important;
+
+		.left {
+			margin: 0 10% !important;
 		}
 	}
+
 	@media screen and (max-width: 992px) {
-		.top{
+		.top {
 			padding: 0;
 		}
-		.btnBox,.hidden-hd{
+
+		.btnBox,
+		.hidden-hd {
 			display: none;
 		}
-		.center{
+
+		.center {
 			position: absolute;
 			left: 20%;
-			margin-top: 3%!important;
+			margin-top: 3% !important;
 		}
-		.left{
-			height: 900px!important;
-			margin: 15% 28%!important;
+
+		.left {
+			height: 900px !important;
+			margin: 15% 28% !important;
 		}
-		.blur{
+
+		.blur {
 			height: 100%;
 			left: 0;
-			background-size: contain!important;
+			background-size: contain !important;
 		}
-		.lyricbox ul li{
+
+		.lyricbox ul li {
 			font-size: 15px;
 			color: #fff;
 			text-shadow: 1px 1px rgb(0 0 0 / 60%)
 		}
+
 		.center-bottom::-webkit-scrollbar {
 			height: 0;
 		}
 	}
+
 	@media screen and (max-width: 768px) {
-		.bottom{
+		.bottom {
 			margin: -150px 0.5rem 0 0.5rem;
 		}
-		.blur{
-			background-size: cover!important;
+
+		.blur {
+			background-size: cover !important;
 		}
-		.left{
-			margin: 15% 20%!important;
+
+		.left {
+			margin: 15% 20% !important;
 		}
-		.center{
+
+		.center {
 			position: absolute;
 			left: 10%;
-			margin-top: 5%!important;
+			margin-top: 5% !important;
 		}
 	}
+
 	@media screen and (max-width: 576px) {
-		.top .songimg{
+		.top .songimg {
 			width: 250px;
 			height: 250px;
 		}
-		.top .songimg img{
-			top: 50px!important;
-			left: 50px!important;
+
+		.top .songimg img {
+			top: 50px !important;
+			left: 50px !important;
 		}
-		.left{
-			margin: 15% 26%!important;
+
+		.left {
+			margin: 15% 26% !important;
 		}
 	}
+
 	@media screen and (max-width: 485px) {
-		.center{
+		.center {
 			left: 25px;
 		}
-		.center-bottom{
-			text-align: center!important;
+
+		.center-bottom {
+			text-align: center !important;
 		}
 	}
+
 	@media screen and (max-width: 415px) {
-		.center-top,.center .musictitle{
-			width: 330px!important;
+
+		.center-top,
+		.center .musictitle {
+			width: 330px !important;
 			margin: 0 auto;
 		}
-		.left{
-			margin: 15% 20%!important;
+
+		.left {
+			margin: 15% 20% !important;
 		}
 	}
+
 	@media screen and (max-width: 391px) {
-		.center{
+		.center {
 			left: -7%;
 		}
-		.left{
-			margin: 15% 17%!important;
+
+		.left {
+			margin: 15% 17% !important;
 		}
 	}
+
 	@media screen and (max-width: 376px) {
-		.left{
-			margin: 15% 15%!important;
+		.left {
+			margin: 15% 15% !important;
 		}
-		.center-bottom{
+
+		.center-bottom {
 			margin-left: -20px;
 		}
 	}
+
 	@media screen and (max-width: 348px) {
-		.center{
+		.center {
 			left: -13%;
 		}
-		.left{
-			margin: 15% 13%!important;
+
+		.left {
+			margin: 15% 13% !important;
 		}
 	}
+
 	@media screen and (max-width: 318px) {
-		.center{
+		.center {
 			left: -20%;
 		}
-		.left{
-			margin: 15% 10%!important;
+
+		.left {
+			margin: 15% 10% !important;
 		}
 	}
 </style>
