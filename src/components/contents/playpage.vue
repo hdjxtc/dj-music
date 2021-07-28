@@ -135,7 +135,7 @@
 			// 相似歌单
 			this.getSimilarplaylist()
 
-			// 赋值拼接字符串中的方法给window对象method里的方法才能正常调用
+			// 将拼接字符串中的方法绑定window对象,method里的方法才能正常调用
 			window.addlike = this.addlike
 		},
 		components: {
@@ -422,6 +422,7 @@
 				let playpage = document.getElementsByClassName('playpage')[0]
 				playpage.scrollTo(0, 700)
 			},
+			// 下载
 			down() {
 				this.$message.success('请稍后~')
 				let downUrl = this.currentSong.url

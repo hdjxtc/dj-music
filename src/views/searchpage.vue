@@ -24,7 +24,7 @@
 		<el-tabs type="card" @tab-click="changeType">
 			<!-- 单曲 -->
 			<el-tab-pane label="单曲">
-				<Songlist :songlist="songList" :width1="400" :width2="300" :width3="300" v-loading="loading"/>
+				<Songlist :songlist="songList" :width1="400" :width2="300" :width3="300" />
 				<div class="feny" v-if="songCount">
 					<Feny :total="songCount" @pageChange="pageChange" />
 				</div>
@@ -47,7 +47,7 @@
 			</el-tab-pane>
 			<!-- 视频 -->
 			<el-tab-pane label="视频">
-				<Videolist :videos="videos" :isVideo="false"/>
+				<Videolist :videos="videos" :isVideo="false" />
 				<div class="feny" v-if="videoCount">
 					<Feny :total="videoCount" @pageChange="pageChange" />
 				</div>
@@ -64,7 +64,10 @@
 </template>
 
 <script>
-	import {createSong,createVideo} from '@/model/song'
+	import {
+		createSong,
+		createVideo
+	} from '@/model/song'
 	import Songlist from '@/components/contents/songlist'
 	import Singerlist from '@/components/contents/singerlist'
 	import Albumlist from '@/components/contents/albumlist'
@@ -91,8 +94,6 @@
 				albums: [],
 				videos: [],
 				playList: [],
-				// 数据加载时动画
-				loading: true,
 			};
 		},
 		components: {
@@ -112,11 +113,13 @@
 			}
 		},
 		watch: {
-			keyword(newval, oldval) {
-				// console.log(newval, oldval)
-				// console.log('搜索推荐待做')
-				return
-			},
+			// keyword(newval) {
+			// 	console.log(newval)
+			// 	let timestamp = new Date().getTime()
+			// 	this.$api.get(`/search/suggest?keywords=${newval}&timestamp=${timestamp}`).then(res=>{
+			// 		console.log(res)
+			// 	})
+			// },
 			// 监听导航栏输入框里的搜索
 			$route(newobj, oldobj) {
 				// console.log(newobj, oldobj)
@@ -189,7 +192,6 @@
 			},
 			//获取歌曲列表
 			async getMusicList(songid) {
-				this.loading = true
 				let timestamp = new Date().valueOf()
 				let ids = songid.join(',')
 				try {
@@ -203,8 +205,6 @@
 					// console.log(res.songs)
 					this.songList = this.normalizeSongs(res.songs)
 					// console.log(this.songList)
-					// 结束动画
-					this.loading = false
 				} catch (err) {
 					this.$message.error(err)
 				}
@@ -213,7 +213,7 @@
 			normalizeSongs(list) {
 				// 处理后的歌曲信息
 				let ret = []
-				list.map((item)=>{
+				list.map((item) => {
 					if (item.id) {
 						ret.push(createSong(item))
 					}
@@ -296,18 +296,20 @@
 	.num {
 		color: #c20c0c;
 	}
-	.keyword{
+
+	.keyword {
 		color: #409EFF;
 		font-size: 18px;
 		font-weight: normal
 	}
-	
+
 	.singer-list {
 		display: flex;
 		flex-wrap: wrap;
 		padding: 2rem;
 	}
-	.searchbox .playall{
+
+	.searchbox .playall {
 		width: 95%;
 	}
 </style>

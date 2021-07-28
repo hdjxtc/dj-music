@@ -4,6 +4,42 @@
 			<div class="logo">
 				<router-link :to="{name: 'home'}" tag="a"></router-link>
 			</div>
+			<!-- 搜素推荐 -->
+			<div class="searchrecommend" v-if="isshow">
+				<!-- <span class="searchclose" @click="isshow = false">关闭<i class="el-icon-switch-button"></i></span> -->
+				<div style="clear: both;"></div>
+				<div class="title historytitle" v-if="getSearchhistory.length > 0">
+					<p>
+						<i class="iconfont dj-icon-jiaoyin" title="热门搜索" style="margin-right: 10px;color: #FA2800;"></i>
+						历史搜索
+					</p>
+					<p class="clear" @click="clearSearch">清空</p>
+				</div>
+				<div class="historylist" v-if="getSearchhistory.length > 0">
+					<ul class="history">
+						<li class="tags" v-for="(item,index) of getSearchhistory" :key="item">
+							<span @click="searchhot(item)" class="historyitem">{{item}}</span>
+							<i class="el-icon-close delete" @click="delsearchhistory(index)"></i>
+						</li>
+					</ul>
+				</div>
+				<!-- 热门搜索 -->
+				<div class="title">
+					<i class="iconfont dj-icon-resou" title="热门搜索" style="margin-right: 10px;color: #FA2800;"></i>
+					热门搜索
+				</div>
+				<div class="list" :class="getSearchhistory.length > 0?'ishistory':''">
+					<div class="hotlist-row" v-for="(item,index) of hots" :key="index"
+						@click="searchhot(item.searchWord)">
+						<span class="num">{{index + 1 }}</span>
+						<div class="songinfo">
+							<p class="ellipsi song">{{item.searchWord}}</p>
+							<p class="ellipsi ellipsis">{{item.content}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- pc -->
 			<div class="nav-pc navpc-lg">
 				<div class="collapse navbar-collapse">
 					<ul class="navbar-nav">
@@ -28,11 +64,11 @@
 					</ul>
 					<div class="search form-inline search-poss" v-if="loginStatu">
 						<input type="search" placeholder="  搜索音乐/视频/歌手/歌单" class="form-control" v-model="keyword"
-							@keyup.enter="search()">
+							@keyup.enter="search()" @focus="isshow = true" @blur="close">
 					</div>
 					<div class="search form-inline search-pos" v-else>
 						<input type="search" placeholder="  搜索音乐/视频/歌手/歌单" class="form-control" v-model="keyword"
-							@keyup.enter="search()">
+							@keyup.enter="search()" @focus="isshow = true" @blur="close">
 					</div>
 					<div class="userbox">
 						<div class="is-login flex-row" v-if="loginStatu">
@@ -59,7 +95,7 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- 移动 -->
 			<div class="nav-mb">
 				<el-drawer :visible.sync="drawer" direction="rtl" size="70%">
 					<div class="titile">
@@ -68,16 +104,19 @@
 						</span>
 					</div>
 					<div class="author">
+						<!-- 登录后 -->
 						<div class="authorimg" v-if="loginStatu">
 							<img :src="userInfo.avatarUrl" @click="innerDrawer = true">
 						</div>
+						<!-- 未登录 -->
 						<div class="authorimg" v-else @click="login">
 							<el-avatar icon="el-icon-user-solid" :size="70"></el-avatar>
 						</div>
-
+						<!-- 登录后 -->
 						<div class="authorname" v-if="loginStatu" @click="innerDrawer = true">
 							{{userInfo.nickname}}
 						</div>
+						<!-- 未登录 -->
 						<div class="authorname" v-else @click="login">
 							登录
 						</div>
@@ -136,45 +175,100 @@
 	</div>
 </template>
 <script>
-	import {mapGetters,mapMutations} from 'vuex'
+	import {
+		mapGetters,
+		mapMutations
+	} from 'vuex'
 	export default {
 		name: 'navbar',
 		data() {
 			return {
+				// 关键词
 				keyword: '',
+				// 热搜列表
 				hots: [],
+				// 侧边栏
 				drawer: false,
 				innerDrawer: false,
+				// 搜索推荐容器
+				isshow: false
+
 			}
 		},
-		watch:{
-			drawer(){
+		watch: {
+			drawer() {
 				this.upisDrawer(this.drawer)
+			},
+			$route() {
+				this.isshow = false
 			}
 		},
 		computed: {
 			...mapGetters([
 				'loginStatu',
 				'userInfo',
+				'getSearchhistory'
 			])
 		},
 		mounted() {
 			// 解决了第一次进来的初始值与退出登录的值一样,点退出登录数据没改变getters不更新的bug
 			this.$store.commit('upStatu', this.loginStatu)
 			this.$store.commit('upUserinfo', this.userInfo)
+			// 获取热门搜索
+			this.getSearchHot()
 		},
 		methods: {
-			...mapMutations([
-				'upisDrawer'
-			]),
 			// 搜索
 			search() {
 				// 空格和未输入	this.keyword.split(' ').join('').length
 				if (this.keyword.split(' ').join('').length !== 0) {
+					this.addSearchhistory(this.keyword)
 					this.drawer = false
 					this.$router.push("/search?keyword=" + this.keyword).catch((err) => {
 						console.log(err);
 					})
+				}
+			},
+			// 点击热门/历史搜索搜索
+			searchhot(keyword) {
+				this.addSearchhistory(keyword)
+				this.drawer = false
+				this.$router.push("/search?keyword=" + keyword).catch((err) => {
+					console.log(err);
+				})
+			},
+			// 删除某一个搜索历史记录
+			delsearchhistory(index) {
+				setTimeout(() => {
+					this.isshow = true
+				}, 300.66)
+				this.delSearchhistory(index)
+			},
+			// 清空搜索历史
+			clearSearch() {
+				setTimeout(() => {
+					this.isshow = true
+				}, 300.66)
+				this.clearSearchhistory()
+			},
+			// 关闭热搜容器
+			close() {
+				setTimeout(() => {
+					this.isshow = false
+				}, 300)
+			},
+			// 获取热搜列表
+			async getSearchHot() {
+				try {
+					let timestamp = new Date().getTime()
+					// await暂停函数，拿到数据后才执行后面判断
+					let res = await this.$api.get(`/search/hot/detail?timestamp=${timestamp}`)
+					if (res.code === 200) {
+						// console.log(res)
+						this.hots = res.data
+					}
+				} catch (error) {
+					console.log(error)
 				}
 			},
 			// 登录
@@ -214,14 +308,24 @@
 					type: 'success'
 				});
 				// 更新store数据
-				this.$store.commit('upStatu',false)
-				this.$store.commit('upUserinfo',null)
+				this.$store.commit('upStatu', false)
+				this.$store.commit('upUserinfo', null)
 			},
+			...mapMutations([
+				'upisDrawer',
+				'addSearchhistory',
+				'delSearchhistory',
+				'clearSearchhistory'
+			]),
 		},
 	}
 </script>
 
 <style scoped>
+	p {
+		margin-bottom: 0;
+	}
+
 	.form-inline .form-control {
 		width: auto;
 		border-radius: 10rem;
@@ -370,7 +474,7 @@
 			display: none !important;
 		}
 	}
-	
+
 	.navbar-toggler {
 		padding: .25rem 2rem !important;
 	}
@@ -378,7 +482,165 @@
 	.innerDrawer {
 		text-align: center;
 	}
-	.active a{
-		color: #fa2800!important;
+
+	.active a {
+		color: #fa2800 !important;
+	}
+
+	/* 搜索推荐 */
+	.searchrecommend {
+		width: 380px;
+		height: 450px;
+		background: #F9F9F9;
+		position: absolute;
+		right: 50px;
+		top: 65px;
+		border-radius: 3px;
+		padding: 5px 15px 30px;
+		overflow: hidden;
+		z-index: 3;
+	}
+
+	/* 搜索推荐标题 */
+	.searchrecommend .title {
+		margin: 0 0 10px;
+		display: flex;
+		align-items: center;
+		font-weight: 600;
+	}
+
+	/* 搜索容器关闭 */
+	/* 	.searchrecommend .searchclose {
+		color: #000;
+		text-shadow: 1px 1px 0 rgb(255,255,255,.3);
+		cursor: pointer;
+		float: right;
+		font-size: 13px;
+		border: 1px solid rgba(106, 106, 106, 0.2);
+		border-radius: 20px;
+		padding: 2px 8px;
+		margin-bottom: 10px;
+	}
+	.searchrecommend .searchclose:hover {
+		color: red;
+	} */
+
+	/* 历史搜索标题 */
+	.searchrecommend .historytitle {
+		justify-content: space-between;
+	}
+
+	/* 清空按钮 */
+	.searchrecommend .historytitle .clear {
+		font-size: 14px;
+		color: #6d7685;
+		font-weight: 100;
+		cursor: pointer;
+	}
+
+	.searchrecommend .historyitem:hover {
+		color: red;
+	}
+
+	.searchrecommend .historytitle .clear:hover {
+		color: red;
+	}
+
+	/* 热搜列表 */
+	.searchrecommend .list {
+		overflow: scroll;
+		max-height: calc(100% - 35px);
+		text-align: left;
+	}
+
+	/* 当出现历史搜索时 */
+	.searchrecommend .ishistory {
+		max-height: calc(100% - 25%);
+	}
+
+	.list::-webkit-scrollbar {
+		width: 0;
+		height: 3px;
+	}
+
+	/* 搜索历史 */
+	.searchrecommend .historylist {
+		overflow: scroll;
+		max-height: calc(100% - 83%);
+		text-align: left;
+	}
+
+	.historylist::-webkit-scrollbar {
+		width: 0;
+		height: 3px;
+	}
+
+	/* 删除按钮 */
+	.searchrecommend .historylist .delete {
+		padding-left: 5px;
+	}
+
+	.searchrecommend .historylist .delete:hover {
+		color: red;
+	}
+
+	.searchrecommend .historylist .history {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	/* 搜索历史列表 */
+	.searchrecommend .historylist .history .tags {
+		margin-bottom: 10px;
+		font-size: 12px;
+		color: #6d7685;
+		background-color: #f4f4f5;
+		list-style: none;
+		cursor: pointer;
+		padding: .25rem;
+	}
+
+	.searchrecommend .hotlist-row {
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		font-size: 13px;
+		padding: 5px;
+		border-radius: 3px;
+		margin-bottom: 20px;
+		cursor: pointer;
+	}
+
+	.searchrecommend .hotlist-row:hover {
+		background: #f4f4f5;
+	}
+
+	/* 歌曲信息 */
+	.searchrecommend .songinfo {
+		width: 80%;
+	}
+
+	/* 超出省略号隐藏 */
+	.searchrecommend .songinfo .ellipsi {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	/* 歌曲标题 */
+	.searchrecommend .songinfo .song {
+		font-weight: 600;
+	}
+
+	/* 介绍 */
+	.searchrecommend .songinfo .ellipsis {
+		font-size: 12px;
+		color: #959595;
+	}
+
+	/* 序号 */
+	.searchrecommend .num {
+		font-size: 16px;
 	}
 </style>

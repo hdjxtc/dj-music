@@ -21,7 +21,9 @@ export default new Vuex.Store({
 		// 移动端，是否打开侧边栏
 		isdrawer: false,
 		// 我创建的歌单
-		mycreatelist: null
+		mycreatelist: null,
+		// 搜索历史
+		searchhistory: []
 	},
 	getters: {
 		// 获取登录状态
@@ -61,6 +63,10 @@ export default new Vuex.Store({
 		// 获取我创建的歌单
 		getMycreatelist(state) {
 			return state.mycreatelist
+		},
+		// 获取搜索历史
+		getSearchhistory(state) {
+			return state.searchhistory
 		}
 	},
 	mutations: {
@@ -94,7 +100,7 @@ export default new Vuex.Store({
 			// console.log(list)
 			// 数据是否为空
 			let isempty = false
-			// 数据是否存在
+			// 数据是否已存在
 			let ispush = true
 			// 添加数据的第一个下标
 			let currentindex = 0
@@ -155,6 +161,27 @@ export default new Vuex.Store({
 		// 添加我创建的歌单
 		addMycreatelist(state,list) {
 			state.mycreatelist = list
+		},
+		// 添加关键词到搜索历史
+		addSearchhistory(state,history) {
+			let isrepeat = true
+			// 判断添加的关键词在搜索历史离别里是否存在
+			state.searchhistory.map(item => {
+				if (item == history) {
+					isrepeat = false
+				}
+			})
+			if (isrepeat) {
+				state.searchhistory.push(history)
+			}
+		},
+		// 删除某一个搜索历史关键词
+		delSearchhistory(state,index) {
+			state.searchhistory.splice(index, 1)
+		},
+		// 清空搜索历史
+		clearSearchhistory(state) {
+			state.searchhistory = []
 		}
 	},
 	actions: {
@@ -181,7 +208,8 @@ export default new Vuex.Store({
 				return {
 					currentindex: val.currentindex,
 					mode: val.mode,
-					playlist: val.playlist
+					playlist: val.playlist,
+					searchhistory: val.searchhistory
 				}
 			}
 		})
