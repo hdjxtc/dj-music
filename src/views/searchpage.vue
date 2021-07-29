@@ -16,7 +16,7 @@
 						<li class="tags" v-for="item of commentsongs" :key="item.id" @click="getSongDetail(item.id)">
 							<!-- 匹配关键字 -->
 							<p v-if="item.name.split(keyword).length>1">
-								<span style="color: #336eff;">{{keyword}}</span>
+								<span style="color: #13b8ff;">{{keyword}}</span>
 								<span>{{item.name.split(keyword)[1]}} - {{item.artists[0].name}}</span>
 							</p>
 							<p v-else>
@@ -34,7 +34,7 @@
 						<li class="tags" v-for="item of commentartists" :key="item.id" @click="toSingerdetail(item.id)">
 							<!-- 匹配关键字 -->
 							<p v-if="item.name.split(keyword).length>1">
-								<span style="color: #336eff;">{{keyword}}</span>
+								<span style="color: #13b8ff;">{{keyword}}</span>
 								<span>{{item.name.split(keyword)[1]}}</span>
 							</p>
 							<p v-else>
@@ -52,7 +52,7 @@
 						<li class="tags" v-for="item of commentalbums" :key="item.id" @click="toAlbumdetail(item.id)">
 							<!-- 匹配关键字 -->
 							<p v-if="item.name.split(keyword).length>1">
-								<span style="color: #336eff;">{{keyword}}</span>
+								<span style="color: #13b8ff;">{{keyword}}</span>
 								<span>{{item.name.split(keyword)[1]}} - {{item.artist.name}}</span>
 							</p>
 							<p v-else>
@@ -71,7 +71,7 @@
 							<!-- 匹配关键字 -->
 							<p v-if="item.name.split(keyword).length>1">
 								<span>{{item.name.split(keyword)[0]}}</span>
-								<span style="color: #336eff;">{{keyword}}</span>
+								<span style="color: #13b8ff;">{{keyword}}</span>
 								<span>{{item.name.split(keyword)[1]}}</span>
 							</p>
 							<p v-else>
@@ -483,6 +483,11 @@
 			width: 50% !important;
 		}
 	}
+	@media screen and (max-width: 768px) {
+		.inputsize {
+			width: 70% !important;
+		}
+	}
 
 	.el-tabs__header {
 		margin-bottom: 0 !important;
@@ -539,17 +544,28 @@
 	}
 	@media screen and (max-width: 768px) {
 		.commentbox {
-			width: 60.5%;
-			left: 20.5%;
+			width: 58.5%;
+			left: 15.5%;
 		}
 	}
 	@media screen and (max-width: 576px) {
 		.commentbox {
-			width: 70.5%;
-			left: 15.5%;
+			width: 69.8%;
+			left: 15.1%;
+			padding-left: 0;
+		}
+		.commentbox .item .tag {
+			font-size: 12px!important;
+		}	
+		.commentbox .item .tags p{
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			width: 95%;
 		}
 		.commentbox .item .tags {
 			white-space: nowrap;
+			font-size: 12px;
 		}
 	}
 
@@ -578,7 +594,7 @@
 	}
 
 	.commentbox ul li {
-		font-size: 14px;
+		font-size: 13px;
 		color: #202227;
 		padding: 10px 0 10px 15px;
 	}
@@ -593,8 +609,9 @@
 		padding: 10px 15px 10px 0;
 		margin-bottom: 0;
 		border-right: 1px solid #ccc;
-		font-size: 14px;
+		font-size: 13px;
 		color: #202227;
+		white-space: nowrap;
 	}
 
 	.commentbox .item .tags {

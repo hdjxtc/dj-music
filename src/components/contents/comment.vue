@@ -219,5 +219,6 @@
 		border-bottom: 1px solid #f1f1f1;
 		margin-bottom: 10px;
 		width: 67%;
+		font-size: 14px;
 	}
 </style>

@@ -69,6 +69,9 @@
 </script>
 
 <style scoped>
+	.flex-row {
+		font-size: 14px;
+	}
 	/* 头像图标 */
 	.comment-box p i {
 		margin-right: 10px;

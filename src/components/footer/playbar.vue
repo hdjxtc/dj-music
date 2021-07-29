@@ -1,6 +1,6 @@
 <template>
 	<transition name="fade">
-		<div class="container shadow flex-row"
+		<div class="playbarbox container shadow flex-row"
 			v-show="playList.length > 0 && !$route.meta.isLogin && !($route.path=='/videodetail') && !($route.path=='/mvdetail')">
 			<!-- 歌曲封面 -->
 			<div v-show="!playpage" class="author" @click="openplaypage">
@@ -601,6 +601,7 @@
 		background: #f9f9f9;
 		position: fixed;
 		top: 50px;
+		z-index: 2021;
 		overflow-y: scroll;
 		overflow-x: hidden;
 	}
@@ -813,7 +814,7 @@
 			padding: 0 10%;
 			bottom: 54px;
 			background: #f9f9f9;
-			z-index: 2;
+			z-index: 2022;
 		}
 
 		.el-slider {
