@@ -635,7 +635,7 @@
 		border-radius: 3px;
 		padding: 10px 30px 30px;
 		overflow: hidden;
-		z-index: 2;
+		z-index: 2022;
 	}
 
 	/* 播放列表标题 */
@@ -738,7 +738,7 @@
 		overflow: hidden;
 		position: absolute;
 		bottom: 70px;
-		z-index: 2;
+		z-index: 2022;
 	}
 
 	/* 歌曲播放页 */
