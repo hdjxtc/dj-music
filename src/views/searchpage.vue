@@ -1,10 +1,86 @@
 <template>
 	<div class="searchbox">
-		<div style="margin: 30px 0">
+		<div style="margin: 30px 0;position: relative;">
 			<el-input placeholder="请输入内容" v-model="keyword" class="input-with-select shadow inputsize" clearable
-				@keyup.enter.native="search(type)">
+				@keyup.enter.native="search(type)" @focus="isshow = true" @blur="blur">
 				<el-button slot="append" icon="el-icon-search" @click="search(type)"></el-button>
 			</el-input>
+			<!-- 搜索推荐 -->
+			<div class="commentbox" v-if="isshow">
+				<div class="item" v-if="commentsongs.length>0">
+					<h4 class="tag">
+						<i class="iconfont dj-icon-yinfu1"></i>
+						<span style="margin-left: 5px;">单曲</span>
+					</h4>
+					<ul>
+						<li class="tags" v-for="item of commentsongs" :key="item.id" @click="getSongDetail(item.id)">
+							<!-- 匹配关键字 -->
+							<p v-if="item.name.split(keyword).length>1">
+								<span style="color: #336eff;">{{keyword}}</span>
+								<span>{{item.name.split(keyword)[1]}} - {{item.artists[0].name}}</span>
+							</p>
+							<p v-else>
+								{{item.name}} - {{item.artists[0].name}}
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div class="item" v-if="commentartists.length>0">
+					<h4 class="tag">
+						<i class="iconfont dj-icon-yonghu"></i>
+						<span style="margin-left: 5px;">歌手</span>
+					</h4>
+					<ul style="background: #efefef;">
+						<li class="tags" v-for="item of commentartists" :key="item.id" @click="toSingerdetail(item.id)">
+							<!-- 匹配关键字 -->
+							<p v-if="item.name.split(keyword).length>1">
+								<span style="color: #336eff;">{{keyword}}</span>
+								<span>{{item.name.split(keyword)[1]}}</span>
+							</p>
+							<p v-else>
+								{{item.name}}
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div class="item" v-if="commentalbums.length>0">
+					<h4 class="tag">
+						<i class="iconfont dj-icon-zhuanji"></i>
+						<span style="margin-left: 5px;">专辑</span>
+					</h4>
+					<ul>
+						<li class="tags" v-for="item of commentalbums" :key="item.id" @click="toAlbumdetail(item.id)">
+							<!-- 匹配关键字 -->
+							<p v-if="item.name.split(keyword).length>1">
+								<span style="color: #336eff;">{{keyword}}</span>
+								<span>{{item.name.split(keyword)[1]}} - {{item.artist.name}}</span>
+							</p>
+							<p v-else>
+								{{item.name}} - {{item.artist.name}}
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div class="item" v-if="commentplaylists.length>0">
+					<h4 class="tag">
+						<i class="iconfont dj-icon-gedan" style="font-size: 17px;"></i>
+						<span style="margin-left: 5px;">歌单</span>
+					</h4>
+					<ul style="background: #efefef;">
+						<li class="tags" v-for="item of commentplaylists" :key="item.id" @click="toPlaydetail(item.id)">
+							<!-- 匹配关键字 -->
+							<p v-if="item.name.split(keyword).length>1">
+								<span>{{item.name.split(keyword)[0]}}</span>
+								<span style="color: #336eff;">{{keyword}}</span>
+								<span>{{item.name.split(keyword)[1]}}</span>
+							</p>
+							<p v-else>
+								{{item.name}}
+							</p>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<div class="tis" v-if="type==1">
 			<b class="keyword">{{keyword}}</b>，共找到 <b class="num">{{songCount}}</b> 条单曲
@@ -68,6 +144,9 @@
 		createSong,
 		createVideo
 	} from '@/model/song'
+	import {
+		mapActions
+	} from 'vuex'
 	import Songlist from '@/components/contents/songlist'
 	import Singerlist from '@/components/contents/singerlist'
 	import Albumlist from '@/components/contents/albumlist'
@@ -94,6 +173,19 @@
 				albums: [],
 				videos: [],
 				playList: [],
+				// 搜索推荐需要的数据
+				// 是否显示
+				isshow: false,
+				// 单曲
+				commentsongs: [],
+				// 歌手
+				commentartists: [],
+				// 专辑
+				commentalbums: [],
+				// 歌单
+				commentplaylists: [],
+				// 顺序
+				commentorder: []
 			};
 		},
 		components: {
@@ -113,13 +205,48 @@
 			}
 		},
 		watch: {
-			// keyword(newval) {
-			// 	console.log(newval)
-			// 	let timestamp = new Date().getTime()
-			// 	this.$api.get(`/search/suggest?keywords=${newval}&timestamp=${timestamp}`).then(res=>{
-			// 		console.log(res)
-			// 	})
-			// },
+			keyword(newval) {
+				// 不为空才请求
+				// console.log(newval)
+				let timestamp = new Date().getTime()
+				this.$api.get(`/search/suggest?keywords=${newval}&timestamp=${timestamp}`).then(res => {
+					// console.log(res)
+					// 单曲
+					if (res.result.songs != undefined) {
+						this.commentsongs = res.result.songs
+					} else {
+						this.commentsongs = []
+					}
+					// 歌手
+					if (res.result.artists != undefined) {
+						this.commentartists = res.result.artists
+					} else {
+						this.commentartists = []
+					}
+					// 专辑
+					if (res.result.albums != undefined) {
+						this.commentalbums = res.result.albums
+					} else {
+						this.commentalbums = []
+					}
+					// 歌单
+					if (res.result.playlists != undefined) {
+						this.commentplaylists = res.result.playlists
+					} else {
+						this.commentplaylists = []
+					}
+
+				}).catch(err => {
+					console.log(err)
+				})
+				// 为空时清空之前的数据
+				if (newval == '') {
+					this.commentsongs = []
+					this.commentartists = []
+					this.commentalbums = []
+					this.commentplaylists = []
+				}
+			},
 			// 监听导航栏输入框里的搜索
 			$route(newobj, oldobj) {
 				// console.log(newobj, oldobj)
@@ -262,11 +389,91 @@
 					this.search(1000)
 				}
 			},
+			// 关闭搜索推荐容器
+			blur() {
+				setTimeout(() => {
+					this.isshow = false
+				}, 200)
+			},
+			// 播放搜索推荐歌曲
+			// 获取歌曲信息，拿歌曲作者、图片等
+			async getSongDetail(id) {
+				try {
+					let timestamp = new Date().getTime()
+					const res = await this.$api.get("/song/detail", {
+						params: {
+							ids: id,
+							timestamp: timestamp
+						},
+					});
+					this.playSong(this.hanlesonglist(res.songs), 0)
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			// 处理歌曲
+			hanlesonglist(list) {
+				let ret = []
+				list.map(item => {
+					if (item.id) {
+						ret.push(createSong(item))
+					}
+				})
+				return ret
+			},
+			// 播放歌曲
+			playSong(list, index) {
+				try {
+					let id = list[index].id
+					this.$api.get(`/song/url?id=${id}`).then(res => {
+						list[index].url = res.data[0].url
+						// console.log(res)
+						this.selectPlay({
+							list,
+							index
+						})
+					})
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			...mapActions([
+				'selectPlay',
+			]),
+			// 前往歌手详情页
+			toSingerdetail(id) {
+				this.$router.push({
+					name: 'singerdetail',
+					query: {
+						id: id
+					}
+				})
+				// this.setSinger(item)
+			},
+			// 前往专辑详情页
+			toAlbumdetail(id) {
+				this.$router.push({
+					name: 'albumdetail',
+					query: {
+						id
+					}
+				})
+			},
+			// 前往歌单详情页
+			toPlaydetail(id) {
+				this.$router.push({
+					name: 'playlistdetail',
+					query: {
+						id: id
+					}
+				})
+			}
 		},
 	}
 </script>
 
 <style>
+	/* 搜索框大小 */
 	.inputsize {
 		width: 35% !important;
 	}
@@ -311,5 +518,72 @@
 
 	.searchbox .playall {
 		width: 95%;
+	}
+
+	/* 搜索推荐 */
+	.commentbox {
+		width: 30.5%;
+		background: #F9F9F9;
+		position: absolute;
+		left: 32.5%;
+		border-radius: 3px;
+		padding-left: 15px;
+		overflow: hidden;
+		z-index: 3;
+	}
+
+	/* 第一个类别的标题 */
+	.commentbox .item:nth-of-type(1) .tag {
+		padding-top: 10px;
+	}
+
+	/* 最后一个类别的最后一条数据 */
+	.commentbox .item:last-child .tags:last-child {
+		border-bottom: none;
+	}
+
+	/* 每个类别的最后一条数据 */
+	.commentbox .item .tags:last-child {
+		border-bottom: 1px solid #ccc;
+	}
+
+	.commentbox ul {
+		list-style: none;
+		padding-left: 0;
+		margin-bottom: 0;
+		width: 100%;
+		text-align: left;
+	}
+
+	.commentbox ul li {
+		font-size: 14px;
+		color: #202227;
+		padding: 10px 0 10px 15px;
+	}
+
+	.commentbox .item {
+		display: flex;
+
+	}
+
+	.commentbox .item .tag {
+		width: 20%;
+		padding: 10px 15px 10px 0;
+		margin-bottom: 0;
+		border-right: 1px solid #ccc;
+		font-size: 14px;
+		color: #202227;
+	}
+
+	.commentbox .item .tags {
+		cursor: pointer;
+	}
+
+	.commentbox .item .tags p{
+		margin-bottom: 0;
+	}
+
+	.commentbox .item .tags:hover {
+		background: #c5c5c5;
 	}
 </style>

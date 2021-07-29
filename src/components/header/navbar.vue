@@ -7,7 +7,7 @@
 			<!-- 搜素推荐 -->
 			<div class="searchrecommend" v-if="isshow">
 				<!-- <span class="searchclose" @click="isshow = false">关闭<i class="el-icon-switch-button"></i></span> -->
-				<div style="clear: both;"></div>
+				<!-- <div style="clear: both;"></div> -->
 				<div class="title historytitle" v-if="getSearchhistory.length > 0">
 					<p>
 						<i class="iconfont dj-icon-jiaoyin" title="热门搜索" style="margin-right: 10px;color: #FA2800;"></i>
