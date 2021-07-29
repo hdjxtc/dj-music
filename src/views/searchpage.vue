@@ -531,6 +531,28 @@
 		overflow: hidden;
 		z-index: 3;
 	}
+	@media screen and (max-width: 992px) {
+		.commentbox {
+			width: 41.5%;
+			left: 25.5%;
+		}
+	}
+	@media screen and (max-width: 768px) {
+		.commentbox {
+			width: 60.5%;
+			left: 20.5%;
+		}
+	}
+	@media screen and (max-width: 576px) {
+		.commentbox {
+			width: 70.5%;
+			left: 15.5%;
+		}
+		.commentbox .item .tags {
+			white-space: nowrap;
+		}
+	}
+
 
 	/* 第一个类别的标题 */
 	.commentbox .item:nth-of-type(1) .tag {
