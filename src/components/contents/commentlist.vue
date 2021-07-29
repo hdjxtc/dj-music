@@ -20,7 +20,7 @@
 				<div class="info">
 					<h2 class="flex-between">
 						<!-- 评论用户、时间 -->
-						<span>
+						<span class="commentuser" @click="toUser(item.user.userId)">
 							{{ item.user.nickname }}
 							<small> · {{handle.formatMsgTime(item.time)}}</small>
 						</span>
@@ -103,7 +103,16 @@
 			// 删除评论
 			deletecomment(commentId){
 				this.$emit('deletecomment',commentId)
-			}
+			},
+			// 跳转到用户界面
+			toUser(id) {
+				this.$router.push({
+					name: 'personalpage',
+					query: {
+						id
+					}
+				})
+			},
 		},
 	}
 </script>
@@ -140,6 +149,10 @@
 
 	.comment-list ul li .info {
 		flex: 1;
+	}
+
+	.comment-list ul li .info .commentuser {
+		cursor: pointer;
 	}
 
 	.comment-list ul li .info h2 {

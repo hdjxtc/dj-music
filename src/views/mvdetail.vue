@@ -102,7 +102,7 @@
 							</h2>
 							<div class="author">
 								by
-								<span v-for="author of item.artists" :key="author.id">
+								<span v-for="author of item.artists" :key="author.id" @click="toSinger(author.id)">
 									<small>
 										{{ author.name }}
 									</small>
@@ -236,6 +236,7 @@
 					let res = await this.$api.get(`/simi/mv?mvid=${id}`)
 					if (res.code === 200) {
 						this.relatedList = res.mvs
+						console.log(this.relatedList)
 					}
 				} catch (error) {
 					console.log(error)
@@ -406,6 +407,17 @@
 						id
 					}
 				})
+			},
+			// 跳转歌手页面
+			toSinger(id) {
+				this.$message.info('请稍后~')
+				this.$router.push({
+					name: 'singerdetail',
+					query: {
+						id: id
+					}
+				})
+				// this.setSinger(item)
 			},
 			...mapMutations([
 				'upplaYing'
@@ -742,13 +754,14 @@
 	.mvdetailbox .right .related ul li .info .author {
 		font-size: 12px;
 		color: #8588c1;
+		cursor: pointer;
 	}
 
 	.mvdetailbox .right .related ul li .info .author span {
 		font-size: 12px;
 		color: #8588c1;
 	}
-
+	/* 有第二个歌手就用'/'拼接 */
 	.mvdetailbox .right .related ul li .info .author span::after {
 		content: '/';
 		margin-left: 5px;

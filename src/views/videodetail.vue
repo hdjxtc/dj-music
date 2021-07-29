@@ -124,7 +124,7 @@
 							</h2>
 							<div class="author">
 								by
-								<span v-for="author of item.creator" :key="author.userId">
+								<span v-for="author of item.creator" :key="author.userId" @click="toUser(author.userId)">
 									<small>
 										{{ author.userName }}
 									</small>
@@ -261,6 +261,7 @@
 					let res = await this.$api.get(`/related/allvideo?id=${id}`)
 					if (res.code === 200) {
 						this.relatedList = res.data
+						console.log(this.relatedList)
 					}
 				} catch (error) {
 					console.log(error)
@@ -425,19 +426,18 @@
 					}
 				})
 			},
+			// 跳转到用户界面
+			toUser(id) {
+				this.$router.push({
+					name: 'personalpage',
+					query: {
+						id
+					}
+				})
+			},
 			...mapMutations([
 				'upplaYing',
 			]),
-			// 用户页
-			toUser(id) {
-				console.log(id)
-				// this.$router.push({
-				// 	name: 'personal',
-				// 	query: {
-				// 		id
-				// 	}
-				// })
-			},
 			// 初始化
 			initialize(id) {
 				this.getMvUrl(id)
@@ -771,6 +771,7 @@
 	.videodetailbox .right .related ul li .info .author {
 		font-size: 12px;
 		color: #8588c1;
+		cursor: pointer;
 	}
 
 	.videodetailbox .right .related ul li .info .author span {

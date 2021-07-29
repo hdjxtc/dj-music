@@ -108,6 +108,8 @@
 							this.hotComments = []
 						}
 						this.newestComment = res.comments
+						// console.log(this.hotComments)
+						// console.log(this.newestComment)
 					}
 				} catch (error) {
 					console.log(error)
