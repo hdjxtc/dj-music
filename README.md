@@ -1,5 +1,5 @@
 # dj-music
-
+[^_^]: # (哈哈我是最萌注释，不会在浏览器中显示。)
 ## 预览地址
 [dj-music](https://djtc.vip/dj-music)
 
