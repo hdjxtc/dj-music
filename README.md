@@ -1,5 +1,5 @@
 # dj-music
-[^_^]: # (哈哈我是最萌注释，不会在浏览器中显示。)
+
 ## 预览地址
 [dj-music](https://djtc.vip/dj-music)
 
@@ -27,7 +27,7 @@
 ##### |   |--app.vue 顶层路由
 ##### |   |--main.js 入口文件
 
-## 使用到的对应接口
+[^_^]: # (使用到的对应接口
 1. 登录
 ```js
 	说明 : 调用此接口登录成功后返回对应的userId、cookie、token等
@@ -110,3 +110,4 @@
 	接口地址 : /song/detail
 	调用例子 : /song/detail?ids=347230,/song/detail?ids=347230,347231
 ```
+)
