@@ -29,10 +29,10 @@
 
 ## 运行安装
 ```shell
-	$ git clone git@github.com:hdjxtc/dj-music.git
-	$ cd dj-music
-	$ npm install
-	$ npm run serve
+$ git clone git@github.com:hdjxtc/dj-music.git
+$ cd dj-music
+$ npm install
+$ npm run serve
 ```
 
 <!--
