@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<div class="songlist" v-if="songlist">
 		<!-- highlight-current-row高亮显示选中行 -->
 		<div class="playall">
@@ -50,22 +51,43 @@
 					{{ handle.SecondTime(scope.row.duration) }}
 				</template>
 			</el-table-column>
+=======
+	<div class="songlist">
+		<el-table :data="songlist" style="width: 100%" @row-click="playSong" stripe>
+			<el-table-column type="index" label=" " width="50px"> </el-table-column>
+			<el-table-column :show-overflow-tooltip="true" prop="name" label="音乐标题" width="280px">
+			</el-table-column>
+			<el-table-column :show-overflow-tooltip="true" prop="artists[0].name" label="歌手" width="236px">
+			</el-table-column>
+			<el-table-column prop="album.name" :show-overflow-tooltip="true" label="专辑" width="214px">
+			</el-table-column>
+			<el-table-column prop="duration" label="时长">
+				<template slot-scope="scope">
+					{{ scope.row.duration | timeFormatFilter }}
+				</template>
+			</el-table-column>
+			<el-table-column label="操作"> </el-table-column>
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		</el-table>
 	</div>
 </template>
 
 <script>
+<<<<<<< HEAD
 	import {
 		mapGetters,
 		mapMutations,
 		mapActions
 	} from 'vuex'
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	export default {
 		name: 'songlist',
 		props: {
 			songlist: {
 				type: Array
 			},
+<<<<<<< HEAD
 			width1: {
 				type: Number
 			},
@@ -205,10 +227,34 @@
 					query: {
 						id
 					}
+=======
+			songCounts: {
+				type: Number
+			},
+
+		},
+		methods: {
+			// 播放歌曲
+			playSong(item, index) {
+				this.selectPlay({
+					list: this.songs,
+					index
+				})
+			},
+			// 停止播放歌曲
+			pauseSong() {
+				this.pausePlay()
+			},
+			// 播放全部
+			playAllSong() {
+				this.playAll({
+					list: this.songs
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 				})
 			},
 			// 收藏歌单
 			async collect() {
+<<<<<<< HEAD
 				this.$emit('collect')
 			},
 			...mapMutations([
@@ -220,11 +266,20 @@
 				// 播放全部
 				'playAll'
 			])
+=======
+				this.$emit('collectArtist')
+			},
+			// 分页跳转,向父组件传递参数page为当前页数
+			pageChange(page) {
+				this.$emit("pageChange", page);
+			},
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		},
 	}
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 	.songlist {
 		margin: 0 auto;
 	}
@@ -298,4 +353,6 @@
 	.playall i {
 		color: #fff;
 	}
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 </style>

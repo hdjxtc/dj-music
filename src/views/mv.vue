@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<div class="mvbox">
 		<!-- 标签 -->
 		<div class="filter">
@@ -302,3 +303,9 @@
 		}
 	}
 </style>
+=======
+	<div class="home">
+		<h1>mv</h1>
+	</div>
+</template>
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de

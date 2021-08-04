@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 	<div class="mv-box">
 		<ul class="mv-list" v-if="videos.length > 0">
 			<li v-for="(item,index) of videos" :key="index" :style="isVideo?'flex: 0 0 25%;':'flex: 0 0 20%;'">
@@ -242,4 +243,16 @@
 			flex: 0 0 100%!important;
 		}
 	}
+=======
+	<h1>视频</h1>
+</template>
+
+<script>
+	export default {
+		name: 'videolist'
+	}
+</script>
+
+<style>
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 </style>

@@ -1,10 +1,17 @@
 <template>
+<<<<<<< HEAD
 	<div class="contents" id="contents">
 		<transition name="fade">
 			<router-view />
 		</transition>
 		<Footer v-if="!$route.meta.isLogin"/>
 		<el-backtop target=".contents" :bottom="70">
+=======
+	<div class="contents">
+		<router-view />
+		<Footer v-if="!$route.meta.isLogin"/>
+		<el-backtop target=".contents" :bottom="35" :right="25">
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			<img src="../../assets/img/gotop.png" >
 		</el-backtop>
 	</div>

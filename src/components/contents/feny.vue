@@ -18,6 +18,7 @@
 </script>
 
 <style>
+<<<<<<< HEAD
 	.block{
 		width: 95%;
 		margin: 0 auto;
@@ -34,4 +35,6 @@
 			min-width: 25px!important;
 		}
 	}
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 </style>

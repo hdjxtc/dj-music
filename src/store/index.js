@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+<<<<<<< HEAD
 // 存储store到本地存储
 import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
@@ -215,4 +216,18 @@ export default new Vuex.Store({
 		})
 	],
 	modules: {}
+=======
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+  },
+  mutations: {
+  },
+  actions: {
+  },
+  modules: {
+  }
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 })

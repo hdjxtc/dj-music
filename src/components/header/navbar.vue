@@ -4,6 +4,7 @@
 			<div class="logo">
 				<router-link :to="{name: 'home'}" tag="a"></router-link>
 			</div>
+<<<<<<< HEAD
 			<!-- 搜素推荐 -->
 			<div class="searchrecommend" v-if="isshow">
 				<!-- <span class="searchclose" @click="isshow = false">关闭<i class="el-icon-switch-button"></i></span> -->
@@ -59,16 +60,46 @@
 							<router-link :to="{ name: 'video' }" tag="a" class="nav-link">视频</router-link>
 						</li>
 						<li class="nav-item" :class="$route.path=='/mv'?'active':''">
+=======
+			<!-- 汉堡包导航 -->
+			<div class="nav-pc navpc-lg">
+				<div class="collapse navbar-collapse" id="target">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<router-link :to="{ name: 'home' }" tag="a" class="nav-link">发现音乐</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link :to="{ name: 'paihang' }" tag="a" class="nav-link">排行榜</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link :to="{ name: 'gedan' }" tag="a" class="nav-link">歌单</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link :to="{ name: 'geshou' }" tag="a" class="nav-link">歌手</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link :to="{ name: 'shiping' }" tag="a" class="nav-link">视频</router-link>
+						</li>
+						<li class="nav-item">
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 							<router-link :to="{ name: 'mv' }" tag="a" class="nav-link">MV</router-link>
 						</li>
 					</ul>
 					<div class="search form-inline search-poss" v-if="loginStatu">
 						<input type="search" placeholder="  搜索音乐/视频/歌手/歌单" class="form-control" v-model="keyword"
+<<<<<<< HEAD
 							@keyup.enter="search()" @focus="isshow = true" @blur="close">
 					</div>
 					<div class="search form-inline search-pos" v-else>
 						<input type="search" placeholder="  搜索音乐/视频/歌手/歌单" class="form-control" v-model="keyword"
 							@keyup.enter="search()" @focus="isshow = true" @blur="close">
+=======
+							@keyup.enter="search()">
+					</div>
+					<div class="search form-inline search-pos" v-else>
+						<input type="search" placeholder="  搜索音乐/视频/歌手/歌单" class="form-control" v-model="keyword"
+							@keyup.enter="search()">
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 					</div>
 					<div class="userbox">
 						<div class="is-login flex-row" v-if="loginStatu">
@@ -95,7 +126,11 @@
 					</div>
 				</div>
 			</div>
+<<<<<<< HEAD
 			<!-- 移动 -->
+=======
+
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			<div class="nav-mb">
 				<el-drawer :visible.sync="drawer" direction="rtl" size="70%">
 					<div class="titile">
@@ -104,6 +139,7 @@
 						</span>
 					</div>
 					<div class="author">
+<<<<<<< HEAD
 						<!-- 登录后 -->
 						<div class="authorimg" v-if="loginStatu">
 							<img :src="userInfo.avatarUrl" @click="innerDrawer = true">
@@ -125,6 +161,25 @@
 								<li class="nav-link el-icon-user" style="margin-left: 5%" @click="personal">个人主页</li>
 								<li class="nav-link el-icon-switch-button" style="margin-left: 5%" @click="signout">退出登录
 								</li>
+=======
+						<div class="authorimg" v-if="loginStatu">
+							<img :src="userInfo.avatarUrl" @click="innerDrawer = true">
+						</div>
+						<div class="authorimg" v-else @click="login">
+							<el-avatar icon="el-icon-user-solid" :size="70"></el-avatar>
+						</div>
+
+						<div class="authorname" v-if="loginStatu" @click="innerDrawer = true">
+							{{userInfo.nickname}}
+						</div>
+						<div class="authorname" v-else @click="login">
+							登录
+						</div>
+						<el-drawer :append-to-body="true" :visible.sync="innerDrawer">
+							<ui class="innerDrawer">
+								<li class="nav-link el-icon-user" style="margin-left: 5%" @click="personal">个人主页</li>
+								<li class="nav-link el-icon-switch-button" style="margin-left: 5%" @click="signout">退出登录</li>
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 							</ui>
 						</el-drawer>
 					</div>
@@ -135,6 +190,7 @@
 						</span>
 					</div>
 					<ul class="navbar-nav navbar-nav-m">
+<<<<<<< HEAD
 						<li class="nav-item" @click="drawer = false" :class="$route.path=='/home'?'active':''">
 							<router-link :to="{ name: 'home' }" tag="a" class="nav-link">发现音乐</router-link>
 						</li>
@@ -151,6 +207,24 @@
 							<router-link :to="{ name: 'video' }" tag="a" class="nav-link">视频</router-link>
 						</li>
 						<li class="nav-item" @click="drawer = false" :class="$route.path=='/mv'?'active':''">
+=======
+						<li class="nav-item" @click="drawer = false">
+							<router-link :to="{ name: 'home' }" tag="a" class="nav-link">发现音乐</router-link>
+						</li>
+						<li class="nav-item" @click="drawer = false">
+							<router-link :to="{ name: 'paihang' }" tag="a" class="nav-link">排行榜</router-link>
+						</li>
+						<li class="nav-item" @click="drawer = false">
+							<router-link :to="{ name: 'gedan' }" tag="a" class="nav-link">歌单</router-link>
+						</li>
+						<li class="nav-item" @click="drawer = false">
+							<router-link :to="{ name: 'geshou' }" tag="a" class="nav-link">歌手</router-link>
+						</li>
+						<li class="nav-item" @click="drawer = false">
+							<router-link :to="{ name: 'shiping' }" tag="a" class="nav-link">视频</router-link>
+						</li>
+						<li class="nav-item" @click="drawer = false">
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 							<router-link :to="{ name: 'mv' }" tag="a" class="nav-link">MV</router-link>
 						</li>
 					</ul>
@@ -165,24 +239,37 @@
 							@keyup.enter="search()">
 					</div>
 				</el-drawer>
+<<<<<<< HEAD
 				<div type="primary" class="navbar-toggler border-0" @click="drawer = true">
 					<!-- 三条杠 -->
 					<!-- <span class="navbar-toggler-icon" @click="drawer = true" type="primary"></span> -->
 					Menu
 				</div>
+=======
+				<button type="primary" class="navbar-toggler border-0" data-toggle="collapse" data-target="#target"
+					@click="drawer = true">
+					<!-- 三条杠 -->
+					<!-- <span class="navbar-toggler-icon" @click="drawer = true" type="primary"></span> -->
+					Menu
+				</button>
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			</div>
 		</nav>
 	</div>
 </template>
 <script>
+<<<<<<< HEAD
 	import {
 		mapGetters,
 		mapMutations
 	} from 'vuex'
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	export default {
 		name: 'navbar',
 		data() {
 			return {
+<<<<<<< HEAD
 				// 关键词
 				keyword: '',
 				// 热搜列表
@@ -223,12 +310,30 @@
 				// 空格和未输入	this.keyword.split(' ').join('').length
 				if (this.keyword.split(' ').join('').length !== 0) {
 					this.addSearchhistory(this.keyword)
+=======
+				keyword: '',
+				loginStatu: false,
+				userInfo: JSON.parse(window.localStorage.getItem('userInfo')),
+				hots: [],
+				drawer: false,
+				innerDrawer: false,
+				dialogVisible: false
+			}
+		},
+		created() {
+			this.loginStatu = JSON.parse(window.localStorage.getItem('loginStatu'))?JSON.parse(window.localStorage.getItem('loginStatu')):false
+		},
+		methods: {
+			search() {
+				if(this.keyword.split(' ').join('').length !== 0){
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 					this.drawer = false
 					this.$router.push("/search?keyword=" + this.keyword).catch((err) => {
 						console.log(err);
 					})
 				}
 			},
+<<<<<<< HEAD
 			// 点击热门/历史搜索搜索
 			searchhot(keyword) {
 				this.addSearchhistory(keyword)
@@ -271,6 +376,8 @@
 					console.log(error)
 				}
 			},
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			// 登录
 			login() {
 				this.drawer = false
@@ -278,6 +385,7 @@
 					name: 'login'
 				})
 			},
+<<<<<<< HEAD
 			// 饿了么组件的下拉菜单指令事件
 			handleCommand(command) {
 				if (command == 'personal') {
@@ -303,10 +411,33 @@
 				window.localStorage.clear()
 				// 清除cookie
 				this.handle.clearCookie()
+=======
+			handleCommand(command) {
+				if (command == 'personal') {
+					this.personal()
+				}else{
+					this.signout()
+				}
+			},
+			personal(){
+				this.drawer = false
+				this.innerDrawer = false
+				this.$router.push({
+					name: 'personal'
+				})
+			},
+			signout(){
+				window.localStorage.clear()
+				// 待优化,使用vuex同步改变数据不需要刷新
+				setTimeout(() => {
+					window.location.reload()
+				}, 500)
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 				this.$message({
 					message: '退出成功',
 					type: 'success'
 				});
+<<<<<<< HEAD
 				// 更新store数据
 				this.$store.commit('upStatu', false)
 				this.$store.commit('upUserinfo', null)
@@ -317,15 +448,21 @@
 				'delSearchhistory',
 				'clearSearchhistory'
 			]),
+=======
+			}
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		},
 	}
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 	p {
 		margin-bottom: 0;
 	}
 
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	.form-inline .form-control {
 		width: auto;
 		border-radius: 10rem;
@@ -397,11 +534,19 @@
 		/* margin-right: -70vw; */
 		/* margin-left: 1.5vw; */
 	}
+<<<<<<< HEAD
 
 	.flex-row {
 		margin-top: 5px;
 	}
 
+=======
+	
+	.flex-row{
+		margin-top: 5px;
+	}
+	
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	.el-dropdown {
 		bottom: 15px;
 		left: 15px;
@@ -482,6 +627,7 @@
 	.innerDrawer {
 		text-align: center;
 	}
+<<<<<<< HEAD
 
 	.active a {
 		color: #fa2800 !important;
@@ -643,4 +789,6 @@
 	.searchrecommend .num {
 		font-size: 16px;
 	}
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 </style>

@@ -59,7 +59,11 @@
 						trigger: 'blur'
 					}]
 				},
+<<<<<<< HEAD
 				loginLoading: false,
+=======
+				loginLoading: false
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			}
 		},
 		methods: {
@@ -73,7 +77,11 @@
 						} = this.ruleForm
 						this.loginAsync(phone, password)
 					} else {
+<<<<<<< HEAD
 						this.$message.error('请输入手机号与密码！')
+=======
+						this.loading = false
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 					}
 				})
 			},
@@ -93,6 +101,10 @@
 						window.localStorage.setItem('cookie', res.cookie)
 						window.localStorage.setItem('token', res.token)
 						window.localStorage.setItem('loginStatu', true)
+<<<<<<< HEAD
+=======
+						// this.setLoginStatu(true)
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 					} else {
 						this.loginLoading = false
 						this.$message.error(res.msg)
@@ -114,6 +126,7 @@
 					if (res.code === 200) {
 						this.loginLoading = false
 						let userInfo = res.profile
+<<<<<<< HEAD
 						// 等级
 						userInfo.level = res.level
 						// 累计听歌数量
@@ -124,10 +137,19 @@
 						userInfo.createDays = res.createDays
 						window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
 
+=======
+						userInfo.level = res.level
+						userInfo.listenSongs = res.listenSongs
+						userInfo.createTime = res.createTime
+						userInfo.createDays = res.createDays
+						window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
+						// this.setUserInfo(res.profile)
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 						this.$message({
 							message: '登录成功',
 							type: 'success'
 						})
+<<<<<<< HEAD
 						this.loginLoading = false
 						this.$store.commit('upStatu', true)
 						this.$store.commit('upUserinfo', userInfo)
@@ -150,6 +172,14 @@
 						// 		path: '/home'
 						// 	})
 						// }, 1000)
+=======
+						setTimeout(() => {
+							this.loginLoading = false
+							this.$router.push({
+								path: '/'
+							})
+						}, 1000)
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 					}
 				} catch (error) {
 					console.log(error)
@@ -224,5 +254,8 @@
 			padding-top: 40%;
 		}
 	}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 </style>

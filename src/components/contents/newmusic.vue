@@ -2,6 +2,7 @@
 	<div class="list">
 		<el-col :xs="24" :sm="24" :md="24" :lg="12" v-for="(item,index) in songList" :key="index">
 			<div class="item">
+<<<<<<< HEAD
 				<div class="wrapper flex-centers shadow">
 					<div class="index-container flex-centers">
 						<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
@@ -14,6 +15,20 @@
 						<el-image :key="item.image" :src="item.image" lazy>
 							<div slot="placeholder" class="image-slot flex-center flex-column">
 								<i class="el-icon-loading"></i>
+=======
+				<div class="wrapper flex-center shadow">
+					<div class="index-container flex-center">
+						<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
+						<div class="boFang hidden-xs">
+							<i class="el-icon-video-play"></i>
+						</div>
+					</div>
+					<div class="avatar">
+						<el-image :key="index" :src="item.image+ '?param=150y150'" lazy>
+							<div slot="placeholder" class="image-slot flex-center flex-column">
+								<i class="iconfont niceicon-3"></i>
+								<p>加载中<span class="dot">...</span></p>
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 							</div>
 							<div slot="error" class="image-slot flex-center">
 								<i class="el-icon-picture-outline"></i>
@@ -21,8 +36,13 @@
 						</el-image>
 					</div>
 					<div class="info">
+<<<<<<< HEAD
 						<p class="name ellipsi">{{item.name}}</p>
 						<p class="ellipsi">
+=======
+						<p class="name ellipsis">{{item.name}}</p>
+						<p class="flex-row ellipsis">
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 							<span>{{item.singer}}</span>
 						</p>
 					</div>
@@ -37,8 +57,14 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 	import {createSong} from '@/model/song'
 	import {mapActions} from 'vuex'
+=======
+	import {
+		createSong
+	} from '@/model/song'
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	export default {
 		name: 'newmusic',
 		data() {
@@ -53,6 +79,7 @@
 		methods: {
 			// // 获取推荐新音乐
 			async getNewSongs() {
+<<<<<<< HEAD
 				try {
 					const res = await this.$api.get("/personalized/newsong");
 					let list = []
@@ -83,6 +110,28 @@
 				}
 			},
 			// 处理歌曲
+=======
+				const res = await this.$api.get("/personalized/newsong");
+				let list = []
+				res.result.map(item => {
+					list.push(item.id)
+				})
+				// console.log('list',list)
+				this.getSongDetail(list)
+			},
+			async getSongDetail(lists) {
+				let timestamp = new Date().valueOf()
+				lists = lists.join(',')
+				const res = await this.$api.get("/song/detail", {
+					params: {
+						ids: lists,
+						timestamp: timestamp
+					},
+				});
+				this.songList = this.hanlesonglist(res.songs)
+			},
+
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			hanlesonglist(list) {
 				let ret = []
 				list.map(item => {
@@ -91,6 +140,7 @@
 					}
 				})
 				return ret
+<<<<<<< HEAD
 			},
 			// 播放歌曲
 			playSong(list, index) {
@@ -112,6 +162,9 @@
 			...mapActions([
 				'selectPlay',
 			])
+=======
+			}
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		},
 	}
 </script>
@@ -126,9 +179,15 @@
 		height: 50px;
 	}
 
+<<<<<<< HEAD
 	.ellipsi {
 		overflow: hidden;
 		text-overflow: ellipsi;
+=======
+	.ellipsis {
+		overflow: hidden;
+		text-overflow: ellipsis;
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		white-space: nowrap;
 	}
 
@@ -139,7 +198,11 @@
 		margin-left: 3.7rem;
 	}
 
+<<<<<<< HEAD
 	.flex-centers {
+=======
+	.flex-center {
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		display: flex;
 		align-items: center;
 	}
@@ -192,7 +255,10 @@
 		border-radius: 5px;
 		position: relative;
 		margin-right: 30px;
+<<<<<<< HEAD
 		cursor: pointer;
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	}
 
 	.list .item .wrapper .avatar img {
@@ -213,7 +279,11 @@
 	}
 
 	.list .item .wrapper .info .author,
+<<<<<<< HEAD
 	.ellipsi span {
+=======
+	.ellipsis span {
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		font-size: 12px;
 		color: #666;
 		font-weight: bold;
@@ -225,9 +295,12 @@
 		font-weight: bold;
 		margin-left: 10%;
 		flex: 1;
+<<<<<<< HEAD
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+=======
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 	}
 
 	.list .item .wrapper .duration {
@@ -257,7 +330,11 @@
 		color: #666;
 	}
 
+<<<<<<< HEAD
 	.flex-centers:hover .boFang {
+=======
+	.flex-center:hover .boFang {
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		transform: translateY(0);
 	}
 
@@ -268,7 +345,11 @@
 		left: 2.5%;
 		font-size: 1.5rem;
 		background: #fff;
+<<<<<<< HEAD
 		transform: translateX(170%);
+=======
+		transform: translateX(140%);
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 		transition: 0.2s;
 		cursor: pointer;
 	}
@@ -322,7 +403,11 @@
 		}
 
 		.info .name,
+<<<<<<< HEAD
 		.ellipsi {
+=======
+		.ellipsis {
+>>>>>>> 4393e5e0e5c3d46e4d4bcf9c689bad40725420de
 			font-size: 12px !important;
 		}
 	}
