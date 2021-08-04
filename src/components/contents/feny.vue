@@ -18,4 +18,20 @@
 </script>
 
 <style>
+	.block{
+		width: 95%;
+		margin: 0 auto;
+		background: #fff;
+		opacity: .6;
+	}
+	@media screen and (max-width: 768px) {
+		.el-pagination__total,.el-pagination__jump{
+			display: none!important;
+		}
+	}
+	@media screen and (max-width: 371px) {
+		.el-pager li{
+			min-width: 25px!important;
+		}
+	}
 </style>

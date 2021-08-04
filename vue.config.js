@@ -2,6 +2,7 @@ module.exports = {
 	lintOnSave: false,
 	// lintOnSave: process.env.NODE_ENV !== 'production',
 	publicPath: './', //打包生成的静态文件的路径起点
+	productionSourceMap: false, // 生产打包时不输出map文件，增加打包速度
 	configureWebpack: {
 		// other webpack options to merge in ...
 	},
@@ -15,7 +16,7 @@ module.exports = {
 		open: true,
 		proxy: { // 解决跨域问题
 			'/api': {
-				// 为了将/api 替换成 https://wyy.djtc.vip/  https://autumnfish.cn/
+				// 为了将/api 替换成 https://wyy.djtc.vip/  https://autumnfish.cn/   https://nicemusic-api.lxhcool.cn/
 				target: 'https://wyy.djtc.vip/',
 				// 允许跨域
 				changeOrigin: true,

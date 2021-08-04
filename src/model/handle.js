@@ -4,26 +4,17 @@ export default {
 	// 补0方法
 	addZero(num, len) {
 		if (String(num).length > len) return num
+		// -slice取出
 		return (Array(len).join(0) + num).slice(-len)
 	},
-	// localStorage存储
-	setStore(name, content) {
-		let contentClone = content
-		if (!name) return
-		if (typeof content !== 'string') {
-			contentClone = JSON.stringify(contentClone)
+	//清除所有cookie函数
+	clearCookie() {
+		var keys = document.cookie.match(/[^ =;]+(?=\=)/g)
+		if (keys) {
+			for (var i = keys.length; i--;){
+				document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+			}
 		}
-		window.localStorage.setItem(name, contentClone)
-	},
-	// localStorage获取
-	getStore(name) {
-		if (!name) return null
-		return window.localStorage.getItem(name)
-	},
-	// localStorage删除
-	removeStore(name) {
-		if (!name) return
-		window.localStorage.removeItem(name)
 	},
 	// 日期格式化
 	dateFormat(str, type) {
@@ -51,19 +42,18 @@ export default {
 		let day = this.addZero(date.getDate(), 2)
 		return `${year}-${month}-${day}`
 	},
-	/**
-	 * 数字转整数 如 100000 转为10万
-	 * @param {需要转化的数} num
-	 * @param {需要保留的小数位数} point
-	 */
+	// 数字转整数 如 100000 转为10万
+	// param {需要转化的数} num
+	// param {需要保留的小数位数} point
 	tranNumber(num, point) {
 		let numStr = num.toString()
-		// 十万以内直接返回
+		// 小于10万直接返回
 		if (numStr.length < 6) {
 			return numStr
 		}
 		//大于8位数是亿
 		else if (numStr.length > 8) {
+			// 取小数
 			let decimal = numStr.substring(
 				numStr.length - 8,
 				numStr.length - 8 + point
@@ -89,11 +79,11 @@ export default {
 		} else if (time < 60) {
 			formatTime = '00:' + time
 		} else {
-			var m = ~~parseInt((time % (1000 * 60 * 60)) / (1000 * 60))
+			var m = ~~(time / (1000 * 60))
 			if (m < 10) {
 				m = '0' + m
 			}
-			var s = ~~parseInt((time % (1000 * 60)) / 1000)
+			var s = ~~((time / 1000) % 60)
 			if (s < 10) {
 				s = '0' + s
 			}
@@ -158,13 +148,32 @@ export default {
 	},
 	// 获取是几几后
 	getAstro(timestamp) {
-		let newDate = new Date()
-		newDate.setTime(timestamp)
+		// console.log(timestamp)
+		let newDate = new Date(timestamp)
+		// let newDate = new Date()
+		// newDate.setTime(timestamp)
 		let birthday = newDate.toLocaleDateString(timestamp)
+		// console.log(birthday)
 		let birthdayArr = birthday.split('/')
-		let year = birthdayArr[0].substring(birthdayArr[0].length - 2) + '后'
+		let year = birthdayArr[0].substring(birthdayArr[0].length - 2) + '年'
+		// console.log(birthdayArr)
 		let month = birthdayArr[1]
 		let day = birthdayArr[2]
+		if(birthdayArr[0]=='1900'){
+			return (
+				'此人很懒，暂未设置~'
+			)
+		}
+		// function getAstro(m, d) {
+		// 	//各个星座的日期分界线，例如1月为："102223444433".charAt(0)即"1"，依此类推... 然后加上19(这里用- -19，因为'+'会当作字符串拼接操作而不是数学的加法)
+		// 	let b = "102223444433".charAt(m - 1) - -19;
+		// 	//如果日期小于分界线，就为1，否则为0
+		// 	let sub = d < b ? 1 : 0;
+		// 	//把月份换算成索引，得到0~12的数字，0 摩羯，1 水瓶，...，12是摩羯。
+		// 	let x = m - sub;
+		// 	//从索引*2的位置开始取出2个字符，即为星座名称
+		// 	return "魔羯水瓶双鱼牡羊金牛双子巨蟹狮子处女天秤天蝎射手魔羯".substr(x * 2, 2);
+		// }
 		return (
 			year +
 			' - ' +
@@ -175,18 +184,4 @@ export default {
 			'座'
 		)
 	},
-	// 数组随机
-	shuffle(arr) {
-		let _arr = arr.slice()
-		for (let i = 0; i < _arr.length; i++) {
-			let j = this.getRandomInt(0, i)
-			let t = _arr[i]
-			_arr[i] = _arr[j]
-			_arr[j] = t
-		}
-		return _arr
-	},
-	getRandomInt(min, max) {
-		return Math.floor(Math.random() * (max - min + 1) + min)
-	}
 }

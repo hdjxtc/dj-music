@@ -1,8 +1,10 @@
 <template>
-	<div class="contents">
-		<router-view />
+	<div class="contents" id="contents">
+		<transition name="fade">
+			<router-view />
+		</transition>
 		<Footer v-if="!$route.meta.isLogin"/>
-		<el-backtop target=".contents" :bottom="35" :right="25">
+		<el-backtop target=".contents" :bottom="70">
 			<img src="../../assets/img/gotop.png" >
 		</el-backtop>
 	</div>

@@ -1,10 +1,10 @@
 /** 歌曲处理方法 */
-
 import handle from './handle'
 
 export function createSong(musicData) {
 	return {
 		id: musicData.id,
+		fee: musicData.fee,
 		singer: filterSinger(musicData.ar || musicData.artists),
 		name: musicData.name,
 		album: musicData.al ? musicData.al.name : musicData.album.name,
@@ -12,7 +12,10 @@ export function createSong(musicData) {
 		image: musicData.al ? musicData.al.picUrl : musicData.album.artist.img1v1Url,
 		url: `https://music.163.com/song/media/outer/url?id=${musicData.id}.mp3`,
 		playCount: musicData.playCount || '',
-		score: musicData.score || ''
+		score: musicData.score || '',
+		mv: musicData.mv || '',
+		albumid: musicData.al ? musicData.al.id : '',
+		artistid: musicData.ar ? musicData.ar[0].id : ''
 	}
 }
 
@@ -37,11 +40,10 @@ export function createVideo(videoData) {
 	}
 	return {
 		id: videoData.id,
-		nickName: videoData.nickName,
 		name: videoData.name,
 		playCount: videoData.playCount,
 		duration: videoData.duration,
 		image: videoData.image,
-		isLive: videoData.isLive
+		isLive: videoData.isLive || false
 	}
 }

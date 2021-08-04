@@ -59,7 +59,7 @@
 						trigger: 'blur'
 					}]
 				},
-				loginLoading: false
+				loginLoading: false,
 			}
 		},
 		methods: {
@@ -73,7 +73,7 @@
 						} = this.ruleForm
 						this.loginAsync(phone, password)
 					} else {
-						this.loading = false
+						this.$message.error('请输入手机号与密码！')
 					}
 				})
 			},
@@ -93,7 +93,6 @@
 						window.localStorage.setItem('cookie', res.cookie)
 						window.localStorage.setItem('token', res.token)
 						window.localStorage.setItem('loginStatu', true)
-						// this.setLoginStatu(true)
 					} else {
 						this.loginLoading = false
 						this.$message.error(res.msg)
@@ -115,22 +114,42 @@
 					if (res.code === 200) {
 						this.loginLoading = false
 						let userInfo = res.profile
+						// 等级
 						userInfo.level = res.level
+						// 累计听歌数量
 						userInfo.listenSongs = res.listenSongs
+						// 创建时间
 						userInfo.createTime = res.createTime
+						// 创建天数
 						userInfo.createDays = res.createDays
 						window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
-						// this.setUserInfo(res.profile)
+
 						this.$message({
 							message: '登录成功',
 							type: 'success'
 						})
-						setTimeout(() => {
-							this.loginLoading = false
+						this.loginLoading = false
+						this.$store.commit('upStatu', true)
+						this.$store.commit('upUserinfo', userInfo)
+						// 使用$router.back()和$router.go(-1)作用相同，都是返回原页面。但如果原页面路由携带参数，使用以上两个方法返回的原页面路由参数消失，此时使用$router.back(-1)返回原页面路由参数仍存在
+						// 判断有没有上一页，有些手机端直接退出了
+						if (window.history.length <= 1) {
 							this.$router.push({
-								path: '/'
+								path: '/home'
 							})
-						}, 1000)
+							return false
+						} else {
+							this.$router.back(-1);
+						}
+						// this.$router.push({
+						// 	path: '/home'
+						// })
+						// setTimeout(() => {
+						// 	this.loginLoading = false
+						// 	this.$router.push({
+						// 		path: '/home'
+						// 	})
+						// }, 1000)
 					}
 				} catch (error) {
 					console.log(error)
@@ -205,4 +224,5 @@
 			padding-top: 40%;
 		}
 	}
+	
 </style>

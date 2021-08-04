@@ -2,18 +2,18 @@
 	<div class="list">
 		<el-col :xs="24" :sm="24" :md="24" :lg="12" v-for="(item,index) in songList" :key="index">
 			<div class="item">
-				<div class="wrapper flex-center shadow">
-					<div class="index-container flex-center">
+				<div class="wrapper flex-centers shadow">
+					<div class="index-container flex-centers">
 						<span class="num">{{ handle.addZero(index + 1, 2) }}</span>
 						<div class="boFang hidden-xs">
-							<i class="el-icon-video-play"></i>
+							<i class="el-icon-video-play" @click="playSong(songList,index)"></i>
 						</div>
 					</div>
-					<div class="avatar">
-						<el-image :key="index" :src="item.image+ '?param=150y150'" lazy>
+					<div class="avatar" @click="playSong(songList,index)">
+						<!-- <img :src="item.image"> -->
+						<el-image :key="item.image" :src="item.image" lazy>
 							<div slot="placeholder" class="image-slot flex-center flex-column">
-								<i class="iconfont niceicon-3"></i>
-								<p>加载中<span class="dot">...</span></p>
+								<i class="el-icon-loading"></i>
 							</div>
 							<div slot="error" class="image-slot flex-center">
 								<i class="el-icon-picture-outline"></i>
@@ -21,8 +21,8 @@
 						</el-image>
 					</div>
 					<div class="info">
-						<p class="name ellipsis">{{item.name}}</p>
-						<p class="flex-row ellipsis">
+						<p class="name ellipsi">{{item.name}}</p>
+						<p class="ellipsi">
 							<span>{{item.singer}}</span>
 						</p>
 					</div>
@@ -37,9 +37,8 @@
 </template>
 
 <script>
-	import {
-		createSong
-	} from '@/model/song'
+	import {createSong} from '@/model/song'
+	import {mapActions} from 'vuex'
 	export default {
 		name: 'newmusic',
 		data() {
@@ -54,26 +53,36 @@
 		methods: {
 			// // 获取推荐新音乐
 			async getNewSongs() {
-				const res = await this.$api.get("/personalized/newsong");
-				let list = []
-				res.result.map(item => {
-					list.push(item.id)
-				})
-				// console.log('list',list)
-				this.getSongDetail(list)
+				try {
+					const res = await this.$api.get("/personalized/newsong");
+					let list = []
+					res.result.map(item => {
+						list.push(item.id)
+					})
+					// console.log('list',list)
+					this.getSongDetail(list)
+				} catch (error) {
+					console.log(error)
+				}
 			},
+			// 获取歌曲信息，拿歌曲作者、图片等
 			async getSongDetail(lists) {
-				let timestamp = new Date().valueOf()
-				lists = lists.join(',')
-				const res = await this.$api.get("/song/detail", {
-					params: {
-						ids: lists,
-						timestamp: timestamp
-					},
-				});
-				this.songList = this.hanlesonglist(res.songs)
+				try {
+					let timestamp = new Date().valueOf()
+					lists = lists.join(',')
+					const res = await this.$api.get("/song/detail", {
+						params: {
+							ids: lists,
+							timestamp: timestamp
+						},
+					});
+					this.songList = this.hanlesonglist(res.songs)
+					// console.log(this.songList)
+				} catch (error) {
+					console.log(error)
+				}
 			},
-
+			// 处理歌曲
 			hanlesonglist(list) {
 				let ret = []
 				list.map(item => {
@@ -82,7 +91,27 @@
 					}
 				})
 				return ret
-			}
+			},
+			// 播放歌曲
+			playSong(list, index) {
+				try {
+					let id = list[index].id
+					this.$api.get(`/song/url?id=${id}`).then(res => {
+						list[index].url = res.data[0].url
+						// console.log(res)
+						this.selectPlay({
+							list,
+							index
+						})
+					})
+				} catch (error) {
+					console.log(error)
+				}
+			},
+			// 调用vuex的Actions改数据
+			...mapActions([
+				'selectPlay',
+			])
 		},
 	}
 </script>
@@ -97,9 +126,9 @@
 		height: 50px;
 	}
 
-	.ellipsis {
+	.ellipsi {
 		overflow: hidden;
-		text-overflow: ellipsis;
+		text-overflow: ellipsi;
 		white-space: nowrap;
 	}
 
@@ -110,7 +139,7 @@
 		margin-left: 3.7rem;
 	}
 
-	.flex-center {
+	.flex-centers {
 		display: flex;
 		align-items: center;
 	}
@@ -163,6 +192,7 @@
 		border-radius: 5px;
 		position: relative;
 		margin-right: 30px;
+		cursor: pointer;
 	}
 
 	.list .item .wrapper .avatar img {
@@ -183,7 +213,7 @@
 	}
 
 	.list .item .wrapper .info .author,
-	.ellipsis span {
+	.ellipsi span {
 		font-size: 12px;
 		color: #666;
 		font-weight: bold;
@@ -195,6 +225,9 @@
 		font-weight: bold;
 		margin-left: 10%;
 		flex: 1;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 
 	.list .item .wrapper .duration {
@@ -224,7 +257,7 @@
 		color: #666;
 	}
 
-	.flex-center:hover .boFang {
+	.flex-centers:hover .boFang {
 		transform: translateY(0);
 	}
 
@@ -235,7 +268,7 @@
 		left: 2.5%;
 		font-size: 1.5rem;
 		background: #fff;
-		transform: translateX(140%);
+		transform: translateX(170%);
 		transition: 0.2s;
 		cursor: pointer;
 	}
@@ -289,7 +322,7 @@
 		}
 
 		.info .name,
-		.ellipsis {
+		.ellipsi {
 			font-size: 12px !important;
 		}
 	}
