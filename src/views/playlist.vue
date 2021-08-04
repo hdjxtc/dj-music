@@ -115,12 +115,12 @@
 				// 将请求标签更改后重新请求数据
 				this.getPlayList()
 			},
-			// 获取歌单分类
+			// 获取所有歌单分类
 			async getCatList() {
 				try {
 					let res = await this.$api.get(`/playlist/catlist`)
 					if (res.code === 200) {
-						// 类别
+						// 类别   待定，好像用不着
 						this.categories = res.categories
 						// console.log(res)
 						this.cateList = this.categoryGroup(res.sub, 'category')

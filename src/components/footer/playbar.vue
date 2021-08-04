@@ -733,7 +733,7 @@
 
 	/* 歌词 */
 	.lyriclist {
-		width: 85%;
+		width: 90%;
 		height: 80px;
 		overflow: hidden;
 		position: absolute;

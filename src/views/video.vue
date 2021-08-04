@@ -34,7 +34,7 @@
 		<Videolist :videos="videos" :isVideo="true" />
 		<!-- 切换 -->
 		<div class="page bottom-action">
-			<!-- 没有总条数，用分页拿不到total -->
+			<!-- 没有总条数，一次获取8条数据，用分页拿不到total -->
 			<button :disabled="offset == 0" class="btn flex-center trainsition" @click="prev">
 				上一页
 			</button>

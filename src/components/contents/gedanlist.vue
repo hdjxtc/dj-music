@@ -1,5 +1,5 @@
 <template>
-	<div class="gendanlist" :class="num?'gendanlisttwo':''">
+	<div class="gendanlist" :class="num?'gendanlisttwo':''" v-if="playList.length>0">
 		<div class="item" :class="num?'two':''" v-for="(item,index) of playList" :key="index" @click="toDetail(item.id)">
 			<div class="wrapper">
 				<div class="cover">
@@ -26,6 +26,7 @@
 			</div>
 		</div>
 	</div>
+	<Empty v-else />
 </template>
 
 <script>

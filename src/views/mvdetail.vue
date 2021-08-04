@@ -32,17 +32,17 @@
 				<!-- 操作 -->
 				<div class="follow">
 					<!-- 点赞 -->
-					<div class="box" @click="likeResource">
+					<div class="box" @click="likeResource" title="点赞">
 						<i class="iconfont dj-icon-zan" :class="videoDetailInfo.isLike ? 'active' : ''"></i>
 						{{ videoDetailInfo.likeCount }}
 					</div>
 					<!-- 收藏 -->
-					<div class="box">
+					<div class="box" title="收藏">
 						<i class="iconfont dj-icon-yishoucang"></i>
 						{{ detail.subCount }}
 					</div>
 					<!-- 转发 -->
-					<div class="box">
+					<div class="box" title="转发">
 						<i class="iconfont dj-icon-fabu"></i>
 						{{ videoDetailInfo.shareCount }}
 					</div>
@@ -199,6 +199,7 @@
 				try {
 					let res = await this.$api.get(`/mv/detail?mvid=${id}`)
 					if (res.code === 200) {
+						// 过滤#
 						res.data.videoGroup.map(item => {
 							if (item.name.indexOf('#') != -1) {
 								item.name = item.name.replace(/#/g, '')
@@ -236,7 +237,7 @@
 					let res = await this.$api.get(`/simi/mv?mvid=${id}`)
 					if (res.code === 200) {
 						this.relatedList = res.mvs
-						console.log(this.relatedList)
+						// console.log(this.relatedList)
 					}
 				} catch (error) {
 					console.log(error)
@@ -252,7 +253,6 @@
 					timestamp
 				}
 				try {
-					// 过滤#
 					let res = await this.$api.get(`/comment/mv`, {
 						params: params
 					})

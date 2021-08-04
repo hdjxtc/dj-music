@@ -261,7 +261,7 @@
 					let res = await this.$api.get(`/related/allvideo?id=${id}`)
 					if (res.code === 200) {
 						this.relatedList = res.data
-						console.log(this.relatedList)
+						// console.log(this.relatedList)
 					}
 				} catch (error) {
 					console.log(error)

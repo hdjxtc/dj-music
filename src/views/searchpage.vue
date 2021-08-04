@@ -205,6 +205,7 @@
 			}
 		},
 		watch: {
+			// 搜索建议
 			keyword(newval) {
 				// 不为空才请求
 				// console.log(newval)

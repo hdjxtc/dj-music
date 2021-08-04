@@ -2,7 +2,7 @@
 	<div class="playpagebox container">
 		<div class="top">
 			<div class="blur"
-				:style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(100px)'}">
+				:style="{background: 'url(' + currentSong.image + ') no-repeat center top',filter: 'blur(300px)'}">
 			</div>
 			<div class="left">
 				<div class="playbar hidden-hd" ref="playbar">
@@ -14,7 +14,7 @@
 				</div>
 				<div class="btnBox">
 					<el-button size="mini" icon="el-icon-circle-plus-outline" @click="clicklike">喜欢</el-button>
-					<el-button size="mini" icon="el-icon-download" @click="down">下载</el-button>
+					<el-button size="mini  hidden-hd" icon="el-icon-download" @click="down">下载</el-button>
 					<el-button size="mini" icon="el-icon-chat-line-square" @click="comment">评论</el-button>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 						<h4>
 							{{currentSong.name}}
 						</h4>
-						<i class="iconfont dj-icon-MV" style="cursor: pointer; margin-left: 3%;"
+						<i class="iconfont dj-icon-MV mvclass"
 							v-if="currentSong.mv!=''" @click="toDetail(currentSong.mv)" title="MV"></i>
 					</div>
 					<div class="musicinfo">
@@ -529,6 +529,13 @@
 		width: 365px;
 		font-size: 32px;
 	}
+	
+	.top .center .musictitle .mvclass{
+		color: #000;
+		text-shadow: -1px -1px rgb(255 255 255);
+		cursor: pointer; 
+		margin-left: 3%;
+	}
 
 	.top .center .musictitle h4 {
 		color: #fff;
@@ -540,17 +547,18 @@
 	/* 歌曲信息 */
 	.top .center .musicinfo {
 		color: #fff;
-		text-shadow: 1px 1px rgb(0 0 0 / 60%);
 	}
 
 	.top .center .musicinfo h6 {
 		font-size: 12px;
+		text-shadow: 1px 1px rgb(0 0 0 / 60%);
 	}
 
 	.top .center .musicinfo a {
 		text-decoration: none;
 		color: #2761e6;
 		transition: .3s;
+		text-shadow: none;
 	}
 
 	.top .center .musicinfo a:hover {
@@ -597,7 +605,13 @@
 		line-height: 31px;
 		letter-spacing: 1px;
 		color: #000;
-		text-shadow: 1px 1px rgb(255 255 255 / 60%)
+	/* 	text-shadow: 1px 1px rgb(255 255 255 / 50%),
+		-1px -1px rgb(255 255 255 / 50%) */
+	/* 	text-shadow: 
+					0.5px 0 0 rgb(255 255 255 / 40%),
+					0 0.5px 0 rgb(255 255 255 / 40%), 
+					-0.5px 0 0 rgb(255 255 255 / 40%), 
+					0 -0.5px 0 rgb(255 255 255 / 40%); */
 	}
 
 	/* 当前歌词 */
@@ -642,11 +656,14 @@
 			padding: 0;
 		}
 
-		.btnBox,
 		.hidden-hd {
 			display: none;
 		}
-
+		
+		.btnBox {
+			margin-top: 300px;
+		}
+		
 		.center {
 			position: absolute;
 			left: 20%;
@@ -709,6 +726,17 @@
 		.left {
 			margin: 15% 26% !important;
 		}
+		.lyricbox ul li {
+			font-size: 12px;
+			color: #fff;
+			text-shadow: 1px 1px rgb(0 0 0 / 60%)
+		}
+		/* 当前歌词 */
+		.lyricbox .current {
+			font-size: 16px;
+			color: #49ff17;
+			text-shadow: -1px 1px rgb(0 0 0 / 60%);
+		}
 	}
 
 	@media screen and (max-width: 485px) {
@@ -736,7 +764,7 @@
 
 	@media screen and (max-width: 391px) {
 		.center {
-			left: -7%;
+			left: -5%;
 		}
 
 		.left {
@@ -756,7 +784,7 @@
 
 	@media screen and (max-width: 348px) {
 		.center {
-			left: -13%;
+			left: -8%;
 		}
 
 		.left {
@@ -766,7 +794,7 @@
 
 	@media screen and (max-width: 318px) {
 		.center {
-			left: -20%;
+			left: -15%;
 		}
 
 		.left {

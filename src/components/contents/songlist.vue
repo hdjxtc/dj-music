@@ -10,7 +10,9 @@
 			</div>
 		</div>
 		<el-table :data="songlist" style="width: 95%;margin:0 auto">
+			<!-- 序号 -->
 			<el-table-column type="index" label="序号" width="60px" align="center"> </el-table-column>
+			<!-- 歌名 -->
 			<el-table-column :show-overflow-tooltip="true" label="歌曲" :width="width1" align="left"
 				header-align="center">
 				<template slot-scope="scope">
@@ -35,10 +37,13 @@
 						v-if="scope.row.fee==1" title="会员"></i>
 				</template>
 			</el-table-column>
+			<!-- 歌手 -->
 			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" :width="width2" align="center">
 			</el-table-column>
+			<!-- 专辑 -->
 			<el-table-column prop="album" :show-overflow-tooltip="true" label="专辑" :width="width3" align="center">
 			</el-table-column>
+			<!-- 时长 -->
 			<el-table-column prop="duration" label="时间" align="center">
 				<template slot-scope="scope">
 					<!-- 秒转00:00 -->
@@ -152,18 +157,35 @@
 					}
 				}
 				let id = scope.row.id
-				this.$api.get(`/song/url?id=${id}`).then(res => {
-					// console.log(res)
-					if (res.code == 200) {
-						list[index].url = res.data[0].url
-						this.selectPlay({
-							list,
-							index
+				let timestamp = new Date().getTime()
+				this.$api.get(`/check/music?id=${id}&timestamp=${timestamp}`).then(res=>{
+					if(res.success) {
+						this.$api.get(`/song/url?id=${id}`).then(res => {
+							// console.log(res)
+							if (res.code == 200) {
+								list[index].url = res.data[0].url
+								this.selectPlay({
+									list,
+									index
+								})
+							}
+						}).catch(err => {
+							this.$message.error('播放错误，请稍后重试')
+							console.log(err)
+							for (let i = 0, trs = tr.length; i < trs; i++) {
+								tr[i].className = 'el-table__row'
+							}
 						})
+					} else {
+						this.$message.warning('亲爱的,暂无版权~')
+						for (let i = 0, trs = tr.length; i < trs; i++) {
+							tr[i].className = 'el-table__row'
+						}
 					}
-				}).catch(err => {
-					this.$message.error('播放错误，请稍后重试')
+					
+				}).catch(err=>{
 					console.log(err)
+					this.$message.warning('亲爱的,暂无版权~')
 					for (let i = 0, trs = tr.length; i < trs; i++) {
 						tr[i].className = 'el-table__row'
 					}

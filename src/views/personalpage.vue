@@ -198,7 +198,6 @@
 							}
 						})
 						this.myCreatelist = myCreatelist
-						this.$store.commit('addMycreatelist', myCreatelist)
 						this.mycollectionlist = mycollectionlist
 					}
 				} catch (error) {
