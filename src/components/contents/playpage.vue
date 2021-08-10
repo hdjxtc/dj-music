@@ -25,8 +25,8 @@
 						<h4>
 							{{currentSong.name}}
 						</h4>
-						<i class="iconfont dj-icon-MV mvclass"
-							v-if="currentSong.mv!=''" @click="toDetail(currentSong.mv)" title="MV"></i>
+						<i class="iconfont dj-icon-MV mvclass" v-if="currentSong.mv!=''"
+							@click="toDetail(currentSong.mv)" title="MV"></i>
 					</div>
 					<div class="musicinfo">
 						<h6>
@@ -73,7 +73,9 @@
 	import Similarsong from './similarsong'
 	import Similargedan from './similargedan'
 	import Comment from './comment'
-	import {parseLyric} from '@/model/parselyric'
+	import {
+		parseLyric
+	} from '@/model/parselyric'
 	export default {
 		name: "playpage",
 		data() {
@@ -387,7 +389,8 @@
 			addlike(pid) {
 				try {
 					let timestamp = new Date().getTime()
-					this.$api.get(`/playlist/tracks?op=add&pid=${pid}&tracks=${this.currentSong.id}&timestamp=${timestamp}`)
+					this.$api.get(
+							`/playlist/tracks?op=add&pid=${pid}&tracks=${this.currentSong.id}&timestamp=${timestamp}`)
 						.then(res => {
 							// console.log(res)
 							// console.log(res.body)
@@ -398,7 +401,7 @@
 								// 更新数据
 								this.getUserArtist()
 								// 主动触发esc关闭弹窗
-								setTimeout(()=>{
+								setTimeout(() => {
 									if (HTMLElement && !HTMLElement.prototype.pressKey) {
 										HTMLElement.prototype.pressKey = function(code) {
 											var evt = document.createEvent('UIEvents');
@@ -408,7 +411,7 @@
 										};
 									}
 									document.body.pressKey(27);
-								},2000)
+								}, 2000)
 							}
 						}).catch(err => {
 							console.log(err)
@@ -529,11 +532,11 @@
 		width: 365px;
 		font-size: 32px;
 	}
-	
-	.top .center .musictitle .mvclass{
+
+	.top .center .musictitle .mvclass {
 		color: #000;
 		text-shadow: -1px -1px rgb(255 255 255);
-		cursor: pointer; 
+		cursor: pointer;
 		margin-left: 3%;
 	}
 
@@ -605,9 +608,9 @@
 		line-height: 31px;
 		letter-spacing: 1px;
 		color: #000;
-	/* 	text-shadow: 1px 1px rgb(255 255 255 / 50%),
+		/* 	text-shadow: 1px 1px rgb(255 255 255 / 50%),
 		-1px -1px rgb(255 255 255 / 50%) */
-	/* 	text-shadow: 
+		/* 	text-shadow: 
 					0.5px 0 0 rgb(255 255 255 / 40%),
 					0 0.5px 0 rgb(255 255 255 / 40%), 
 					-0.5px 0 0 rgb(255 255 255 / 40%), 
@@ -659,11 +662,11 @@
 		.hidden-hd {
 			display: none;
 		}
-		
+
 		.btnBox {
 			margin-top: 300px;
 		}
-		
+
 		.center {
 			position: absolute;
 			left: 20%;
@@ -726,11 +729,13 @@
 		.left {
 			margin: 15% 26% !important;
 		}
+
 		.lyricbox ul li {
 			font-size: 12px;
 			color: #fff;
 			text-shadow: 1px 1px rgb(0 0 0 / 60%)
 		}
+
 		/* 当前歌词 */
 		.lyricbox .current {
 			font-size: 16px;

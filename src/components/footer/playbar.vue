@@ -42,7 +42,7 @@
 				<i class="iconfont dj-icon-geci hidden-col" title="歌词" @click="openLyric"
 					:style="showLyric?'color:red':''"></i>
 				<i class="iconfont dj-icon-bofangduilie right" title="播放列表" @click="openPlaylist"
-					:style="showPlaylist?'color:red':''"></i>
+					:style="showPlaylist?'color:red':''"><span class="bofangliebiaonum">{{playList.length}}</span></i>
 			</div>
 			<audio ref="audio" :src="currentSong.url" @playing="audioReady" @error="audioError" @timeupdate="updateTime"
 				@pause="audioPaused" @ended="audioEnd" :muted="isMuted"></audio>
@@ -859,5 +859,10 @@
 			width: 300px !important;
 			height: 360px !important;
 		}
+	}
+	.bofangliebiaonum {
+		font-size: 16px;
+		font-weight: 100;
+		margin-left: 5px;
 	}
 </style>

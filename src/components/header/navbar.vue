@@ -4,10 +4,10 @@
 			<div class="logo">
 				<router-link :to="{name: 'home'}" tag="a"></router-link>
 			</div>
-			<!-- 搜素推荐 -->
 			<div class="searchrecommend" v-if="isshow">
 				<!-- <span class="searchclose" @click="isshow = false">关闭<i class="el-icon-switch-button"></i></span> -->
 				<!-- <div style="clear: both;"></div> -->
+				<!-- 历史搜索 -->
 				<div class="title historytitle" v-if="getSearchhistory.length > 0">
 					<p>
 						<i class="iconfont dj-icon-jiaoyin" title="热门搜索" style="margin-right: 10px;color: #FA2800;"></i>
@@ -339,7 +339,7 @@
 		width: 157px;
 		display: block;
 		height: 35px;
-		background: url(../../assets/img/logo.png) no-repeat center 3px;
+		background: url(../../assets/img/dj-music.png) no-repeat center 3px;
 		background-size: 146px 26px;
 		margin: 0 25px;
 	}
@@ -358,7 +358,11 @@
 		color: #1f2d3a !important;
 		font-weight: bold;
 	}
-
+	
+	.nav-link {
+		color: #1f2d3a!important;
+	}
+	
 	.collapse {
 		display: flex;
 	}
