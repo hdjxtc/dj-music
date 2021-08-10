@@ -58,9 +58,9 @@
 						if(!item[1]){
 							this.lyricarray.splice(index,1)
 						}
-						if(index==6){
-							this.start = item[0]
-						}
+						// if(index==6){
+						// 	this.start = item[0]
+						// }
 					})
 					this.lasttime = this.lyricarray[this.lyricarray.length-1][0]
 				}
