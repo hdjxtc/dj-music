@@ -330,7 +330,7 @@
 				this.upplaYing(true)
 			},
 
-			// 歌曲是否准备完成
+			// 歌曲准备完成
 			audioReady() {
 				clearTimeout(this.timer)
 				// 准备完成后拿到歌曲真实播放时间重新赋值
@@ -347,18 +347,23 @@
 				this.$api.get(`/song/url?id=${id}`).then(res => {
 					let list = res.data
 					let index = 0
-					this.selectPlay({
+					this.selectPlay2({
 						list,
 						index
 					})
 				})
+				// 播放错误后更改播放状态
+				// 判断当前播放状态，判断时播放时地址失效还是暂停时地址失效
+				if(this.currentPlaying) {
+					this.upplaYing(false)
+				}
 				clearTimeout(this.timer)
 				this.songReady = true
 			},
 
 			// 歌曲暂停
+			// 时间播放完会自动执行
 			audioPaused() {
-				// 时间播放完会自动执行
 				this.upplaYing(false)
 			},
 
@@ -475,6 +480,7 @@
 			]),
 			...mapActions([
 				'selectPlay',
+				'selectPlay2'
 			])
 		}
 	}

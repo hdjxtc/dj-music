@@ -11,7 +11,7 @@ export default {
 	clearCookie() {
 		var keys = document.cookie.match(/[^ =;]+(?=\=)/g)
 		if (keys) {
-			for (var i = keys.length; i--;){
+			for (var i = keys.length; i--;) {
 				document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
 			}
 		}
@@ -20,6 +20,7 @@ export default {
 	dateFormat(str, type) {
 		let date = new Date(str)
 		let year = date.getFullYear()
+		// getMonth获取到的月份是0-11，所以要加1
 		let month = this.addZero(date.getMonth() + 1, 2)
 		let day = this.addZero(date.getDate(), 2)
 		let hour = this.addZero(date.getHours(), 2)
@@ -33,16 +34,7 @@ export default {
 			return `${month}/${day} ${hour}:${minute}:${seconds}`
 		}
 	},
-	// 获取当前时间前后N天前后日期
-	getDateBefore(dayCount) {
-		var date = new Date()
-		date.setDate(date.getDate() + dayCount)
-		let year = date.getFullYear()
-		let month = this.addZero(date.getMonth() + 1, 2)
-		let day = this.addZero(date.getDate(), 2)
-		return `${year}-${month}-${day}`
-	},
-	// 数字转整数 如 100000 转为10万
+	// 转换单位 如 100000 转为10万
 	// param {需要转化的数} num
 	// param {需要保留的小数位数} point
 	tranNumber(num, point) {
@@ -60,7 +52,7 @@ export default {
 			)
 			return parseFloat(parseInt(num / 100000000) + '.' + decimal) + '亿'
 		}
-		//大于6位数是十万 (以10W分割 10W以下全部显示)
+		//6位数是十万，大于5就是大于等于10万(以10W分割 10W以下全部显示)
 		else if (numStr.length > 5) {
 			let decimal = numStr.substring(
 				numStr.length - 4,
@@ -69,7 +61,7 @@ export default {
 			return parseFloat(parseInt(num / 10000) + '.' + decimal) + '万'
 		}
 	},
-	// 格式化时间毫秒转分秒
+	// 格式化时间
 	formatTime(time) {
 		// 取整
 		time = ~~time
@@ -159,7 +151,7 @@ export default {
 		// console.log(birthdayArr)
 		let month = birthdayArr[1]
 		let day = birthdayArr[2]
-		if(birthdayArr[0]=='1900'){
+		if (birthdayArr[0] == '1900') {
 			return (
 				'此人很懒，暂未设置~'
 			)

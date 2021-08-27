@@ -17,7 +17,7 @@ Vue.component('Empty', Empty)
 
 Vue.use(ElementUI);
 
-// 封装全局变量
+// 封装全局使用
 // 请求axiox接口
 Vue.prototype.$api = api
 // 处理工具函数

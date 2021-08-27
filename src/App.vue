@@ -42,5 +42,16 @@
 			Contents,
 			Playbar
 		},
+		// 路线更改时滚动到顶部
+		watch: {
+			$route() {
+				// 路由视图内容
+				let contents = document.getElementById('contents')
+				// 歌曲详情页
+				let playpage = document.querySelector('.playpage')
+				contents.scrollTo(0,0)
+				playpage.scrollTo(0,0)
+			}
+		}
 	}
 </script>
