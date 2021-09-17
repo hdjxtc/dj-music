@@ -132,6 +132,15 @@
 				lyriclist: null,
 			}
 		},
+		mounted() {
+			// 初始化播放音量
+			this.$nextTick(() => {
+				const audio = this.$refs.audio
+				if (audio) {
+					audio.volume = this.volume
+				}
+			})
+		},
 		components: {
 			Lyric,
 			Playpage
@@ -347,13 +356,13 @@
 				this.$api.get(`/song/url?id=${id}`).then(res => {
 					let list = res.data
 					let index = 0
-					this.selectPlay2({
+					this.selectPlay({
 						list,
 						index
 					})
 				})
 				// 播放错误后更改播放状态
-				// 判断当前播放状态，判断时播放时地址失效还是暂停时地址失效
+				// 解决播放时地址失效重新获取更改后,不会自动播放的bug,更改为false状态在action里又将状态改为true触发监听状态事件，达到播放目的
 				if(this.currentPlaying) {
 					this.upplaYing(false)
 				}
@@ -479,8 +488,7 @@
 				'deletePlaylist'
 			]),
 			...mapActions([
-				'selectPlay',
-				'selectPlay2'
+				'selectPlay'
 			])
 		}
 	}

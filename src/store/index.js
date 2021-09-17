@@ -193,10 +193,6 @@ export default new Vuex.Store({
 			commit('upplayList', list[index])
 			commit('upplaYing', true)
 		},
-		// 用于地址错误时重新赋值歌曲地址
-		selectPlay2({commit}, {list,index}) {
-			commit('upplayList', list[index])
-		},
 		// 播放全部
 		playAll(context, list) {
 			// console.log(list)
