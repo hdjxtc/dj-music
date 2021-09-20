@@ -297,7 +297,8 @@
 
 	/* 左栏 */
 	.personalpagebox .left {
-		width: 950px;
+		/* width: 950px; */
+		width: 72%;
 		margin-right: 20px;
 		padding: 1rem;
 	}
@@ -400,8 +401,8 @@
 		.personalpagebox {
 			display: block;
 		}
-
-		.personalpagebox .right {
+		
+		.personalpagebox .left,.personalpagebox .right {
 			width: 100%;
 		}
 	}

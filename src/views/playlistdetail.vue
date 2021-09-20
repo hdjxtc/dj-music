@@ -374,7 +374,6 @@
 
 	.playlistdetailbox .left {
 		/* flex: 1; */
-		width: 950px;
 		padding: 15px;
 		border-radius: 8px;
 		margin-right: 20px;

@@ -255,10 +255,10 @@ textarea{
 
 /* 歌曲列表响应 */
 @media screen and (max-width: 1400px) {
-	.ismob,col[name=el-table_1_column_5] {
+	.ismob,col:nth-of-type(5) {
 		display: none;
 	}
-	col[name=el-table_1_column_2]{
+	col:nth-of-type(2){
 		width: 300px;
 	}
 	.el-table__header,.el-table__body {
@@ -266,20 +266,20 @@ textarea{
 	}
 }
 @media screen  and (max-width: 1200px){
-	col[name=el-table_1_column_2] {
+	col:nth-of-type(2) {
 		width: 200px;
 	}
-	col[name=el-table_1_column_3],col[name=el-table_1_column_4] {
+	col:nth-of-type(3),col:nth-of-type(4) {
 		width: 100px;
 	}
 }
 @media screen and (max-width: 490px) {
-	.ismob-xs,col[name=el-table_1_column_1] {
+	.ismob-xs,col:nth-of-type(1) {
 		display: none;
 	}
 }
 @media screen and (max-width: 430px) {
-	.ismob-xss,col[name=el-table_1_column_4] {
+	.ismob-xss,col:nth-of-type(4) {
 		display: none;
 	}
 }
