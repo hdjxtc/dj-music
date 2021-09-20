@@ -22,11 +22,11 @@
 			<!-- pc和移动对应的点击抬起事件 -->
 			<div class="progress-wrap" id="progress-wrap" @mousedown="isDrag = true" @mouseup="isDrag = false"
 				@touchstart="isDrag = true" @touchend="isDrag = false">
-				<p class="current-time">{{ formatTime(currentTimes) }}</p>
+				<p class="current-time">{{ handle.SecondTime(currentTimes) }}</p>
 				<el-slider v-model="currentTimes" :max="audioduration" :show-tooltip="false"
 					style="width: 70%;margin-left: 1%;" @change="changeProgress"></el-slider>
 				<p class="duration-time">
-					{{formatTime(audioduration)}}
+					{{handle.SecondTime(audioduration)}}
 				</p>
 			</div>
 			<!-- 音量条 -->
@@ -69,7 +69,7 @@
 							</div>
 							<p class="ellipsis" style="flex: 2;margin-right: 10%">{{item.name}}</p>
 							<p class="ellipsis" style="margin-right: 5%">{{item.singer}}</p>
-							<p class="ellipsis">{{formatTime(item.duration)}}</p>
+							<p class="ellipsis">{{handle.SecondTime(item.duration)}}</p>
 							<i class="iconfont dj-icon-guanbi" title="删除" @click="deletePlaylist(index)"></i>
 						</div>
 					</div>
@@ -100,7 +100,9 @@
 		mapActions
 	} from 'vuex'
 	// 循环模式
-	import {playMode} from '@/common/playmod'
+	import {
+		playMode
+	} from '@/common/playmod'
 	import Lyric from './lyric'
 	// 歌词
 	// import Lyric from 'lyric-parser'
@@ -247,13 +249,13 @@
 		},
 		methods: {
 			// 格式化时间
-			formatTime(interval) {
-				// 取整
-				interval = interval | 0
-				const m = (interval / 60) | 0
-				const s = interval % 60
-				return `${this.handle.addZero(m, 2)}:${this.handle.addZero(s, 2)}`
-			},
+			// formatTime(interval) {
+			// 	// 取整
+			// 	interval = interval | 0
+			// 	const m = (interval / 60) | 0
+			// 	const s = interval % 60
+			// 	return `${this.handle.addZero(m, 2)}:${this.handle.addZero(s, 2)}`
+			// },
 
 			// 切换播放暂停
 			togglePlay() {
@@ -363,7 +365,7 @@
 				})
 				// 播放错误后更改播放状态
 				// 解决播放时地址失效重新获取更改后,不会自动播放的bug,更改为false状态在action里又将状态改为true触发监听状态事件，达到播放目的
-				if(this.currentPlaying) {
+				if (this.currentPlaying) {
 					this.upplaYing(false)
 				}
 				clearTimeout(this.timer)
@@ -699,13 +701,13 @@
 		align-items: center;
 		position: relative;
 	}
-	
+
 	.playlist-row:hover .flex-center i {
 		display: block;
 		position: absolute;
 		bottom: -5px;
 		left: 0;
-		
+
 	}
 
 	.playlist-box .num {
@@ -874,6 +876,7 @@
 			height: 360px !important;
 		}
 	}
+
 	.bofangliebiaonum {
 		font-size: 16px;
 		font-weight: 100;

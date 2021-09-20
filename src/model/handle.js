@@ -35,8 +35,8 @@ export default {
 		}
 	},
 	// 转换单位 如 100000 转为10万
-	// param {需要转化的数} num
-	// param {需要保留的小数位数} point
+	// 需要转化的数 num
+	// 需要保留的小数位数 point
 	tranNumber(num, point) {
 		let numStr = num.toString()
 		// 小于10万直接返回
@@ -61,8 +61,28 @@ export default {
 			return parseFloat(parseInt(num / 10000) + '.' + decimal) + '万'
 		}
 	},
-	// 格式化时间
+	// 转换成秒
+	formatSecond(time) {
+		// 取整
+		time = ~~time
+		// return parseInt(time/1000)
+		var secondTime
+		if (time < 10) {
+			secondTime = '00:0' + time
+		} else if (time < 60) {
+			secondTime = '00:' + time
+		} else {
+			var m = ~~parseInt((time % (1000 * 60 * 60)) / (1000 * 60))
+			// var m = ~~parseInt((time / (1000 * 60)) % 60)
+			var s = ~~parseInt((time % (1000 * 60)) / 1000)
+			// var s = ~~parseInt((time / 1000 ) % 60)
+			secondTime = Number(m * 60 + s)
+		}
+		return secondTime
+	},
+	// 格式化时间(用于处理视频接口(song.js)得到的时间，接口返回的时间毫秒数)
 	formatTime(time) {
+		console.log('cs')
 		// 取整
 		time = ~~time
 		var formatTime
@@ -71,10 +91,13 @@ export default {
 		} else if (time < 60) {
 			formatTime = '00:' + time
 		} else {
+			// 视频接口里的时间没转为秒，所以要1000*60
 			var m = ~~(time / (1000 * 60))
 			if (m < 10) {
 				m = '0' + m
 			}
+			console.log(m)
+			console.log('cs')
 			var s = ~~((time / 1000) % 60)
 			if (s < 10) {
 				s = '0' + s
@@ -83,23 +106,7 @@ export default {
 		}
 		return formatTime
 	},
-	// 转换成秒
-	formatSecond(time) {
-		// 取整
-		time = ~~time
-		var secondTime
-		if (time < 10) {
-			secondTime = '00:0' + time
-		} else if (time < 60) {
-			secondTime = '00:' + time
-		} else {
-			var m = ~~parseInt((time % (1000 * 60 * 60)) / (1000 * 60))
-			var s = ~~parseInt((time % (1000 * 60)) / 1000)
-			secondTime = Number(m * 60 + s)
-		}
-		return secondTime
-	},
-	// 秒转00:00
+	// 秒转00:00（用于新歌推荐、进度条，歌曲信息里的时间已经用formatSecond转换为秒）
 	SecondTime(interval) {
 		// 按位或'|',数值为undefined或null或false时，直接返回0
 		interval = interval | 0

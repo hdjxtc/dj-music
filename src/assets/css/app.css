@@ -188,11 +188,6 @@ textarea{
 	transform: translate3d(-100%, 100%, 0);
 }
 
-/* 歌单歌曲列表 */
-.playlistdetailbox .left .el-table {
-	width: 100% !important;
-	margin: 0 !important;
-}
 
 /* 歌手页性别图标 */
 .nv {
@@ -206,11 +201,6 @@ textarea{
 /* 歌手页播放全部 */
 .singerdetailbox .playall {
 	width: 95%;
-}
-
-/* 个人主页歌曲列表 */
-.personalpagebox .left .el-table {
-	width: 100% !important;
 }
 
 /* 个人主页歌单列表 */
@@ -251,4 +241,45 @@ textarea{
 
 .singerdetailbox .el-tabs--card>.el-tabs__header .el-tabs__item {
 	border-left: none;
+}
+
+/* 个人主页歌曲列表 */
+.personalpagebox .left .el-table {
+	width: 100% !important;
+}
+/* 歌单歌曲列表 */
+.playlistdetailbox .left .el-table {
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+/* 歌曲列表响应 */
+@media screen and (max-width: 1400px) {
+	.ismob,col[name=el-table_1_column_5] {
+		display: none;
+	}
+	col[name=el-table_1_column_2]{
+		width: 300px;
+	}
+	.el-table__header,.el-table__body {
+		width: 100%!important;
+	}
+}
+@media screen  and (max-width: 1200px){
+	col[name=el-table_1_column_2] {
+		width: 200px;
+	}
+	col[name=el-table_1_column_3],col[name=el-table_1_column_4] {
+		width: 100px;
+	}
+}
+@media screen and (max-width: 490px) {
+	.ismob-xs,col[name=el-table_1_column_1] {
+		display: none;
+	}
+}
+@media screen and (max-width: 430px) {
+	.ismob-xss,col[name=el-table_1_column_4] {
+		display: none;
+	}
 }

@@ -11,15 +11,15 @@
 		</div>
 		<el-table :data="songlist" style="width: 95%;margin:0 auto">
 			<!-- 序号 -->
-			<el-table-column type="index" label="序号" width="60px" align="center"> </el-table-column>
+			<el-table-column type="index" label="序号" width="60px" align="center" class-name="ismob-xs"> </el-table-column>
 			<!-- 歌名 -->
 			<el-table-column :show-overflow-tooltip="true" label="歌曲" :width="width1" align="left"
-				header-align="center">
+				header-align="center" class="ismobwd">	
 				<template slot-scope="scope">
 					<!-- <img :src="scope.row.image" style="height: 50px;width: 50px;"/> -->
 					<!-- 懒加载 -->
 					<el-image :key="scope.row.image" :src="scope.row.image"
-						style="height: 50px;width: 50px;vertical-align: middle;" lazy>
+						style="height: 50px;width: 50px;vertical-align: middle;" class="ismob" lazy>
 						<div slot="placeholder" class="image-slot flex-center flex-column">
 							<i class="el-icon-loading"></i>
 						</div>
@@ -41,10 +41,10 @@
 			<el-table-column :show-overflow-tooltip="true" prop="singer" label="歌手" :width="width2" align="center">
 			</el-table-column>
 			<!-- 专辑 -->
-			<el-table-column prop="album" :show-overflow-tooltip="true" label="专辑" :width="width3" align="center">
+			<el-table-column prop="album" :show-overflow-tooltip="true" label="专辑" :width="width3" align="center" class-name="ismob-xss">
 			</el-table-column>
 			<!-- 时长 -->
-			<el-table-column prop="duration" label="时间" align="center">
+			<el-table-column prop="duration" label="时间" align="center" class-name="ismob">
 				<template slot-scope="scope">
 					<!-- 秒转00:00 -->
 					{{ handle.SecondTime(scope.row.duration) }}
@@ -89,7 +89,7 @@
 			}
 		},
 		watch: {
-			// 正在播放的选中样式在搜索其他歌曲时清除
+			// 正在播放的选中样式在搜索其他歌曲时清除（导航类别切换）
 			// 切换其他页后切回判断对应歌曲渲染
 			songlist(newsong) {
 				// 改变DOM数据后延迟执行的回调,解决执行过快dom还没还没生成，找不到对应dom导致渲染不上和报错TypeError: Cannot read property 'id' of undefined"

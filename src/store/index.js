@@ -121,7 +121,11 @@ export default new Vuex.Store({
 					}
 					ispush = true
 				})
-				state.currentindex = state.playlist.length - currentindex
+				// 解决点击第二次播放全部时下标减1，找不到歌曲的bug
+				if(!currentindex==0) {
+					// 播放列表为空或播放列表有歌曲时的选择播放歌曲逻辑
+					state.currentindex = state.playlist.length - currentindex
+				}
 			}
 			
 		},
