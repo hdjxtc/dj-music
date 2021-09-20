@@ -680,6 +680,9 @@
 		.playlistdetailbox .right{
 			width: 100%;
 		}
+		.playlistdetailbox .left {
+			margin-right: 0px;
+		}
 	}
 	@media screen and (max-width: 768px) {
 		.playlistdetailbox .left .top{
