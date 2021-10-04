@@ -359,7 +359,7 @@
 								</div>
 								<div class="info">
 									<h2 class="ellipsis" title="item.name">${item.name}</h2>
-									<span><small>by ${item.trackCount}</small></span>
+									<span><small>${item.trackCount} 首</small></span>
 								</div>
 							</li>`
 					})

@@ -27,7 +27,8 @@
 			@commentSubmit="commentSubmit" 
 			@commentLike="commentLike" 
 		/>
-		<Commentlist title="最新评论" 
+		<Commentlist 
+			title="最新评论" 
 			:commentList="newestComment" 
 			:currentCommentId="currentCommentId"
 			@deletecomment="deletecomments" 
