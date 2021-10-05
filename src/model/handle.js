@@ -82,7 +82,6 @@ export default {
 	},
 	// 格式化时间(用于处理视频接口(song.js)得到的时间，接口返回的时间毫秒数)
 	formatTime(time) {
-		console.log('cs')
 		// 取整
 		time = ~~time
 		var formatTime
@@ -96,8 +95,6 @@ export default {
 			if (m < 10) {
 				m = '0' + m
 			}
-			console.log(m)
-			console.log('cs')
 			var s = ~~((time / 1000) % 60)
 			if (s < 10) {
 				s = '0' + s
