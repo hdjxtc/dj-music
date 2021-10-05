@@ -73,7 +73,7 @@
 						} = this.ruleForm
 						this.loginAsync(phone, password)
 					} else {
-						this.$message.error('请输入手机号与密码！')
+						this.$message.error('手机号与密码呢！')
 					}
 				})
 			},
@@ -99,7 +99,7 @@
 					}
 				}).catch(() => {
 					this.loginLoading = false
-					this.$message.error('似乎出了什么问题啊，啧啧啧!!!')
+					this.$message.error('似乎出了什么问题，啧啧啧!!!')
 				})
 			},
 			// 获取个人信息

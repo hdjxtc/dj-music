@@ -359,7 +359,7 @@
 								</div>
 								<div class="info">
 									<h2 class="ellipsis" title="item.name">${item.name}</h2>
-									<span><small>by ${item.trackCount}</small></span>
+									<span><small>${item.trackCount} 首</small></span>
 								</div>
 							</li>`
 					})
@@ -394,9 +394,7 @@
 						.then(res => {
 							// console.log(res)
 							// console.log(res.body)
-							if (res.body.code == 502) {
-								this.$message.warning(res.body.message)
-							} else {
+							if (res.body.code == 200) {
 								this.$message.success('收藏成功！')
 								// 更新数据
 								this.getUserArtist()
@@ -412,6 +410,11 @@
 									}
 									document.body.pressKey(27);
 								}, 2000)
+							} else if (res.body.code == 502) {
+								this.$message.warning(res.body.message)
+							}
+							else {
+								this.$message.warning('授权已过期，请重新登录！')
 							}
 						}).catch(err => {
 							console.log(err)

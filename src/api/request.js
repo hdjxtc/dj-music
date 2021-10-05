@@ -3,15 +3,12 @@ import store from '@/store'
 // import router from '@/router'
 import {Message} from 'element-ui'
 import config from './config'
-const {
-	api_base_url
-} = config
+const {api_base_url} = config
 
 let api = axios.create({
 	timeout: 1000 * 10,
 	baseURL: api_base_url
 })
-
 
 // 跨域请求时是否携带凭据 cookie,视频、评论等接口需要用到cookie
 api.defaults.withCredentials = true
@@ -50,6 +47,11 @@ api.interceptors.response.use(response => {
 					message: '授权已过期，请重新登录！',
 					duration: 2000
 				})
+				// 清除登录信息，重新登录
+				window.localStorage.clear()
+				this.handle.clearCookie()
+				this.$store.commit('upStatu', false)
+				this.$store.commit('upUserinfo', null)
 			}
 			// router.replace({
 			// 	path: '/login'

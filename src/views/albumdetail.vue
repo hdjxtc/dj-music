@@ -252,7 +252,6 @@
 
 	.playlistdetailbox .left {
 		/* flex: 1; */
-		width: 950px;
 		padding: 15px;
 		border-radius: 8px;
 		margin-right: 20px;
@@ -561,6 +560,9 @@
 
 		.playlistdetailbox .right {
 			width: 100%;
+		}
+		.playlistdetailbox .left {
+			margin-right: 0px;
 		}
 	}
 
